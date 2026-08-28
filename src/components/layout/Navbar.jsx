@@ -47,7 +47,7 @@ export const Navbar = ({ onToggleSidebar }) => {
       <div className="max-w-[1700px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
-          {/* Left: Hamburger & Brand Breadcrumb */}
+          {/* Left: Hamburger & Brand Breadcrumb with Logo */}
           <div className="flex items-center space-x-3 sm:space-x-4">
             <button
               onClick={onToggleSidebar}
@@ -57,17 +57,20 @@ export const Navbar = ({ onToggleSidebar }) => {
               <Menu className="w-5 h-5" />
             </button>
 
+            {/* Brand Logo in Navbar */}
+            <div className="hidden sm:flex items-center">
+              <BrandLogo size="small" showText={false} />
+            </div>
+
             {/* Breadcrumb Title */}
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-2">
-                <span className="text-base sm:text-lg font-black text-[#0e2b7a] dark:text-white">
-                  Dashboard
-                </span>
-                <span className="text-slate-400 dark:text-slate-600 text-sm">/</span>
-                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-orange-50 dark:bg-orange-950/60 text-[#ff5900] border border-orange-200 dark:border-orange-900/60">
-                  Work Order & Asset Telemetry
-                </span>
-              </div>
+            <div className="flex items-center space-x-2 border-l border-slate-200 dark:border-slate-800 pl-3">
+              <span className="text-base font-black text-[#0e2b7a] dark:text-white">
+                Dashboard
+              </span>
+              <span className="text-slate-400 dark:text-slate-600 text-sm">/</span>
+              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-orange-50 dark:bg-orange-950/60 text-[#ff5900] border border-orange-200 dark:border-orange-900/60">
+                Work Order & Asset Telemetry
+              </span>
             </div>
           </div>
 

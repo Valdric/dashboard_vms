@@ -60,8 +60,8 @@ export const Sidebar = ({ isOpen, onClose }) => {
       >
         {/* Header & Brand with uploaded logo */}
         <div className="flex-1 overflow-y-auto">
-          <div className="h-16 flex items-center justify-between px-5 border-b border-slate-200/90 dark:border-slate-800">
-            <BrandLogo size="normal" showText={true} />
+          <div className="h-16 flex items-center justify-between px-4 border-b border-slate-200/90 dark:border-slate-800">
+            <BrandLogo size="normal" showText={false} />
 
             {/* Mobile Close Button */}
             <button
@@ -69,7 +69,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
               className="lg:hidden p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex-shrink-0"
               aria-label="Tutup sidebar"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
 
