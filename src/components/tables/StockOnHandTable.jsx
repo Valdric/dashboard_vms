@@ -1,109 +1,132 @@
 import React from 'react';
-import { Info, ArrowUpDown, QrCode, Trash2, Edit } from 'lucide-react';
+import { 
+  ArrowUpDown, 
+  QrCode, 
+  Sliders, 
+  CheckCircle2, 
+  AlertTriangle, 
+  Boxes, 
+  Building2, 
+  MapPin,
+  RotateCcw
+} from 'lucide-react';
 import { useData } from '../../context/DataContext';
 
 export const StockOnHandTable = ({ data }) => {
-  const { openSNModal, deleteTransaction } = useData();
+  const { openSNModal, setIsAddTxModalOpen, setActiveTab } = useData();
 
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-left text-xs text-slate-600 dark:text-slate-300">
-        <thead className="bg-[#1e293b] text-white uppercase text-[11px] font-bold tracking-wider select-none">
+        <thead className="bg-[#091c52] text-white uppercase text-[10px] font-bold tracking-wider select-none">
           <tr>
-            <th className="py-3.5 px-4 rounded-tl-xl w-12 text-center">
-              <span className="flex items-center justify-center gap-1"># <ArrowUpDown className="w-3 h-3 opacity-60" /></span>
+            <th className="py-3 px-3.5 text-center w-10">#</th>
+            <th className="py-3 px-3.5 min-w-[110px]">SKU</th>
+            <th className="py-3 px-3.5 min-w-[220px]">Deskripsi Perangkat / Material</th>
+            <th className="py-3 px-3.5 min-w-[170px]">Gudang Warehouse</th>
+            <th className="py-3 px-3.5 min-w-[140px]">Lokasi Penyimpanan</th>
+            <th className="py-3 px-3.5 text-center min-w-[110px] bg-emerald-900/60 text-emerald-200">
+              Good (Ready)
             </th>
-            <th className="py-3.5 px-4 min-w-[120px]">
-              <span className="flex items-center gap-1">SKU <ArrowUpDown className="w-3 h-3 opacity-60" /></span>
+            <th className="py-3 px-3.5 text-center min-w-[90px] bg-amber-900/60 text-amber-200">
+              Booked
             </th>
-            <th className="py-3.5 px-4 min-w-[240px]">
-              <span className="flex items-center gap-1">Product <ArrowUpDown className="w-3 h-3 opacity-60" /></span>
+            <th className="py-3 px-3.5 text-center min-w-[90px] bg-rose-900/60 text-rose-200">
+              Damaged
             </th>
-            <th className="py-3.5 px-4 text-center w-20">
-              <span className="flex items-center justify-center gap-1">UoM <ArrowUpDown className="w-3 h-3 opacity-60" /></span>
+            <th className="py-3 px-3.5 text-center min-w-[90px] bg-purple-900/60 text-purple-200">
+              Retur
             </th>
-            <th className="py-3.5 px-4 min-w-[200px]">
-              <span className="flex items-center gap-1">Warehouse <ArrowUpDown className="w-3 h-3 opacity-60" /></span>
+            <th className="py-3 px-3.5 text-center min-w-[110px] bg-slate-950 text-white">
+              Total Fisik
             </th>
-            <th className="py-3.5 px-3 text-center w-24">
-              <span className="flex items-center justify-center gap-1 text-sky-400">Ready <ArrowUpDown className="w-3 h-3 opacity-60" /></span>
-            </th>
-            <th className="py-3.5 px-3 text-center w-24">
-              <span className="flex items-center justify-center gap-1 text-amber-400">Booked <ArrowUpDown className="w-3 h-3 opacity-60" /></span>
-            </th>
-            <th className="py-3.5 px-3 text-center w-24">
-              <span className="flex items-center justify-center gap-1 text-rose-400">Damage <ArrowUpDown className="w-3 h-3 opacity-60" /></span>
-            </th>
-            <th className="py-3.5 px-3 text-center w-24">
-              <span className="flex items-center justify-center gap-1 text-emerald-400">Total <ArrowUpDown className="w-3 h-3 opacity-60" /></span>
-            </th>
-            <th className="py-3.5 px-4 text-center rounded-tr-xl min-w-[160px]">
-              Action
-            </th>
+            <th className="py-3 px-3.5 text-center min-w-[140px]">Aksi Telemetri</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+        <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-xs">
           {data.length === 0 ? (
             <tr>
-              <td colSpan={10} className="py-12 text-center text-slate-400 dark:text-slate-500 font-medium">
-                No data available in table
+              <td colSpan={11} className="py-8 text-center text-slate-400 font-medium">
+                Tidak ada data Stok yang sesuai filter.
               </td>
             </tr>
           ) : (
-            data.map((item, index) => (
-              <tr 
-                key={item.id || index} 
-                className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors group"
-              >
-                <td className="py-3.5 px-4 text-center font-semibold text-slate-500 dark:text-slate-400">
-                  {item.id || index + 1}
-                </td>
-                <td className="py-3.5 px-4 font-mono font-bold text-slate-900 dark:text-white">
+            data.map((item, idx) => (
+              <tr key={item.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+                <td className="py-3 px-3.5 text-center font-bold text-slate-400">{idx + 1}</td>
+
+                {/* SKU */}
+                <td className="py-3 px-3.5 font-mono font-bold text-[#091c52] dark:text-sky-300">
                   {item.sku}
                 </td>
-                <td className="py-3.5 px-4 font-semibold text-slate-800 dark:text-slate-100">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-purple-500"></span>
-                    <span>{item.product}</span>
+
+                {/* Product */}
+                <td className="py-3 px-3.5">
+                  <div>
+                    <p className="font-bold text-slate-900 dark:text-white">
+                      {item.product}
+                    </p>
+                    <span className="text-[10px] text-slate-400">
+                      {item.category} • Satuan: <span className="font-bold font-mono">{item.uom || 'PCS'}</span>
+                    </span>
                   </div>
                 </td>
-                <td className="py-3.5 px-4 text-center">
-                  <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium text-[11px]">
-                    {item.uom}
-                  </span>
-                </td>
-                <td className="py-3.5 px-4 text-slate-700 dark:text-slate-300 font-medium">
+
+                {/* Warehouse */}
+                <td className="py-3 px-3.5 font-semibold text-slate-800 dark:text-slate-200">
                   {item.warehouse}
                 </td>
-                <td className="py-3.5 px-3 text-center font-bold text-sky-600 dark:text-sky-400 font-mono">
+
+                {/* Location */}
+                <td className="py-3 px-3.5 font-mono text-[11px] text-slate-500">
+                  {item.location || 'Zone A / Rack Primary'}
+                </td>
+
+                {/* Ready */}
+                <td className="py-3 px-3.5 text-center font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50/30 dark:bg-emerald-950/20">
                   {item.ready}
                 </td>
-                <td className="py-3.5 px-3 text-center font-bold text-amber-600 dark:text-amber-400 font-mono">
+
+                {/* Booked */}
+                <td className="py-3 px-3.5 text-center font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-50/30 dark:bg-amber-950/20">
                   {item.booked}
                 </td>
-                <td className="py-3.5 px-3 text-center font-bold text-rose-600 dark:text-rose-400 font-mono">
+
+                {/* Damaged */}
+                <td className="py-3 px-3.5 text-center font-mono font-bold text-rose-600 dark:text-rose-400 bg-rose-50/30 dark:bg-rose-950/20">
                   {item.damage}
                 </td>
-                <td className="py-3.5 px-3 text-center font-extrabold text-slate-900 dark:text-white font-mono bg-slate-50/50 dark:bg-slate-800/30">
-                  {item.total}
+
+                {/* Retur */}
+                <td className="py-3 px-3.5 text-center font-mono font-bold text-purple-600 dark:text-purple-400 bg-purple-50/30 dark:bg-purple-950/20">
+                  {item.retur || 0}
                 </td>
-                <td className="py-3.5 px-4 text-center">
-                  <div className="flex items-center justify-center gap-2">
-                    {/* Blue Serial Number Modal Trigger matching image 170c7d63-7851-43c1-be79-f3dd4d85fd31.jpg */}
+
+                {/* Total */}
+                <td className="py-3 px-3.5 text-center font-mono font-black text-slate-900 dark:text-white bg-slate-100/50 dark:bg-slate-900/50">
+                  {item.total} {item.uom || 'PCS'}
+                </td>
+
+                {/* Actions */}
+                <td className="py-3 px-3.5 text-center">
+                  <div className="flex items-center justify-center space-x-1.5">
+                    {/* SN Explorer Button */}
                     <button
                       onClick={() => openSNModal(item)}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold text-xs shadow-sm hover:shadow-sky-500/30 transition-all duration-150 active:scale-95"
+                      className="flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-orange-50 hover:bg-orange-100 dark:bg-orange-950/60 dark:hover:bg-orange-900 text-[#ff5900] text-[10px] font-bold transition-all border border-orange-200 dark:border-orange-900"
+                      title="Kelola Serial Number"
                     >
-                      <Info className="w-3.5 h-3.5" />
-                      <span>Serial Number</span>
+                      <QrCode className="w-3 h-3" />
+                      <span>Scan SN</span>
                     </button>
 
+                    {/* Adjustment Button */}
                     <button
-                      onClick={() => deleteTransaction('Stock', item.id)}
-                      title="Hapus baris"
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 opacity-0 group-hover:opacity-100 transition-all"
+                      onClick={() => setIsAddTxModalOpen(true)}
+                      className="p-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300"
+                      title="Ajukan Stock Adjustment"
                     >
-                      <Trash2 className="w-3.5 h-3.5" />
+                      <Sliders className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </td>

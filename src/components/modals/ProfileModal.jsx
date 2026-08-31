@@ -11,7 +11,9 @@ import {
   ShieldCheck, 
   Edit2,
   CheckCircle2,
-  Lock
+  Lock,
+  Table,
+  Check
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from '../../context/DataContext';
@@ -20,509 +22,422 @@ export const ProfileModal = () => {
   const { 
     currentUser, 
     profiles, 
-    createProfile, 
     updateProfile, 
+    createProfile, 
     deleteProfile, 
     switchActiveProfile 
   } = useAuth();
+  
+  const { isProfileModalOpen, setIsProfileModalOpen, showToast } = useData();
 
-  const { isProfileModalOpen, setIsProfileModalOpen, warehouses, showToast } = useData();
+  const [activeTab, setActiveTab] = useState('current'); // 'current' | 'team' | 'raci' | 'new'
+  const [editing, setEditing] = useState(false);
+  const [formData, setFormData] = useState({ ...currentUser });
 
-  const [activeSubTab, setActiveSubTab] = useState('edit'); // 'edit' | 'team' | 'create'
-
-  // Edit current profile state
-  const [formData, setFormData] = useState({
-    name: currentUser?.name || '',
-    username: currentUser?.username || '',
-    email: currentUser?.email || '',
-    password: currentUser?.password || '',
-    role: currentUser?.role || 'Logistics Manager',
-    branch: currentUser?.branch || 'KCU JAKARTA PUSAT - 10000',
-    phone: currentUser?.phone || '',
-    department: currentUser?.department || 'Danantara x POS IND Sovereign Logistics',
-    bio: currentUser?.bio || '',
-    avatar: currentUser?.avatar || ''
-  });
-
-  // Create new profile state
   const [newUserData, setNewUserData] = useState({
     name: '',
     username: '',
     email: '',
     password: 'password123',
-    role: 'Warehouse Operator',
-    branch: 'KCU MEDAN - 20000',
-    phone: '',
-    department: 'Regional Operations',
-    bio: '',
-    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
+    role: 'PIC Warehouse Pos Indonesia',
+    branch: 'KCU JAKARTA PUSAT - 10000',
+    phone: '+62 812-0000-0000',
+    department: 'KCU Warehouse Operations',
+    bio: 'Petugas operasional WMS.'
   });
-
-  const [searchTeam, setSearchTeam] = useState('');
 
   if (!isProfileModalOpen) return null;
 
-  // Handle Edit Profile Save (Update)
-  const handleUpdateCurrentProfile = (e) => {
+  const handleUpdate = (e) => {
     e.preventDefault();
     updateProfile(currentUser.id, formData);
-    showToast('Profil pengguna VMS berhasil diperbarui!', 'success');
+    setEditing(false);
+    showToast('Profil pengguna berhasil diperbarui!', 'success');
   };
 
-  // Handle Create New Profile (Create)
-  const handleCreateNewUser = (e) => {
+  const handleCreateNew = (e) => {
     e.preventDefault();
-    if (!newUserData.name.trim() || !newUserData.email.trim()) {
-      showToast('Mohon isi nama dan email pengguna baru!', 'warning');
+    if (!newUserData.name || !newUserData.email) {
+      showToast('Nama dan email wajib diisi!', 'warning');
       return;
     }
     const created = createProfile(newUserData);
-    showToast(`Pengguna baru ${created.name} berhasil dibuat!`, 'success');
-    setNewUserData({
-      name: '',
-      username: '',
-      email: '',
-      password: 'password123',
-      role: 'Warehouse Operator',
-      branch: 'KCU MEDAN - 20000',
-      phone: '',
-      department: 'Regional Operations',
-      bio: '',
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
-    });
-    setActiveSubTab('team');
+    switchActiveProfile(created.id);
+    setActiveTab('current');
+    showToast(`Pengguna baru ${newUserData.name} (${newUserData.role}) berhasil ditambahkan!`, 'success');
   };
 
-  // Handle Delete User (Delete)
-  const handleDeleteUser = (id, name) => {
-    const res = deleteProfile(id);
-    if (res.success) {
-      showToast(`Pengguna ${name} berhasil dihapus.`, 'info');
-    } else {
-      showToast(res.message, 'warning');
-    }
-  };
-
-  // Avatar Presets
-  const avatarPresets = [
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150&auto=format&fit=crop&q=80'
+  const raciData = [
+    { no: 1, activity: 'Penetapan kebutuhan bisnis WMS', mora: 'C', slp: 'C', pic: 'C', spv: 'C', ds: 'R', admin: 'I', biz: 'A' },
+    { no: 2, activity: 'Pembuatan DO/WO Inbound', mora: 'A/R', slp: 'I', pic: 'I', spv: 'I', ds: 'I', admin: 'I', biz: 'C' },
+    { no: 3, activity: 'Pickup barang dari Warehouse Mora', mora: 'C', slp: 'A/R', pic: 'I', spv: 'C', ds: 'I', admin: 'I', biz: 'I' },
+    { no: 4, activity: 'Pengiriman Middle Mile ke Gudang Tujuan', mora: 'I', slp: 'R', pic: 'I', spv: 'A', ds: 'I', admin: 'I', biz: 'I' },
+    { no: 5, activity: 'Receiving dan validasi barang inbound', mora: 'I', slp: 'C', pic: 'R', spv: 'A', ds: 'I', admin: 'I', biz: 'I' },
+    { no: 6, activity: 'Upload BAST / Surat Jalan / Evidence', mora: 'I', slp: 'C', pic: 'R', spv: 'A', ds: 'I', admin: 'I', biz: 'I' },
+    { no: 7, activity: 'Put Away dan penentuan lokasi rak', mora: 'I', slp: 'I', pic: 'R', spv: 'A', ds: 'I', admin: 'I', biz: 'I' },
+    { no: 8, activity: 'Update dan monitoring inventory', mora: 'I', slp: 'I', pic: 'R', spv: 'A', ds: 'C', admin: 'C', biz: 'I' },
+    { no: 9, activity: 'Stock Opname', mora: 'I', slp: 'I', pic: 'R', spv: 'A', ds: 'I', admin: 'C', biz: 'I' },
+    { no: 10, activity: 'Stock Adjustment (Approval)', mora: 'I', slp: 'I', pic: 'R', spv: 'A', ds: 'C', admin: 'C', biz: 'I' },
+    { no: 11, activity: 'Pembuatan DO/WO Outbound', mora: 'A/R', slp: 'I', pic: 'I', spv: 'I', ds: 'I', admin: 'I', biz: 'C' },
+    { no: 12, activity: 'Picking barang di rak', mora: 'I', slp: 'I', pic: 'R', spv: 'A', ds: 'I', admin: 'I', biz: 'I' },
+    { no: 13, activity: 'Validasi Serial Number / Barcode', mora: 'I', slp: 'I', pic: 'R', spv: 'A', ds: 'C', admin: 'I', biz: 'I' },
+    { no: 14, activity: 'Packing barang & QC', mora: 'I', slp: 'I', pic: 'R', spv: 'A', ds: 'I', admin: 'I', biz: 'I' },
+    { no: 15, activity: 'Outbound Processing & Handover', mora: 'I', slp: 'I', pic: 'R', spv: 'A', ds: 'I', admin: 'I', biz: 'I' },
+    { no: 16, activity: 'Last Mile Delivery (PosAja)', mora: 'I', slp: 'C', pic: 'C', spv: 'A/R', ds: 'I', admin: 'I', biz: 'I' },
+    { no: 17, activity: 'Update status pengiriman real-time', mora: 'I', slp: 'I', pic: 'C', spv: 'A/R', ds: 'C', admin: 'I', biz: 'I' },
+    { no: 18, activity: 'Receiving barang retur', mora: 'I', slp: 'I', pic: 'R', spv: 'A', ds: 'I', admin: 'I', biz: 'I' },
+    { no: 19, activity: 'Update inventory barang retur / triage', mora: 'I', slp: 'I', pic: 'R', spv: 'A', ds: 'I', admin: 'C', biz: 'I' },
+    { no: 20, activity: 'Penanganan exception operasional', mora: 'C', slp: 'C', pic: 'R', spv: 'A', ds: 'C', admin: 'I', biz: 'I' },
+    { no: 21, activity: 'Monitoring SLA & performa fulfillment', mora: 'I', slp: 'I', pic: 'C', spv: 'R', ds: 'C', admin: 'I', biz: 'A' },
+    { no: 22, activity: 'Dashboard Telemetri & Reporting', mora: 'I', slp: 'I', pic: 'C', spv: 'C', ds: 'R', admin: 'C', biz: 'A' },
+    { no: 23, activity: 'Integrasi WMS dengan sistem Mora', mora: 'C', slp: 'I', pic: 'I', spv: 'C', ds: 'A/R', admin: 'C', biz: 'C' },
+    { no: 24, activity: 'Integrasi WMS dengan sistem PosAja', mora: 'I', slp: 'I', pic: 'C', spv: 'C', ds: 'A/R', admin: 'C', biz: 'C' },
+    { no: 25, activity: 'Pengelolaan user & hak akses (RBAC)', mora: 'I', slp: 'I', pic: 'I', spv: 'C', ds: 'C', admin: 'A/R', biz: 'I' },
+    { no: 26, activity: 'Audit Trail & Activity Log', mora: 'I', slp: 'I', pic: 'I', spv: 'C', ds: 'A', admin: 'R', biz: 'I' }
   ];
 
-  const filteredTeam = profiles.filter(p => 
-    p.name.toLowerCase().includes(searchTeam.toLowerCase()) || 
-    p.email.toLowerCase().includes(searchTeam.toLowerCase()) ||
-    p.role.toLowerCase().includes(searchTeam.toLowerCase()) ||
-    p.branch.toLowerCase().includes(searchTeam.toLowerCase())
-  );
-
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="relative w-full max-w-4xl glass-card rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden animate-slide-up bg-white dark:bg-[#0d1527]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
+      <div className="relative w-full max-w-4xl bg-white dark:bg-[#0b1329] rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-6">
         
-        {/* Modal Top Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-[#091329]">
-          <div className="flex items-center space-x-3">
-            <div className="p-2.5 rounded-2xl bg-gradient-to-tr from-[#0e2b7a] to-[#ff5900] text-white shadow-md">
-              <User className="w-5 h-5" />
-            </div>
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-[#091c52] via-[#0e2b7a] to-[#123896] text-white">
+          <div className="flex items-center space-x-2.5">
+            <ShieldCheck className="w-5 h-5 text-[#ff5900]" />
             <div>
-              <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <span>Manajemen Profil & Akses VMS</span>
-                <span className="text-[10px] font-mono font-bold bg-orange-100 dark:bg-orange-950 text-[#ff5900] px-2 py-0.5 rounded-full">
-                  Danantara x POS IND
-                </span>
+              <h3 className="font-bold text-base tracking-tight">
+                Manajemen Pengguna & Matriks RACI (SKB 5.4)
               </h3>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                Kelola identitas akun aktif dan kontrol wewenang personel KCU
+              <p className="text-[11px] text-sky-200">
+                Hak Akses Berbasis Peran (RBAC) • Mora Republic ✕ Pos Indonesia
               </p>
             </div>
           </div>
-
           <button
             onClick={() => setIsProfileModalOpen(false)}
-            className="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Sub-Tab Navigation */}
-        <div className="flex items-center space-x-2 px-6 pt-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0d1527]">
+        {/* Tab Controls */}
+        <div className="flex items-center p-2 bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 gap-1.5 overflow-x-auto">
           <button
-            onClick={() => setActiveSubTab('edit')}
-            className={`pb-3 text-xs font-bold border-b-2 flex items-center gap-1.5 transition-all ${
-              activeSubTab === 'edit'
-                ? 'border-[#ff5900] text-[#ff5900]'
-                : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
+            onClick={() => setActiveTab('current')}
+            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+              activeTab === 'current'
+                ? 'bg-[#ff5900] text-white shadow-md shadow-orange-500/25'
+                : 'text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800'
             }`}
           >
-            <Edit2 className="w-4 h-4" />
-            <span>Edit Profil Aktif (Update)</span>
+            <User className="w-3.5 h-3.5" />
+            <span>Profil Aktif</span>
           </button>
 
           <button
-            onClick={() => setActiveSubTab('team')}
-            className={`pb-3 text-xs font-bold border-b-2 flex items-center gap-1.5 transition-all ${
-              activeSubTab === 'team'
-                ? 'border-[#ff5900] text-[#ff5900]'
-                : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
+            onClick={() => setActiveTab('team')}
+            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+              activeTab === 'team'
+                ? 'bg-[#0e2b7a] text-white shadow-md shadow-blue-900/30'
+                : 'text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800'
             }`}
           >
-            <Users className="w-4 h-4" />
-            <span>Daftar Pengguna ({profiles.length})</span>
+            <Users className="w-3.5 h-3.5" />
+            <span>Daftar 7 Peran Resmi SKB ({profiles.length})</span>
           </button>
 
           <button
-            onClick={() => setActiveSubTab('create')}
-            className={`pb-3 text-xs font-bold border-b-2 flex items-center gap-1.5 transition-all ${
-              activeSubTab === 'create'
-                ? 'border-[#ff5900] text-[#ff5900]'
-                : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
+            onClick={() => setActiveTab('raci')}
+            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+              activeTab === 'raci'
+                ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30'
+                : 'text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800'
             }`}
           >
-            <Plus className="w-4 h-4" />
-            <span>+ Tambah Anggota (Create)</span>
+            <Table className="w-3.5 h-3.5" />
+            <span>Matriks RACI (SKB 5.4)</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('new')}
+            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+              activeTab === 'new'
+                ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30'
+                : 'text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800'
+            }`}
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>+ Tambah Akun</span>
           </button>
         </div>
 
-        {/* Tab 1: Edit Current Profile (UPDATE) */}
-        {activeSubTab === 'edit' && (
-          <form onSubmit={handleUpdateCurrentProfile} className="p-6 space-y-6">
-            
-            {/* Top User Card Preview */}
-            <div className="p-4 rounded-2xl bg-gradient-to-r from-blue-50/80 via-slate-50 to-orange-50/70 dark:from-[#091c52]/60 dark:via-[#0d1527] dark:to-orange-950/20 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center gap-4">
-              <div className="relative group">
+        {/* Modal Body */}
+        <div className="p-6 max-h-[70vh] overflow-y-auto">
+          
+          {/* TAB 1: CURRENT ACTIVE PROFILE */}
+          {activeTab === 'current' && (
+            <div className="space-y-6 text-xs">
+              <div className="flex flex-col sm:flex-row items-center gap-5 p-5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                 <img
-                  src={formData.avatar || currentUser?.avatar}
-                  alt={formData.name}
-                  className="w-20 h-20 rounded-2xl object-cover ring-4 ring-[#ff5900]/40 shadow-md"
+                  src={currentUser.avatar}
+                  alt={currentUser.name}
+                  className="w-20 h-20 rounded-2xl object-cover ring-4 ring-[#ff5900]/30 shadow-md"
                 />
+                <div className="text-center sm:text-left space-y-1 flex-1">
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                    <h4 className="text-lg font-black text-slate-900 dark:text-white">
+                      {currentUser.name}
+                    </h4>
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#ff5900] text-white">
+                      {currentUser.role}
+                    </span>
+                  </div>
+                  <p className="text-slate-500 dark:text-slate-400 font-medium">
+                    {currentUser.department}
+                  </p>
+                  <p className="text-slate-400 text-[11px]">
+                    Cabang: <span className="font-semibold text-slate-700 dark:text-slate-200">{currentUser.branch}</span>
+                  </p>
+                </div>
               </div>
 
-              <div className="flex-1 text-center sm:text-left space-y-1">
-                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                  <h4 className="text-base font-bold text-slate-900 dark:text-white">
-                    {formData.name || 'Nama Pengguna'}
-                  </h4>
-                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#0e2b7a] text-white">
-                    {formData.role}
-                  </span>
-                </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{formData.email}</p>
-                <div className="text-xs text-[#0e2b7a] dark:text-sky-300 font-semibold">
-                  📍 {formData.branch} • {formData.department}
-                </div>
-              </div>
+              {/* Edit Form */}
+              <form onSubmit={handleUpdate} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-slate-600 dark:text-slate-300 font-bold mb-1">Nama Lengkap</label>
+                    <input
+                      type="text"
+                      value={formData.name || ''}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
+                    />
+                  </div>
 
-              {/* Avatar Preset Selector */}
-              <div className="flex items-center gap-1.5 p-1.5 rounded-xl bg-white/80 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                {avatarPresets.map((url, idx) => (
-                  <img
-                    key={idx}
-                    src={url}
-                    onClick={() => setFormData({ ...formData, avatar: url })}
-                    className={`w-8 h-8 rounded-lg object-cover cursor-pointer transition-all hover:scale-110 ${
-                      formData.avatar === url ? 'ring-2 ring-[#ff5900] scale-105' : 'opacity-70 hover:opacity-100'
-                    }`}
-                    alt="Preset"
+                  <div>
+                    <label className="block text-slate-600 dark:text-slate-300 font-bold mb-1">Email Resmi</label>
+                    <input
+                      type="email"
+                      value={formData.email || ''}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-slate-600 dark:text-slate-300 font-bold mb-1">No. Kontak / Telepon</label>
+                    <input
+                      type="text"
+                      value={formData.phone || ''}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-slate-600 dark:text-slate-300 font-bold mb-1">Penugasan / Cabang</label>
+                    <input
+                      type="text"
+                      value={formData.branch || ''}
+                      onChange={(e) => setFormData({ ...formData, branch: e.target.value })}
+                      className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-slate-600 dark:text-slate-300 font-bold mb-1">Deskripsi Tugas</label>
+                  <textarea
+                    rows="2"
+                    value={formData.bio || ''}
+                    onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                    className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
                   />
-                ))}
-              </div>
-            </div>
+                </div>
 
-            {/* Input Form Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Nama Lengkap
-                </label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3.5 py-2 text-xs rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#ff5900]/40"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  value={formData.username}
-                  onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                  className="w-full px-3.5 py-2 text-xs rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-mono focus:outline-none focus:ring-2 focus:ring-[#ff5900]/40"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Email Korporat
-                </label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-3.5 py-2 text-xs rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#ff5900]/40"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Password
-                </label>
-                <input
-                  type="text"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full px-3.5 py-2 text-xs rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-mono focus:outline-none focus:ring-2 focus:ring-[#ff5900]/40"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Peran / Hak Akses
-                </label>
-                <select
-                  value={formData.role}
-                  onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                  className="w-full px-3.5 py-2 text-xs rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none cursor-pointer"
-                >
-                  <option value="Super Admin">Super Admin (Danantara x POS)</option>
-                  <option value="Logistics Manager">Logistics Manager (Kepala Gudang KCU)</option>
-                  <option value="Warehouse Operator">Warehouse Operator (Staff Gudang)</option>
-                  <option value="Field Dispatcher">Field Dispatcher (Kurir POS IND)</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Penempatan Cabang KCU
-                </label>
-                <select
-                  value={formData.branch}
-                  onChange={(e) => setFormData({ ...formData, branch: e.target.value })}
-                  className="w-full px-3.5 py-2 text-xs rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none cursor-pointer"
-                >
-                  <option value="Headquarters - All KCU">Headquarters - All KCU</option>
-                  {warehouses.filter(w => w !== 'All').map(wh => (
-                    <option key={wh} value={wh}>{wh}</option>
-                  ))}
-                </select>
-              </div>
-
-            </div>
-
-            {/* Submit Button */}
-            <div className="flex justify-end pt-3 border-t border-slate-200 dark:border-slate-800">
-              <button
-                type="submit"
-                className="flex items-center space-x-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#0e2b7a] via-[#1639ac] to-[#ff5900] hover:from-[#091c52] hover:to-[#ea4e00] text-white text-xs font-bold shadow-lg shadow-orange-500/20 transition-all active:scale-95 cursor-pointer"
-              >
-                <CheckCircle2 className="w-4 h-4" />
-                <span>Simpan Perubahan Profil</span>
-              </button>
-            </div>
-          </form>
-        )}
-
-        {/* Tab 2: Team List & Switch User */}
-        {activeSubTab === 'team' && (
-          <div className="p-6 space-y-4">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-              <input
-                type="text"
-                placeholder="Cari nama, email, atau KCU..."
-                value={searchTeam}
-                onChange={(e) => setSearchTeam(e.target.value)}
-                className="w-full sm:w-72 px-3.5 py-1.5 text-xs rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none"
-              />
-              <span className="text-xs text-slate-500 font-medium">
-                Total {profiles.length} Pengguna Terdaftar
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 max-h-[380px] overflow-y-auto pr-1">
-              {filteredTeam.map((prof) => {
-                const isCurrent = currentUser?.id === prof.id;
-
-                return (
-                  <div
-                    key={prof.id}
-                    className={`p-4 rounded-2xl border transition-all ${
-                      isCurrent
-                        ? 'bg-orange-50/80 dark:bg-orange-950/30 border-[#ff5900]/40 shadow-sm'
-                        : 'bg-slate-50/50 dark:bg-[#070c18] border-slate-200 dark:border-slate-800'
-                    }`}
+                <div className="flex justify-end pt-2">
+                  <button
+                    type="submit"
+                    className="px-5 py-2 rounded-xl bg-[#ff5900] hover:bg-[#ea4e00] text-white font-bold shadow-md shadow-orange-500/25"
                   >
-                    <div className="flex items-start justify-between">
+                    Simpan Perubahan
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
+
+          {/* TAB 2: 7 OFFICIAL SKB ROLES SWITCHER */}
+          {activeTab === 'team' && (
+            <div className="space-y-3">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Pilih peran untuk mensimulasikan hak akses & tampilan dashboard secara real-time:
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {profiles.map((p) => {
+                  const isActive = currentUser.id === p.id;
+                  return (
+                    <div
+                      key={p.id}
+                      onClick={() => {
+                        switchActiveProfile(p.id);
+                        showToast(`Beralih ke profil ${p.name} (${p.role})`, 'info');
+                      }}
+                      className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
+                        isActive
+                          ? 'bg-orange-50 dark:bg-[#4a1c06]/30 border-[#ff5900] shadow-md'
+                          : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:border-[#ff5900]/50'
+                      }`}
+                    >
                       <div className="flex items-center space-x-3">
                         <img
-                          src={prof.avatar}
-                          alt={prof.name}
-                          className="w-11 h-11 rounded-xl object-cover ring-2 ring-[#ff5900]/40"
+                          src={p.avatar}
+                          alt={p.name}
+                          className="w-11 h-11 rounded-xl object-cover"
                         />
                         <div>
-                          <div className="flex items-center gap-1.5">
-                            <h5 className="text-xs font-bold text-slate-900 dark:text-white">
-                              {prof.name}
-                            </h5>
-                            {isCurrent && (
-                              <span className="text-[9px] bg-[#ff5900] text-white px-1.5 py-0.2 rounded font-bold">
-                                Aktif
-                              </span>
-                            )}
+                          <div className="flex items-center space-x-1.5">
+                            <p className="font-bold text-xs text-slate-900 dark:text-white">{p.name}</p>
+                            {isActive && <CheckCircle2 className="w-3.5 h-3.5 text-[#ff5900]" />}
                           </div>
-                          <p className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">{prof.username}</p>
-                          <span className="inline-block text-[10px] font-semibold text-[#0e2b7a] dark:text-sky-300 mt-1">
-                            {prof.role}
-                          </span>
+                          <span className="text-[10px] font-bold text-[#ff5900] block">{p.role}</span>
+                          <p className="text-[10px] text-slate-400 truncate max-w-[180px]">{p.branch}</p>
                         </div>
                       </div>
 
-                      <div className="flex items-center space-x-1.5">
-                        {!isCurrent && (
-                          <button
-                            onClick={() => {
-                              switchActiveProfile(prof.id);
-                              showToast(`Berganti ke akun: ${prof.name}`, 'info');
-                            }}
-                            className="px-2.5 py-1 rounded-lg bg-blue-100 dark:bg-[#0e2b7a] text-[#0e2b7a] dark:text-sky-200 text-[10px] font-bold transition-all"
-                          >
-                            Pilih
-                          </button>
-                        )}
-
-                        <button
-                          onClick={() => handleDeleteUser(prof.id, prof.name)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
-                          title="Hapus Akun"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
+                      <button
+                        type="button"
+                        className={`px-2.5 py-1 rounded-lg text-[10px] font-bold ${
+                          isActive
+                            ? 'bg-[#ff5900] text-white'
+                            : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
+                        }`}
+                      >
+                        {isActive ? 'Aktif' : 'Pilih'}
+                      </button>
                     </div>
-
-                    <div className="mt-2.5 pt-2.5 border-t border-slate-200/60 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 flex items-center justify-between">
-                      <span className="truncate max-w-[200px]">📍 {prof.branch}</span>
-                      <span>{prof.phone || '-'}</span>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Tab 3: Create New Profile (CREATE) */}
-        {activeSubTab === 'create' && (
-          <form onSubmit={handleCreateNewUser} className="p-6 space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Nama Lengkap Personel *
-                </label>
-                <input
-                  type="text"
-                  placeholder="Contoh: Rian Pratama"
-                  value={newUserData.name}
-                  onChange={(e) => setNewUserData({ ...newUserData, name: e.target.value })}
-                  className="w-full px-3.5 py-2 text-xs rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#ff5900]/40"
-                  required
-                />
+          {/* TAB 3: RACI MATRIX (SKB BAB 5.4) */}
+          {activeTab === 'raci' && (
+            <div className="space-y-4">
+              <div className="p-3 rounded-2xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900/50 text-xs text-purple-900 dark:text-purple-200">
+                <span className="font-bold">Keterangan RACI SKB Bab 5.4: </span>
+                <span className="font-bold text-emerald-600 dark:text-emerald-400">R</span> = Responsible (Pelaksana), 
+                <span className="font-bold text-blue-600 dark:text-blue-400 ml-1">A</span> = Accountable (Penanggung Jawab), 
+                <span className="font-bold text-amber-600 dark:text-amber-400 ml-1">C</span> = Consulted (Dikonsultasikan), 
+                <span className="font-bold text-slate-600 dark:text-slate-400 ml-1">I</span> = Informed (Menerima Info).
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  placeholder="rian.pratama"
-                  value={newUserData.username}
-                  onChange={(e) => setNewUserData({ ...newUserData, username: e.target.value })}
-                  className="w-full px-3.5 py-2 text-xs rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none font-mono"
-                />
+              <div className="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-2xl">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-[#091c52] text-white font-bold text-[10px] uppercase">
+                    <tr>
+                      <th className="py-2.5 px-3 text-center w-10">No</th>
+                      <th className="py-2.5 px-3 min-w-[200px]">Aktivitas / Fungsi Utama</th>
+                      <th className="py-2.5 px-2 text-center text-[#ff5900]">Mora</th>
+                      <th className="py-2.5 px-2 text-center text-sky-300">SLP</th>
+                      <th className="py-2.5 px-2 text-center">PIC WH</th>
+                      <th className="py-2.5 px-2 text-center">SPV</th>
+                      <th className="py-2.5 px-2 text-center">DS</th>
+                      <th className="py-2.5 px-2 text-center">Admin</th>
+                      <th className="py-2.5 px-2 text-center">Bisnis</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-[11px] text-slate-700 dark:text-slate-300">
+                    {raciData.map((row) => (
+                      <tr key={row.no} className="hover:bg-slate-50 dark:hover:bg-slate-900/50">
+                        <td className="py-2 px-3 text-center font-bold text-slate-400">{row.no}</td>
+                        <td className="py-2 px-3 font-semibold text-slate-900 dark:text-white">{row.activity}</td>
+                        <td className="py-2 px-2 text-center font-bold text-[#ff5900]">{row.mora}</td>
+                        <td className="py-2 px-2 text-center font-bold text-sky-500">{row.slp}</td>
+                        <td className="py-2 px-2 text-center font-bold">{row.pic}</td>
+                        <td className="py-2 px-2 text-center font-bold">{row.spv}</td>
+                        <td className="py-2 px-2 text-center font-bold">{row.ds}</td>
+                        <td className="py-2 px-2 text-center font-bold">{row.admin}</td>
+                        <td className="py-2 px-2 text-center font-bold">{row.biz}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: ADD NEW USER */}
+          {activeTab === 'new' && (
+            <form onSubmit={handleCreateNew} className="space-y-4 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-slate-600 dark:text-slate-300 font-bold mb-1">Nama Lengkap</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Contoh: Rian Pratama"
+                    value={newUserData.name}
+                    onChange={(e) => setNewUserData({ ...newUserData, name: e.target.value })}
+                    className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-600 dark:text-slate-300 font-bold mb-1">Peran Akun (Role)</label>
+                  <select
+                    value={newUserData.role}
+                    onChange={(e) => setNewUserData({ ...newUserData, role: e.target.value })}
+                    className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-bold"
+                  >
+                    <option value="Mora Republic Partner">Mora Republic Partner (Client Facing)</option>
+                    <option value="SLP KC Tangerang Selatan">SLP KC Tangerang Selatan</option>
+                    <option value="PIC Warehouse Pos Indonesia">PIC Warehouse Pos Indonesia</option>
+                    <option value="Supervisor Operasional">Supervisor Operasional</option>
+                    <option value="Administrator WMS">Administrator WMS</option>
+                    <option value="Bisnis / Account Management">Bisnis / Account Management</option>
+                    <option value="Digital Services (DS)">Digital Services (DS)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-slate-600 dark:text-slate-300 font-bold mb-1">Email</label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="nama@posindonesia.co.id"
+                    value={newUserData.email}
+                    onChange={(e) => setNewUserData({ ...newUserData, email: e.target.value })}
+                    className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-600 dark:text-slate-300 font-bold mb-1">Penugasan Cabang / Unit</label>
+                  <input
+                    type="text"
+                    value={newUserData.branch}
+                    onChange={(e) => setNewUserData({ ...newUserData, branch: e.target.value })}
+                    className="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
+                  />
+                </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Email Korporat *
-                </label>
-                <input
-                  type="email"
-                  placeholder="rian@vms.posindonesia.co.id"
-                  value={newUserData.email}
-                  onChange={(e) => setNewUserData({ ...newUserData, email: e.target.value })}
-                  className="w-full px-3.5 py-2 text-xs rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Password
-                </label>
-                <input
-                  type="text"
-                  value={newUserData.password}
-                  onChange={(e) => setNewUserData({ ...newUserData, password: e.target.value })}
-                  className="w-full px-3.5 py-2 text-xs rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none font-mono"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Peran & Hak Akses
-                </label>
-                <select
-                  value={newUserData.role}
-                  onChange={(e) => setNewUserData({ ...newUserData, role: e.target.value })}
-                  className="w-full px-3.5 py-2 text-xs rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none cursor-pointer"
+              <div className="flex justify-end pt-2">
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-md shadow-emerald-600/30 flex items-center space-x-1.5"
                 >
-                  <option value="Super Admin">Super Admin</option>
-                  <option value="Logistics Manager">Logistics Manager</option>
-                  <option value="Warehouse Operator">Warehouse Operator</option>
-                  <option value="Field Dispatcher">Field Dispatcher</option>
-                </select>
+                  <Plus className="w-4 h-4" />
+                  <span>Daftarkan Akun Baru</span>
+                </button>
               </div>
+            </form>
+          )}
 
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Cabang KCU
-                </label>
-                <select
-                  value={newUserData.branch}
-                  onChange={(e) => setNewUserData({ ...newUserData, branch: e.target.value })}
-                  className="w-full px-3.5 py-2 text-xs rounded-xl bg-slate-50 dark:bg-[#070c18] border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none cursor-pointer"
-                >
-                  {warehouses.filter(w => w !== 'All').map(wh => (
-                    <option key={wh} value={wh}>{wh}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div className="flex justify-end pt-3 border-t border-slate-200 dark:border-slate-800">
-              <button
-                type="submit"
-                className="flex items-center space-x-2 px-6 py-2.5 rounded-xl bg-[#ff5900] hover:bg-[#ea4e00] text-white text-xs font-bold shadow-lg shadow-orange-500/25 transition-all active:scale-95 cursor-pointer"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Buat Pengguna Baru</span>
-              </button>
-            </div>
-          </form>
-        )}
+        </div>
 
       </div>
     </div>

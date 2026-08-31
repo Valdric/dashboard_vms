@@ -1,18 +1,18 @@
 import React from 'react';
 import { 
-  FileText, 
-  Boxes, 
+  ArrowDownToLine, 
+  ArrowUpFromLine, 
   Layers, 
   Send, 
   Truck, 
   MapPin, 
-  CornerUpRight, 
+  RotateCcw, 
   AlertTriangle, 
-  CornerUpLeft, 
-  XCircle, 
-  CheckCircle2,
-  Users,
-  Sparkles
+  CheckCircle2, 
+  ShieldCheck, 
+  Activity,
+  Zap,
+  Server
 } from 'lucide-react';
 import { MetricCard } from './MetricCard';
 import { useData } from '../../context/DataContext';
@@ -20,40 +20,66 @@ import { useData } from '../../context/DataContext';
 export const MetricGrid = () => {
   const { metrics, setActiveTab } = useData();
 
+  // Top Row: Primary SLA & Fulfillment Volume
   const topRowCards = [
     {
-      title: 'Work Order Request',
-      value: metrics.workOrderRequest,
-      icon: FileText,
-      watermarkIcon: FileText,
-      gradientClass: 'bg-gradient-to-br from-[#0e2b7a] via-[#1639ac] to-[#091c52] shadow-blue-900/30',
-      tab: 'Work Order'
-    },
-    {
-      title: 'WO Realization',
-      value: metrics.workOrderRealization,
-      icon: Sparkles,
-      watermarkIcon: Boxes,
-      gradientClass: 'bg-gradient-to-br from-[#ff5900] via-[#ea4e00] to-[#c23b00] shadow-orange-500/25',
-      tab: 'Work Order'
-    },
-    {
-      title: 'Stock Item & SKU',
-      value: metrics.stockItem,
-      icon: Layers,
-      watermarkIcon: Layers,
-      gradientClass: 'bg-gradient-to-br from-[#091c52] via-[#0c2862] to-[#172554] shadow-slate-900/40',
-      badgeText: 'Danantara x POS',
+      title: 'Akurasi Inventory (SKB 4.5)',
+      value: metrics.inventoryAccuracy,
+      icon: ShieldCheck,
+      watermarkIcon: ShieldCheck,
+      gradientClass: 'bg-gradient-to-br from-[#091c52] via-[#0d2862] to-[#173b9e] shadow-blue-950/40',
+      badgeText: 'Target ≥ 99%',
       tab: 'Stock On Hand'
     },
     {
-      title: 'Outbound Request',
+      title: 'Integrasi Order (SKB 4.5)',
+      value: metrics.orderIntegrationSuccess,
+      icon: Zap,
+      watermarkIcon: Activity,
+      gradientClass: 'bg-gradient-to-br from-[#ff5900] via-[#ea4e00] to-[#c23b00] shadow-orange-500/25',
+      badgeText: 'Target ≥ 99%',
+      tab: 'Integrations'
+    },
+    {
+      title: 'Uptime Sistem (7x24 Jam)',
+      value: metrics.systemAvailability,
+      icon: Server,
+      watermarkIcon: Server,
+      gradientClass: 'bg-gradient-to-br from-[#047857] to-[#065f46] shadow-emerald-600/20',
+      badgeText: 'Target ≥ 99.5%',
+      tab: 'Integrations'
+    },
+    {
+      title: 'Stok Fisik Tersedia (Good)',
+      value: metrics.stockReady,
+      icon: Layers,
+      watermarkIcon: Layers,
+      gradientClass: 'bg-gradient-to-br from-[#0e2b7a] via-[#1a4ca8] to-[#2563eb] shadow-blue-700/20',
+      badgeText: 'Siap Outbound',
+      tab: 'Stock On Hand'
+    },
+    {
+      title: 'DO Inbound Diproses',
+      value: metrics.inboundCount,
+      icon: ArrowDownToLine,
+      watermarkIcon: ArrowDownToLine,
+      gradientClass: 'bg-gradient-to-br from-[#7e22ce] to-[#6b21a8] shadow-purple-600/20',
+      badgeText: 'SLP Tangsel',
+      tab: 'Inbound'
+    },
+    {
+      title: 'DO Outbound Request',
       value: metrics.outboundRequest,
       icon: Send,
       watermarkIcon: Send,
       gradientClass: 'bg-gradient-to-br from-[#d97706] to-[#b45309] shadow-amber-500/20',
+      badgeText: 'Customer Order',
       tab: 'Outbound'
-    },
+    }
+  ];
+
+  // Bottom Row: Execution, Delivery, Retur & Exceptions
+  const bottomRowCards = [
     {
       title: 'Outbound Realization',
       value: metrics.outboundRealization,
@@ -63,54 +89,44 @@ export const MetricGrid = () => {
       tab: 'Outbound'
     },
     {
-      title: 'Delivery',
+      title: 'Dalam Pengiriman (PosAja)',
       value: metrics.delivery,
       icon: MapPin,
       watermarkIcon: MapPin,
-      gradientClass: 'bg-gradient-to-br from-[#047857] to-[#065f46] shadow-emerald-600/20',
-      tab: 'Outbound'
-    }
-  ];
-
-  const bottomRowCards = [
-    {
-      title: 'On Process',
-      value: metrics.onProcess,
-      icon: CornerUpRight,
-      watermarkIcon: CornerUpRight,
-      gradientClass: 'bg-gradient-to-br from-[#ea580c] to-[#c2410c] shadow-orange-500/20',
+      gradientClass: 'bg-gradient-to-br from-[#0d9488] to-[#0f766e] shadow-teal-600/20',
       tab: 'Outbound'
     },
     {
-      title: 'Irregularity',
-      value: metrics.irregularity,
-      icon: AlertTriangle,
-      watermarkIcon: AlertTriangle,
-      gradientClass: 'bg-gradient-to-br from-[#cc1b24] to-[#991b1b] shadow-red-500/20',
-      tab: 'Stock On Hand'
-    },
-    {
-      title: 'Retur',
-      value: metrics.retur,
-      icon: CornerUpLeft,
-      watermarkIcon: CornerUpLeft,
-      gradientClass: 'bg-gradient-to-br from-[#e11d48] to-[#be123c] shadow-rose-500/20',
-      tab: 'Outbound'
-    },
-    {
-      title: 'Canceled',
-      value: metrics.canceled,
-      icon: XCircle,
-      watermarkIcon: XCircle,
-      gradientClass: 'bg-gradient-to-br from-[#334155] to-[#1e293b] shadow-slate-600/20',
-      tab: 'Outbound'
-    },
-    {
-      title: 'Delivered',
+      title: 'Terkirim Selesai (Delivered)',
       value: metrics.delivered,
       icon: CheckCircle2,
       watermarkIcon: CheckCircle2,
       gradientClass: 'bg-gradient-to-br from-[#059669] to-[#047857] shadow-emerald-500/20',
+      tab: 'Outbound'
+    },
+    {
+      title: 'Penerimaan Retur (Triage)',
+      value: metrics.returCount,
+      icon: RotateCcw,
+      watermarkIcon: RotateCcw,
+      gradientClass: 'bg-gradient-to-br from-[#e11d48] to-[#be123c] shadow-rose-500/20',
+      tab: 'Retur'
+    },
+    {
+      title: 'Exceptions / Kendala Aktif',
+      value: metrics.exceptionsCount,
+      icon: AlertTriangle,
+      watermarkIcon: AlertTriangle,
+      gradientClass: 'bg-gradient-to-br from-[#dc2626] to-[#991b1b] shadow-red-500/20',
+      badgeText: metrics.exceptionsCount > 0 ? 'Perlu Tindakan' : 'Normal',
+      tab: 'Exceptions'
+    },
+    {
+      title: 'SLA Ketepatan Waktu',
+      value: metrics.slaFulfillmentRate,
+      icon: Activity,
+      watermarkIcon: Activity,
+      gradientClass: 'bg-gradient-to-br from-[#4f46e5] to-[#3730a3] shadow-indigo-600/20',
       tab: 'Outbound'
     }
   ];
@@ -128,8 +144,8 @@ export const MetricGrid = () => {
         ))}
       </div>
 
-      {/* Row 2: 5 Columns */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+      {/* Row 2: 6 Columns */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
         {bottomRowCards.map((card) => (
           <MetricCard
             key={card.title}

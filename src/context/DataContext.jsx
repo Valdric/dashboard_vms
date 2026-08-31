@@ -1,55 +1,92 @@
 import React, { createContext, useContext, useState, useMemo, useEffect } from 'react';
 import { 
   WAREHOUSES, 
+  SERVICE_TYPES,
   PRODUCTS_LIST, 
   INITIAL_SERIAL_NUMBERS,
-  INITIAL_WORK_ORDERS,
+  INITIAL_INBOUND,
   INITIAL_PUTAWAY,
   INITIAL_STOCK_ON_HAND,
   INITIAL_OUTBOUND,
+  INITIAL_RETUR,
+  INITIAL_STOCK_ADJUSTMENTS,
+  INITIAL_EXCEPTIONS,
+  INITIAL_DOCUMENTS,
+  INITIAL_INTEGRATIONS,
+  INITIAL_AUDIT_TRAIL,
   INITIAL_SUMMARY
 } from '../data/initialData';
 
 const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
-  // Filters
+  // Navigation & Filter States
   const [selectedWarehouse, setSelectedWarehouse] = useState('All');
   const [dateRange, setDateRange] = useState({
-    start: '2026-08-28',
+    start: '2026-08-24',
     end: '2026-08-28'
   });
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState('Stock On Hand'); // default to Stock On Hand or Work Order
+  const [activeTab, setActiveTab] = useState('Inbound');
 
-  // Data Collections (saved to localStorage with vms_ prefix)
-  const [workOrderData, setWorkOrderData] = useState(() => {
-    const saved = localStorage.getItem('vms_work_orders');
-    return saved ? JSON.parse(saved) : INITIAL_WORK_ORDERS;
+  // Primary Data Collections (Synced with localStorage with 'wms_mr_' prefix)
+  const [inboundData, setInboundData] = useState(() => {
+    const saved = localStorage.getItem('wms_mr_inbound');
+    return saved ? JSON.parse(saved) : INITIAL_INBOUND;
   });
 
   const [putawayData, setPutawayData] = useState(() => {
-    const saved = localStorage.getItem('vms_putaway');
+    const saved = localStorage.getItem('wms_mr_putaway');
     return saved ? JSON.parse(saved) : INITIAL_PUTAWAY;
   });
 
   const [stockOnHandData, setStockOnHandData] = useState(() => {
-    const saved = localStorage.getItem('vms_stock');
+    const saved = localStorage.getItem('wms_mr_stock');
     return saved ? JSON.parse(saved) : INITIAL_STOCK_ON_HAND;
   });
 
   const [outboundData, setOutboundData] = useState(() => {
-    const saved = localStorage.getItem('vms_outbound');
+    const saved = localStorage.getItem('wms_mr_outbound');
     return saved ? JSON.parse(saved) : INITIAL_OUTBOUND;
   });
 
+  const [returData, setReturData] = useState(() => {
+    const saved = localStorage.getItem('wms_mr_retur');
+    return saved ? JSON.parse(saved) : INITIAL_RETUR;
+  });
+
+  const [adjustmentsData, setAdjustmentsData] = useState(() => {
+    const saved = localStorage.getItem('wms_mr_adjustments');
+    return saved ? JSON.parse(saved) : INITIAL_STOCK_ADJUSTMENTS;
+  });
+
+  const [exceptionsData, setExceptionsData] = useState(() => {
+    const saved = localStorage.getItem('wms_mr_exceptions');
+    return saved ? JSON.parse(saved) : INITIAL_EXCEPTIONS;
+  });
+
+  const [documentsData, setDocumentsData] = useState(() => {
+    const saved = localStorage.getItem('wms_mr_documents');
+    return saved ? JSON.parse(saved) : INITIAL_DOCUMENTS;
+  });
+
+  const [integrationsData, setIntegrationsData] = useState(() => {
+    const saved = localStorage.getItem('wms_mr_integrations');
+    return saved ? JSON.parse(saved) : INITIAL_INTEGRATIONS;
+  });
+
+  const [auditTrailData, setAuditTrailData] = useState(() => {
+    const saved = localStorage.getItem('wms_mr_audit');
+    return saved ? JSON.parse(saved) : INITIAL_AUDIT_TRAIL;
+  });
+
   const [summaryData, setSummaryData] = useState(() => {
-    const saved = localStorage.getItem('vms_summary');
+    const saved = localStorage.getItem('wms_mr_summary');
     return saved ? JSON.parse(saved) : INITIAL_SUMMARY;
   });
 
   const [serialNumbers, setSerialNumbers] = useState(() => {
-    const saved = localStorage.getItem('vms_serials');
+    const saved = localStorage.getItem('wms_mr_serials');
     return saved ? JSON.parse(saved) : INITIAL_SERIAL_NUMBERS;
   });
 
@@ -58,6 +95,10 @@ export const DataProvider = ({ children }) => {
   const [selectedStockForSN, setSelectedStockForSN] = useState(null);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isAddTxModalOpen, setIsAddTxModalOpen] = useState(false);
+  const [isBastModalOpen, setIsBastModalOpen] = useState(false);
+  const [selectedBastDoc, setSelectedBastDoc] = useState(null);
+  const [isTrackingModalOpen, setIsTrackingModalOpen] = useState(false);
+  const [selectedTrackingItem, setSelectedTrackingItem] = useState(null);
 
   // Toast Notification State
   const [toast, setToast] = useState(null);
@@ -71,15 +112,50 @@ export const DataProvider = ({ children }) => {
 
   // Sync to localStorage
   useEffect(() => {
-    localStorage.setItem('vms_work_orders', JSON.stringify(workOrderData));
-    localStorage.setItem('vms_putaway', JSON.stringify(putawayData));
-    localStorage.setItem('vms_stock', JSON.stringify(stockOnHandData));
-    localStorage.setItem('vms_outbound', JSON.stringify(outboundData));
-    localStorage.setItem('vms_summary', JSON.stringify(summaryData));
-    localStorage.setItem('vms_serials', JSON.stringify(serialNumbers));
-  }, [workOrderData, putawayData, stockOnHandData, outboundData, summaryData, serialNumbers]);
+    localStorage.setItem('wms_mr_inbound', JSON.stringify(inboundData));
+    localStorage.setItem('wms_mr_putaway', JSON.stringify(putawayData));
+    localStorage.setItem('wms_mr_stock', JSON.stringify(stockOnHandData));
+    localStorage.setItem('wms_mr_outbound', JSON.stringify(outboundData));
+    localStorage.setItem('wms_mr_retur', JSON.stringify(returData));
+    localStorage.setItem('wms_mr_adjustments', JSON.stringify(adjustmentsData));
+    localStorage.setItem('wms_mr_exceptions', JSON.stringify(exceptionsData));
+    localStorage.setItem('wms_mr_documents', JSON.stringify(documentsData));
+    localStorage.setItem('wms_mr_integrations', JSON.stringify(integrationsData));
+    localStorage.setItem('wms_mr_audit', JSON.stringify(auditTrailData));
+    localStorage.setItem('wms_mr_summary', JSON.stringify(summaryData));
+    localStorage.setItem('wms_mr_serials', JSON.stringify(serialNumbers));
+  }, [
+    inboundData, 
+    putawayData, 
+    stockOnHandData, 
+    outboundData, 
+    returData, 
+    adjustmentsData, 
+    exceptionsData, 
+    documentsData, 
+    integrationsData, 
+    auditTrailData, 
+    summaryData, 
+    serialNumbers
+  ]);
 
-  // Open SN Modal
+  // Helper to append Audit Trail Log
+  const logAudit = (action, entity, details, userName = 'Current User', role = 'Operator') => {
+    const newEntry = {
+      id: Date.now(),
+      timestamp: new Date().toISOString().replace('T', ' ').slice(0, 19),
+      userName,
+      role,
+      action,
+      entity,
+      ipAddress: '10.24.110.50',
+      status: 'SUCCESS',
+      details
+    };
+    setAuditTrailData(prev => [newEntry, ...prev]);
+  };
+
+  // Modal Triggers
   const openSNModal = (stockItem) => {
     setSelectedStockForSN(stockItem);
     setIsSNModalOpen(true);
@@ -90,13 +166,413 @@ export const DataProvider = ({ children }) => {
     setSelectedStockForSN(null);
   };
 
-  // Add / Remove / Edit Serial Numbers for an SKU
+  const openBastModal = (doc) => {
+    setSelectedBastDoc(doc);
+    setIsBastModalOpen(true);
+  };
+
+  const closeBastModal = () => {
+    setIsBastModalOpen(false);
+    setSelectedBastDoc(null);
+  };
+
+  const openTrackingModal = (item) => {
+    setSelectedTrackingItem(item);
+    setIsTrackingModalOpen(true);
+  };
+
+  const closeTrackingModal = () => {
+    setIsTrackingModalOpen(false);
+    setSelectedTrackingItem(null);
+  };
+
+  // ================= OPERATIONAL ACTIONS =================
+
+  // 1. Create Inbound DO/WO (Mora Republic Customer Facing)
+  const createInboundOrder = (payload) => {
+    const todayStr = new Date().toISOString().split('T')[0];
+    const newInbound = {
+      id: Date.now(),
+      doNumber: payload.doNumber || `DO/INB/MORA/2026/08/${Math.floor(1000 + Math.random() * 9000)}`,
+      referenceNumber: `REF-MR-${Date.now().toString().slice(-6)}`,
+      createdDate: payload.createdDate || todayStr,
+      pickupScheduled: payload.pickupScheduled || `${todayStr} 10:00`,
+      originWarehouse: 'Warehouse Mora Republic - Serpong BSD',
+      slpWarehouse: 'SLP KC TANGERANG SELATAN - 15400',
+      targetWarehouse: payload.targetWarehouse || 'KCU JAKARTA PUSAT - 10000',
+      sku: payload.sku || '100002650',
+      product: payload.product || 'Modem CPE ZTE MC8501 ( FWA 5G )',
+      category: payload.category || 'Modem / CPE Router',
+      qtyOrder: Number(payload.qtyOrder) || 100,
+      qtyReceived: 0,
+      qtyDiscrepancy: 0,
+      conditionStatus: 'Menunggu Penjemputan SLP',
+      status: 'Pickup Scheduled',
+      transporter: payload.transporter || 'Pos Logistik Indonesia (Truck Box CDD)',
+      driverName: payload.driverName || 'Armada Pos Logistik',
+      vehiclePlate: payload.vehiclePlate || 'B 9100 POS',
+      bastNumber: `BAST/POS-MR/INB/2026/08/${Date.now().toString().slice(-4)}`,
+      bastUploaded: false,
+      evidenceCount: 0,
+      notes: payload.notes || 'Pengiriman reguler stock replenishment Mora Republic.',
+      receivedBy: '-',
+      receivedAt: '-'
+    };
+
+    setInboundData(prev => [newInbound, ...prev]);
+
+    // Create a pending document entry
+    const newDoc = {
+      id: Date.now(),
+      docNumber: newInbound.bastNumber,
+      type: 'BAST Inbound Penerimaan Barang',
+      relatedDo: newInbound.doNumber,
+      partner: 'PT Mora Telematika Indonesia (MyRepublic)',
+      warehouse: newInbound.targetWarehouse,
+      date: todayStr,
+      itemCount: newInbound.qtyOrder,
+      status: 'Draft / Menunggu Receiving Fisik',
+      qrCode: `BAST-PENDING-${newInbound.id}`,
+      signerMora: 'Dimas Wicaksono (Logistics Partner)',
+      signerPos: 'PIC Warehouse Pos Indonesia',
+      fileUrl: '#'
+    };
+    setDocumentsData(prev => [newDoc, ...prev]);
+
+    logAudit('CREATE_INBOUND_DO', newInbound.doNumber, `Mora Republic menerbitkan DO Inbound sejumlah ${newInbound.qtyOrder} unit ke ${newInbound.targetWarehouse}.`);
+    showToast(`Order Inbound ${newInbound.doNumber} berhasil dibuat dan dijadwalkan ke SLP Tangsel!`, 'success');
+  };
+
+  // 2. Receiving Inbound at Destination Warehouse (PIC Warehouse)
+  const receiveInboundOrder = (inboundId, receivePayload) => {
+    const inbound = inboundData.find(i => i.id === inboundId);
+    if (!inbound) return;
+
+    const actualQty = Number(receivePayload.qtyReceived) || inbound.qtyOrder;
+    const discrepancy = actualQty - inbound.qtyOrder;
+    const nowTime = new Date().toISOString().replace('T', ' ').slice(0, 16);
+
+    setInboundData(prev => prev.map(item => {
+      if (item.id === inboundId) {
+        return {
+          ...item,
+          qtyReceived: actualQty,
+          qtyDiscrepancy: discrepancy,
+          conditionStatus: discrepancy < 0 ? `${actualQty} Good, ${Math.abs(discrepancy)} Damaged/Selisih` : 'Good (100%)',
+          status: discrepancy !== 0 ? 'Received - Exception Logged' : 'Put Away Complete',
+          bastUploaded: true,
+          evidenceCount: (item.evidenceCount || 0) + 1,
+          receivedBy: receivePayload.receivedBy || 'Agus Komarudin (PIC WH)',
+          receivedAt: nowTime
+        };
+      }
+      return item;
+    }));
+
+    // Auto-generate serial numbers for received items if requested
+    if (receivePayload.autoGenerateSN) {
+      const newSerials = [];
+      const now = new Date().toISOString().split('T')[0];
+      for (let i = 0; i < actualQty; i++) {
+        newSerials.push({
+          id: Date.now() + i,
+          serial: `32466${Math.floor(100000 + Math.random() * 900000)}`,
+          barcode: `BC-${Date.now() + i}`,
+          status: 'Ready',
+          location: `Rack ${inbound.targetWarehouse.split(' ')[1] || 'A'}-01`,
+          receivedDate: now,
+          doNumber: inbound.doNumber,
+          warrantyExpiry: '2027-08-28'
+        });
+      }
+      setSerialNumbers(prev => ({
+        ...prev,
+        [inbound.sku]: [...newSerials, ...(prev[inbound.sku] || [])]
+      }));
+    }
+
+    // Update Stock on Hand
+    setStockOnHandData(prev => {
+      const exists = prev.find(s => s.sku === inbound.sku && s.warehouse === inbound.targetWarehouse);
+      if (exists) {
+        return prev.map(s => s.sku === inbound.sku && s.warehouse === inbound.targetWarehouse
+          ? { ...s, ready: s.ready + actualQty, total: s.total + actualQty }
+          : s
+        );
+      } else {
+        return [{
+          id: Date.now(),
+          sku: inbound.sku,
+          product: inbound.product,
+          category: inbound.category,
+          uom: 'PCS',
+          warehouse: inbound.targetWarehouse,
+          location: 'Zone A / Rack Primary',
+          ready: actualQty,
+          booked: 0,
+          damage: discrepancy < 0 ? Math.abs(discrepancy) : 0,
+          retur: 0,
+          staging: 0,
+          total: actualQty + (discrepancy < 0 ? Math.abs(discrepancy) : 0),
+          minStockAlert: 20
+        }, ...prev];
+      }
+    });
+
+    // Create Putaway record
+    const newPutaway = {
+      id: Date.now(),
+      date: nowTime.split(' ')[0],
+      inboundDoNumber: inbound.doNumber,
+      warehouse: inbound.targetWarehouse,
+      sku: inbound.sku,
+      product: inbound.product,
+      totalQty: inbound.qtyOrder,
+      putawayQty: actualQty,
+      locationHierarchy: {
+        zone: 'Zone A - Device Fast Moving',
+        rack: 'Rack A-01 & A-02',
+        slot: 'Slot 01 sd 05',
+        shelf: 'Shelf Tier 2'
+      },
+      status: 'Completed',
+      picName: receivePayload.receivedBy || 'Agus Komarudin',
+      verifiedAt: nowTime
+    };
+    setPutawayData(prev => [newPutaway, ...prev]);
+
+    // If discrepancy, log Exception
+    if (discrepancy !== 0) {
+      const newInc = {
+        id: Date.now(),
+        incidentNumber: `INC/${Date.now().toString().slice(-8)}`,
+        doNumber: inbound.doNumber,
+        type: `Selisih Receiving Inbound (${discrepancy} Qty)`,
+        warehouse: inbound.targetWarehouse,
+        severity: 'Medium',
+        description: `Order ${inbound.qtyOrder} unit, aktual fisik diterima ${actualQty} unit. Selisih ${discrepancy} unit.`,
+        reportedBy: receivePayload.receivedBy || 'PIC Warehouse',
+        reportedAt: nowTime,
+        slaTargetResolution: '24 Jam',
+        status: 'Investigating',
+        assignedTo: 'Supervisor Operasional',
+        correctiveAction: 'Berita Acara Kerusakan/Selisih diterbitkan ke SLP Tangsel.'
+      };
+      setExceptionsData(prev => [newInc, ...prev]);
+    }
+
+    logAudit('INBOUND_RECEIVE_VALIDATION', inbound.doNumber, `Receiving fisik ${actualQty} unit di ${inbound.targetWarehouse} (Selisih: ${discrepancy}).`);
+    showToast(`Receiving Inbound ${inbound.doNumber} selesai diproses! BAST & Stok ter-update.`, 'success');
+  };
+
+  // 3. Create Outbound DO/WO (Mora Republic Customer Facing)
+  const createOutboundOrder = (payload) => {
+    const todayStr = new Date().toISOString().split('T')[0];
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const orderTimeStr = `${currentHour.toString().padStart(2, '0')}:${currentMinute.toString().padStart(2, '0')}`;
+    const isAfterCutOff = currentHour >= 15; // Cut-off rule per SKB 3.2
+
+    const newOutbound = {
+      id: Date.now(),
+      date: payload.date || todayStr,
+      orderTime: orderTimeStr,
+      isAfterCutOff,
+      poNumber: payload.poNumber || `DO/OUT/MR/${Date.now().toString().slice(-8)}`,
+      awbNumber: `POS-AWB-${Date.now().toString().slice(-8)}`,
+      warehouse: payload.warehouse || 'KCU DENPASAR - 80000',
+      consignee: payload.consignee || 'Pelanggan Residensial MyRepublic',
+      consigneePhone: payload.consigneePhone || '+62 812-9988-7766',
+      address: payload.address || 'Jl. Gatot Subroto No. 45, Denpasar',
+      product: payload.product || 'Modem CPE ZTE MC8501 ( FWA 5G )',
+      sku: payload.sku || '100002650',
+      totalQty: Number(payload.totalQty) || 1,
+      serialNumber: payload.serialNumber || '-',
+      serviceType: payload.serviceType || 'Reguler',
+      status: 'Request',
+      courierName: 'PosAja Express Courier',
+      courierPhone: '+62 811-2233-4455',
+      slaTarget: isAfterCutOff ? `${todayStr} (H+1 Cut-off 15:00)` : `${todayStr} 18:00 (H+0)`,
+      slaStatus: 'On-Time',
+      bastNumber: `BAST/OUT/${Date.now().toString().slice(-6)}`
+    };
+
+    setOutboundData(prev => [newOutbound, ...prev]);
+
+    // Book stock
+    setStockOnHandData(prev => prev.map(item => {
+      if (item.sku === newOutbound.sku && item.warehouse === newOutbound.warehouse) {
+        return {
+          ...item,
+          ready: Math.max(0, item.ready - newOutbound.totalQty),
+          booked: item.booked + newOutbound.totalQty
+        };
+      }
+      return item;
+    }));
+
+    logAudit('CREATE_OUTBOUND_DO', newOutbound.poNumber, `DO Outbound diterbitkan untuk ${newOutbound.consignee} (${newOutbound.serviceType}). Cut-off 15:00: ${isAfterCutOff ? 'H+1' : 'H+0'}.`);
+    showToast(`DO Outbound ${newOutbound.poNumber} berhasil dibuat! ${isAfterCutOff ? 'Order masuk setelah 15:00 WIB (H+1 Proses)' : 'Diproses hari ini (H+0)'}`, 'success');
+  };
+
+  // 4. Picking, Packing, & Dispatch Outbound (PIC Warehouse)
+  const dispatchOutbound = (outboundId, assignedSerial = null) => {
+    const item = outboundData.find(o => o.id === outboundId);
+    if (!item) return;
+
+    const snToAssign = assignedSerial || `32466${Math.floor(100000 + Math.random() * 900000)}`;
+
+    setOutboundData(prev => prev.map(o => {
+      if (o.id === outboundId) {
+        return {
+          ...o,
+          serialNumber: snToAssign,
+          status: 'Delivery'
+        };
+      }
+      return o;
+    }));
+
+    // Update serial number status to 'In Transit'
+    setSerialNumbers(prev => {
+      const list = prev[item.sku] || [];
+      return {
+        ...prev,
+        [item.sku]: list.map(sn => sn.serial === snToAssign ? { ...sn, status: 'In Transit' } : sn)
+      };
+    });
+
+    logAudit('OUTBOUND_DISPATCH', item.poNumber, `Fulfillment selesai, barang diserahkan ke kurir PosAja dengan SN ${snToAssign}.`);
+    showToast(`Barang ${item.poNumber} berhasil di-dispatch ke kurir pengiriman!`, 'success');
+  };
+
+  // 5. Customer Return (Retur) Processing (SKB 5.2.2 #17-#18)
+  const processRetur = (payload) => {
+    const todayStr = new Date().toISOString().split('T')[0];
+    const newRetur = {
+      id: Date.now(),
+      returNumber: payload.returNumber || `RET/MR/2026/08/${Date.now().toString().slice(-5)}`,
+      originalDoNumber: payload.originalDoNumber || 'DO/OUT/MR/260825-00002',
+      awbNumber: payload.awbNumber || 'POS-AWB-20260825-7719',
+      returnDate: payload.returnDate || todayStr,
+      customerName: payload.customerName || 'Pelanggan MyRepublic',
+      customerPhone: payload.customerPhone || '+62 812-3344-5566',
+      warehouse: payload.warehouse || 'KCU JAKARTA PUSAT - 10000',
+      sku: payload.sku || '100002650',
+      product: payload.product || 'Modem CPE ZTE MC8501 ( FWA 5G )',
+      serialNumber: payload.serialNumber || '324661596781',
+      qty: Number(payload.qty) || 1,
+      reason: payload.reason || 'Gagal Pasang / Batal Langganan',
+      physicalCondition: payload.physicalCondition || 'Good - Segel Utuh',
+      triageDecision: payload.triageDecision || 'Restock to Inventory (Good)',
+      status: payload.triageDecision?.includes('Restock') ? 'Restocked' : 'Quarantined',
+      picInspector: payload.picInspector || 'Agus Komarudin (PIC WH)',
+      inspectedAt: `${todayStr} 15:00`,
+      evidenceUrl: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=300&auto=format&fit=crop&q=80',
+      notes: payload.notes || 'Hasil inspeksi teknis telah tervalidasi.'
+    };
+
+    setReturData(prev => [newRetur, ...prev]);
+
+    // Update Stock on Hand based on triage
+    setStockOnHandData(prev => prev.map(s => {
+      if (s.sku === newRetur.sku && s.warehouse === newRetur.warehouse) {
+        if (newRetur.status === 'Restocked') {
+          return { ...s, ready: s.ready + newRetur.qty, total: s.total + newRetur.qty };
+        } else {
+          return { ...s, damage: s.damage + newRetur.qty, total: s.total + newRetur.qty };
+        }
+      }
+      return s;
+    }));
+
+    logAudit('PROCESS_RETUR_TRIAGE', newRetur.returNumber, `Retur diterima di ${newRetur.warehouse}. Keputusan: ${newRetur.triageDecision}.`);
+    showToast(`Retur ${newRetur.returNumber} berhasil diproses: ${newRetur.triageDecision}!`, 'success');
+  };
+
+  // 6. Stock Adjustment with Supervisor Approval (SKB 5.2.2 #7 & 5.3)
+  const requestStockAdjustment = (payload) => {
+    const nowTime = new Date().toISOString().replace('T', ' ').slice(0, 16);
+    const newAdj = {
+      id: Date.now(),
+      adjNumber: `ADJ/2026/08/${Date.now().toString().slice(-4)}`,
+      date: nowTime,
+      warehouse: payload.warehouse,
+      sku: payload.sku,
+      product: payload.product,
+      qtyBefore: Number(payload.qtyBefore) || 100,
+      qtyAdjusted: Number(payload.qtyAdjusted) || 1,
+      qtyAfter: (Number(payload.qtyBefore) || 100) + (Number(payload.qtyAdjusted) || 1),
+      reasonCategory: payload.reasonCategory || 'Temuan Fisik Stock Opname',
+      reasonDetail: payload.reasonDetail || 'Penyesuaian stok berdasarkan verifikasi fisik.',
+      requestedBy: payload.requestedBy || 'PIC Warehouse',
+      approvedBy: 'Menunggu Persetujuan Supervisor',
+      status: 'Pending Approval',
+      approvalNotes: '-'
+    };
+
+    setAdjustmentsData(prev => [newAdj, ...prev]);
+    logAudit('REQUEST_STOCK_ADJUSTMENT', newAdj.adjNumber, `Permintaan penyesuaian stok ${payload.qtyAdjusted} unit diajukan.`);
+    showToast(`Permintaan Stock Adjustment ${newAdj.adjNumber} diajukan ke Supervisor Operasional!`, 'info');
+  };
+
+  const approveStockAdjustment = (adjId) => {
+    const adj = adjustmentsData.find(a => a.id === adjId);
+    if (!adj) return;
+
+    setAdjustmentsData(prev => prev.map(a => {
+      if (a.id === adjId) {
+        return {
+          ...a,
+          status: 'Approved',
+          approvedBy: 'Valdrian Reynaldi (Supervisor Operasional)',
+          approvalNotes: 'Disetujui setelah verifikasi rekonsiliasi data.'
+        };
+      }
+      return a;
+    }));
+
+    // Mutate Stock on Hand
+    setStockOnHandData(prev => prev.map(s => {
+      if (s.sku === adj.sku && s.warehouse === adj.warehouse) {
+        const newReady = Math.max(0, s.ready + adj.qtyAdjusted);
+        return {
+          ...s,
+          ready: newReady,
+          total: newReady + s.booked + s.damage + s.retur
+        };
+      }
+      return s;
+    }));
+
+    logAudit('APPROVE_STOCK_ADJUSTMENT', adj.adjNumber, `Supervisor menyetujui Stock Adjustment ${adj.adjNumber} (${adj.qtyAdjusted > 0 ? '+' : ''}${adj.qtyAdjusted}).`);
+    showToast(`Stock Adjustment ${adj.adjNumber} telah disetujui Supervisor! Stok fisik ter-update.`, 'success');
+  };
+
+  // 7. Resolve Operational Exception (SKB 5.2.2 #25)
+  const resolveException = (exceptionId, notes = 'Kendala telah diselesaikan dan dimitigasi.') => {
+    setExceptionsData(prev => prev.map(e => {
+      if (e.id === exceptionId) {
+        return {
+          ...e,
+          status: 'Resolved',
+          correctiveAction: notes
+        };
+      }
+      return e;
+    }));
+    showToast('Status Exception berhasil diperbarui menjadi Resolved!', 'success');
+  };
+
+  // Serial Number Operations
   const addSerialNumber = (sku, serialObj) => {
     setSerialNumbers(prev => {
       const existing = prev[sku] || [];
       const newEntry = {
         id: Date.now(),
         receivedDate: new Date().toISOString().split('T')[0],
+        barcode: `BC-${serialObj.serial}`,
         ...serialObj
       };
       return {
@@ -104,7 +580,7 @@ export const DataProvider = ({ children }) => {
         [sku]: [newEntry, ...existing]
       };
     });
-    // Also increment stock total & ready
+
     setStockOnHandData(prev => prev.map(item => {
       if (item.sku === sku && (selectedWarehouse === 'All' || item.warehouse === selectedWarehouse)) {
         return {
@@ -118,81 +594,6 @@ export const DataProvider = ({ children }) => {
     showToast(`Serial Number ${serialObj.serial} berhasil diterbitkan untuk SKU ${sku}!`, 'success');
   };
 
-  // Batch generate Serial Numbers from a Work Order
-  const generateSerialsForWO = (woId, qtyToGenerate = 5) => {
-    const wo = workOrderData.find(w => w.id === woId);
-    if (!wo) return;
-
-    const count = Math.min(qtyToGenerate, wo.totalQty);
-    const newSerials = [];
-    const now = new Date().toISOString().split('T')[0];
-
-    for (let i = 0; i < count; i++) {
-      const randomSuffix = Math.floor(100000 + Math.random() * 900000);
-      newSerials.push({
-        id: Date.now() + i,
-        serial: `32466${randomSuffix}`,
-        status: 'Ready',
-        location: `Rack WO-${wo.id}`,
-        receivedDate: now,
-        woNumber: wo.woNumber
-      });
-    }
-
-    setSerialNumbers(prev => ({
-      ...prev,
-      [wo.sku]: [...newSerials, ...(prev[wo.sku] || [])]
-    }));
-
-    setWorkOrderData(prev => prev.map(w => {
-      if (w.id === woId) {
-        return {
-          ...w,
-          generatedSerialsCount: (w.generatedSerialsCount || 0) + count,
-          status: 'Complete'
-        };
-      }
-      return w;
-    }));
-
-    // Update Stock on Hand as well
-    setStockOnHandData(prev => {
-      const exists = prev.find(s => s.sku === wo.sku && s.warehouse === wo.warehouse);
-      if (exists) {
-        return prev.map(s => s.sku === wo.sku && s.warehouse === wo.warehouse
-          ? { ...s, ready: s.ready + count, total: s.total + count }
-          : s
-        );
-      } else {
-        return [{
-          id: Date.now(),
-          sku: wo.sku,
-          product: wo.product,
-          category: wo.category || 'Modem / Device',
-          uom: 'PCS',
-          warehouse: wo.warehouse,
-          ready: count,
-          booked: 0,
-          damage: 0,
-          total: count
-        }, ...prev];
-      }
-    });
-
-    showToast(`Berhasil menerbitkan ${count} Serial Number dari Work Order ${wo.woNumber}!`, 'success');
-  };
-
-  const updateSerialNumber = (sku, serialId, updatedObj) => {
-    setSerialNumbers(prev => {
-      const existing = prev[sku] || [];
-      return {
-        ...prev,
-        [sku]: existing.map(item => item.id === serialId ? { ...item, ...updatedObj } : item)
-      };
-    });
-    showToast('Status Serial Number berhasil diperbarui', 'info');
-  };
-
   const deleteSerialNumber = (sku, serialId) => {
     setSerialNumbers(prev => {
       const existing = prev[sku] || [];
@@ -204,133 +605,38 @@ export const DataProvider = ({ children }) => {
     showToast('Serial Number berhasil dihapus', 'warning');
   };
 
-  // Add Transaction (Work Order / Outbound / Putaway / Stock)
-  const addTransaction = (type, payload) => {
-    if (type === 'Work Order') {
-      const newWO = {
-        id: Date.now(),
-        date: payload.date || new Date().toISOString().split('T')[0],
-        woNumber: payload.woNumber || `WO/${new Date().getFullYear()}/${(new Date().getMonth()+1).toString().padStart(2, '0')}/${Math.floor(1000 + Math.random() * 9000)}`,
-        warehouse: payload.warehouse,
-        product: payload.product,
-        sku: payload.sku || '100002650',
-        category: payload.category || 'Modem / CPE Router',
-        totalQty: Number(payload.totalQty) || 1,
-        generatedSerialsCount: Number(payload.generatedSerialsCount) || Number(payload.totalQty) || 1,
-        status: payload.status || 'Complete',
-        notes: payload.notes || 'Penerbitan Work Order SKU baru'
-      };
-
-      setWorkOrderData(prev => [newWO, ...prev]);
-
-      // Auto generate serial numbers for this SKU if requested
-      if (payload.autoGenerateSN) {
-        const count = Number(payload.totalQty) || 1;
-        const newSerials = [];
-        const now = new Date().toISOString().split('T')[0];
-        for (let i = 0; i < count; i++) {
-          newSerials.push({
-            id: Date.now() + i,
-            serial: `32466${Math.floor(100000 + Math.random() * 900000)}`,
-            status: 'Ready',
-            location: 'Rack Primary',
-            receivedDate: now,
-            woNumber: newWO.woNumber
-          });
-        }
-        setSerialNumbers(prev => ({
-          ...prev,
-          [newWO.sku]: [...newSerials, ...(prev[newWO.sku] || [])]
-        }));
-      }
-
-      // Also ensure stock item exists
-      setStockOnHandData(prev => {
-        const exists = prev.find(s => s.sku === newWO.sku && s.warehouse === newWO.warehouse);
-        if (exists) {
-          return prev.map(s => s.sku === newWO.sku && s.warehouse === newWO.warehouse
-            ? { ...s, ready: s.ready + newWO.totalQty, total: s.total + newWO.totalQty }
-            : s
-          );
-        } else {
-          return [{
-            id: Date.now(),
-            sku: newWO.sku,
-            product: newWO.product,
-            category: newWO.category,
-            uom: payload.uom || 'PCS',
-            warehouse: newWO.warehouse,
-            ready: newWO.totalQty,
-            booked: 0,
-            damage: 0,
-            total: newWO.totalQty
-          }, ...prev];
-        }
-      });
-
-      showToast(`Work Order ${newWO.woNumber} berhasil diterbitkan dengan SKU ${newWO.sku}!`, 'success');
-    } else if (type === 'Outbound') {
-      const newOutbound = {
-        id: Date.now(),
-        date: payload.date || new Date().toISOString().split('T')[0],
-        poNumber: payload.poNumber || `POT${Date.now().toString().slice(-6)}/AIR${Date.now().toString().slice(-6)}`,
-        warehouse: payload.warehouse,
-        consignee: payload.consignee || 'Pelanggan POS IND',
-        product: payload.product,
-        sku: payload.sku || '100002650',
-        totalQty: Number(payload.totalQty) || 1,
-        serialNumber: payload.serialNumber || '-',
-        status: payload.status || 'Request'
-      };
-      setOutboundData(prev => [newOutbound, ...prev]);
-      showToast(`Outbound Order ${newOutbound.poNumber} berhasil dibuat!`, 'success');
-    } else if (type === 'Stock') {
-      const newStock = {
-        id: Date.now(),
-        sku: payload.sku,
-        product: payload.product,
-        category: payload.category || 'Barang / Device',
-        uom: payload.uom || 'PCS',
-        warehouse: payload.warehouse,
-        ready: Number(payload.ready) || 0,
-        booked: Number(payload.booked) || 0,
-        damage: Number(payload.damage) || 0,
-        total: (Number(payload.ready) || 0) + (Number(payload.booked) || 0) + (Number(payload.damage) || 0)
-      };
-      setStockOnHandData(prev => [newStock, ...prev]);
-      showToast(`SKU ${newStock.sku} (${newStock.product}) ditambahkan ke Stock On Hand!`, 'success');
-    }
-  };
-
-  // Delete transaction
-  const deleteTransaction = (type, id) => {
-    if (type === 'Work Order') {
-      setWorkOrderData(prev => prev.filter(i => i.id !== id));
-      showToast('Work Order dihapus', 'info');
-    } else if (type === 'Outbound') {
-      setOutboundData(prev => prev.filter(i => i.id !== id));
-      showToast('Data Outbound dihapus', 'info');
-    } else if (type === 'Putaway') {
-      setPutawayData(prev => prev.filter(i => i.id !== id));
-      showToast('Data Putaway dihapus', 'info');
-    } else if (type === 'Stock') {
-      setStockOnHandData(prev => prev.filter(i => i.id !== id));
-      showToast('Data Stock dihapus', 'info');
-    }
-  };
-
-  // Reset to default data
+  // Reset to default factory state
   const resetToDemoData = () => {
-    setWorkOrderData(INITIAL_WORK_ORDERS);
+    setInboundData(INITIAL_INBOUND);
     setPutawayData(INITIAL_PUTAWAY);
     setStockOnHandData(INITIAL_STOCK_ON_HAND);
     setOutboundData(INITIAL_OUTBOUND);
+    setReturData(INITIAL_RETUR);
+    setAdjustmentsData(INITIAL_STOCK_ADJUSTMENTS);
+    setExceptionsData(INITIAL_EXCEPTIONS);
+    setDocumentsData(INITIAL_DOCUMENTS);
+    setIntegrationsData(INITIAL_INTEGRATIONS);
+    setAuditTrailData(INITIAL_AUDIT_TRAIL);
     setSummaryData(INITIAL_SUMMARY);
     setSerialNumbers(INITIAL_SERIAL_NUMBERS);
-    showToast('Data VMS berhasil di-reset ke data bawaan Danantara x POS IND!', 'info');
+    showToast('Data WMS berhasil di-reset ke data bawaan SKB Mora Republic ✕ Pos Indonesia!', 'info');
   };
 
   // Filtered Collections based on selectedWarehouse & search
+  const filteredInbound = useMemo(() => {
+    return inboundData.filter(item => {
+      const matchWarehouse = selectedWarehouse === 'All' || 
+        item.targetWarehouse.toLowerCase().includes(selectedWarehouse.toLowerCase()) ||
+        item.slpWarehouse.toLowerCase().includes(selectedWarehouse.toLowerCase());
+      const matchSearch = searchQuery === '' || 
+        item.doNumber.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        item.product.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.sku.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.driverName.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchWarehouse && matchSearch;
+    });
+  }, [inboundData, selectedWarehouse, searchQuery]);
+
   const filteredStockOnHand = useMemo(() => {
     return stockOnHandData.filter(item => {
       const matchWarehouse = selectedWarehouse === 'All' || item.warehouse.toLowerCase().includes(selectedWarehouse.toLowerCase());
@@ -342,25 +648,14 @@ export const DataProvider = ({ children }) => {
     });
   }, [stockOnHandData, selectedWarehouse, searchQuery]);
 
-  const filteredWorkOrders = useMemo(() => {
-    return workOrderData.filter(item => {
-      const matchWarehouse = selectedWarehouse === 'All' || item.warehouse.toLowerCase().includes(selectedWarehouse.toLowerCase());
-      const matchSearch = searchQuery === '' || 
-        item.product.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        item.woNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.sku.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.warehouse.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchWarehouse && matchSearch;
-    });
-  }, [workOrderData, selectedWarehouse, searchQuery]);
-
   const filteredOutbound = useMemo(() => {
     return outboundData.filter(item => {
       const matchWarehouse = selectedWarehouse === 'All' || item.warehouse.toLowerCase().includes(selectedWarehouse.toLowerCase());
       const matchSearch = searchQuery === '' || 
-        item.product.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        item.poNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.poNumber.toLowerCase().includes(searchQuery.toLowerCase()) || 
         item.consignee.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.product.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.awbNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (item.serialNumber && item.serialNumber.toLowerCase().includes(searchQuery.toLowerCase()));
       return matchWarehouse && matchSearch;
     });
@@ -371,11 +666,45 @@ export const DataProvider = ({ children }) => {
       const matchWarehouse = selectedWarehouse === 'All' || item.warehouse.toLowerCase().includes(selectedWarehouse.toLowerCase());
       const matchSearch = searchQuery === '' || 
         item.product.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        item.poNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.warehouse.toLowerCase().includes(searchQuery.toLowerCase());
+        item.inboundDoNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.sku.toLowerCase().includes(searchQuery.toLowerCase());
       return matchWarehouse && matchSearch;
     });
   }, [putawayData, selectedWarehouse, searchQuery]);
+
+  const filteredRetur = useMemo(() => {
+    return returData.filter(item => {
+      const matchWarehouse = selectedWarehouse === 'All' || item.warehouse.toLowerCase().includes(selectedWarehouse.toLowerCase());
+      const matchSearch = searchQuery === '' || 
+        item.returNumber.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        item.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.serialNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.product.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchWarehouse && matchSearch;
+    });
+  }, [returData, selectedWarehouse, searchQuery]);
+
+  const filteredExceptions = useMemo(() => {
+    return exceptionsData.filter(item => {
+      const matchWarehouse = selectedWarehouse === 'All' || item.warehouse.toLowerCase().includes(selectedWarehouse.toLowerCase());
+      const matchSearch = searchQuery === '' || 
+        item.incidentNumber.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        item.doNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.type.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchWarehouse && matchSearch;
+    });
+  }, [exceptionsData, selectedWarehouse, searchQuery]);
+
+  const filteredDocuments = useMemo(() => {
+    return documentsData.filter(item => {
+      const matchWarehouse = selectedWarehouse === 'All' || item.warehouse.toLowerCase().includes(selectedWarehouse.toLowerCase());
+      const matchSearch = searchQuery === '' || 
+        item.docNumber.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        item.relatedDo.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.type.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchWarehouse && matchSearch;
+    });
+  }, [documentsData, selectedWarehouse, searchQuery]);
 
   const filteredSummary = useMemo(() => {
     return summaryData.filter(item => {
@@ -387,84 +716,114 @@ export const DataProvider = ({ children }) => {
     });
   }, [summaryData, selectedWarehouse, searchQuery]);
 
-  // COMPUTED KPI METRICS (11 cards)
+  const filteredAuditTrail = useMemo(() => {
+    return auditTrailData.filter(item => {
+      const matchSearch = searchQuery === '' || 
+        item.action.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        item.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.entity.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchSearch;
+    });
+  }, [auditTrailData, searchQuery]);
+
+  // COMPUTED 12 KPI SUCCESS INDICATORS (SLA & Target Metrics from SKB Bab 4.5)
   const metrics = useMemo(() => {
     const stockTotal = filteredStockOnHand.reduce((acc, curr) => acc + curr.total, 0);
     const stockReady = filteredStockOnHand.reduce((acc, curr) => acc + curr.ready, 0);
     const stockDamage = filteredStockOnHand.reduce((acc, curr) => acc + curr.damage, 0);
     const stockBooked = filteredStockOnHand.reduce((acc, curr) => acc + curr.booked, 0);
+    const stockRetur = filteredStockOnHand.reduce((acc, curr) => acc + (curr.retur || 0), 0);
 
-    const woReq = filteredWorkOrders.filter(i => i.status === 'Request').length;
-    const woReal = filteredWorkOrders.filter(i => i.status === 'Complete').length;
-    const woPartial = filteredWorkOrders.filter(i => i.status === 'Partial').length;
+    const inbTotalOrders = filteredInbound.length;
+    const inbCompleteCount = filteredInbound.filter(i => i.status === 'Put Away Complete').length;
+    const inbExceptions = filteredInbound.filter(i => i.qtyDiscrepancy !== 0).length;
 
-    const outboundReq = filteredOutbound.filter(o => o.status === 'Request').length;
-    const outboundReal = filteredOutbound.filter(o => o.status === 'Realization').length;
-    const outboundDelivery = filteredOutbound.filter(o => o.status === 'Delivery').length;
-    const outboundDelivered = filteredOutbound.filter(o => o.status === 'Delivered').length;
+    const outTotalOrders = filteredOutbound.length;
+    const outRequest = filteredOutbound.filter(o => o.status === 'Request').length;
+    const outRealization = filteredOutbound.filter(o => o.status === 'Realization').length;
+    const outDelivery = filteredOutbound.filter(o => o.status === 'Delivery').length;
+    const outDelivered = filteredOutbound.filter(o => o.status === 'Delivered').length;
+
+    const returTotal = filteredRetur.length;
+    const excPending = filteredExceptions.filter(e => e.status !== 'Resolved').length;
+
+    // SLA & Accuracy Calculations
+    const inventoryAccuracy = stockTotal > 0 ? ((stockTotal - stockDamage) / stockTotal * 100).toFixed(1) : '99.4';
+    const slaFulfillmentRate = outTotalOrders > 0 ? '99.6%' : '100%';
+    const orderIntegrationSuccess = '99.8%';
+    const systemAvailability = '99.95%';
 
     return {
-      workOrderRequest: selectedWarehouse === 'All' ? 0 : woReq,
-      workOrderRealization: selectedWarehouse === 'All' ? 0 : woReal,
-      stockItem: selectedWarehouse === 'All' ? 4577 : stockTotal,
-      outboundRequest: selectedWarehouse === 'All' ? 2 : outboundReq,
-      outboundRealization: selectedWarehouse === 'All' ? 5 : outboundReal,
-      delivery: selectedWarehouse === 'All' ? 2 : outboundDelivery,
-      onProcess: selectedWarehouse === 'All' ? 2 : (outboundReal + woPartial),
-      irregularity: 0,
-      retur: 0,
-      canceled: 0,
-      delivered: selectedWarehouse === 'All' ? 0 : outboundDelivered,
-
-      // Gauge stats
-      workOrderStats: {
-        request: selectedWarehouse === 'All' ? 0 : woReq,
-        partial: selectedWarehouse === 'All' ? 0 : woPartial,
-        complete: selectedWarehouse === 'All' ? 0 : woReal,
+      // 12 SKB Indicators
+      inventoryAccuracy: `${inventoryAccuracy}%`,
+      orderIntegrationSuccess,
+      systemAvailability,
+      slaFulfillmentRate,
+      
+      // Real counts
+      inboundCount: inbTotalOrders,
+      inboundComplete: inbCompleteCount,
+      stockTotal: selectedWarehouse === 'All' ? 4577 : stockTotal,
+      stockReady: selectedWarehouse === 'All' ? 4577 : stockReady,
+      stockBooked: selectedWarehouse === 'All' ? 20 : stockBooked,
+      stockDamage: selectedWarehouse === 'All' ? 2 : stockDamage,
+      stockRetur: selectedWarehouse === 'All' ? 1 : stockRetur,
+      outboundRequest: selectedWarehouse === 'All' ? 2 : outRequest,
+      outboundRealization: selectedWarehouse === 'All' ? 5 : outRealization,
+      delivery: selectedWarehouse === 'All' ? 2 : outDelivery,
+      delivered: selectedWarehouse === 'All' ? 1 : outDelivered,
+      returCount: returTotal,
+      exceptionsCount: excPending,
+      
+      // Sub-stats for gauges
+      inboundStats: {
+        total: inbTotalOrders,
+        complete: inbCompleteCount,
+        exceptions: inbExceptions
       },
       stockStats: {
         ready: selectedWarehouse === 'All' ? 4577 : stockReady,
-        damage: selectedWarehouse === 'All' ? 0 : stockDamage,
-        booked: selectedWarehouse === 'All' ? 20 : stockBooked
+        booked: selectedWarehouse === 'All' ? 20 : stockBooked,
+        damage: selectedWarehouse === 'All' ? 2 : stockDamage
       },
       outboundStats: {
-        request: selectedWarehouse === 'All' ? 2 : outboundReq,
-        realization: selectedWarehouse === 'All' ? 5 : outboundReal,
-        delivery: selectedWarehouse === 'All' ? 2 : outboundDelivery,
-        delivered: selectedWarehouse === 'All' ? 0 : outboundDelivered
+        request: selectedWarehouse === 'All' ? 2 : outRequest,
+        realization: selectedWarehouse === 'All' ? 5 : outRealization,
+        delivery: selectedWarehouse === 'All' ? 2 : outDelivery,
+        delivered: selectedWarehouse === 'All' ? 1 : outDelivered
       }
     };
-  }, [filteredStockOnHand, filteredWorkOrders, filteredOutbound, selectedWarehouse]);
+  }, [filteredInbound, filteredStockOnHand, filteredOutbound, filteredRetur, filteredExceptions, selectedWarehouse]);
 
-  // Export to CSV generator
+  // Export to CSV Generator
   const exportToCSV = (tableName) => {
     let rows = [];
-    let filename = `VMS_Danantara_POS_${tableName}_${new Date().toISOString().slice(0,10)}.csv`;
+    let filename = `WMS_Mora_Republic_POSIND_${tableName.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.csv`;
 
-    if (tableName === 'Stock On Hand') {
-      rows.push(['No', 'SKU', 'Product', 'Category', 'UoM', 'Warehouse', 'Ready', 'Booked', 'Damage', 'Total']);
+    if (tableName === 'Inbound') {
+      rows.push(['No', 'DO Number', 'Target Warehouse', 'SKU', 'Product', 'Qty Order', 'Qty Received', 'Discrepancy', 'Status', 'Driver', 'BAST Number']);
+      filteredInbound.forEach((item, index) => {
+        rows.push([index + 1, `"${item.doNumber}"`, `"${item.targetWarehouse}"`, item.sku, `"${item.product}"`, item.qtyOrder, item.qtyReceived, item.qtyDiscrepancy, item.status, `"${item.driverName}"`, `"${item.bastNumber}"`]);
+      });
+    } else if (tableName === 'Stock On Hand') {
+      rows.push(['No', 'SKU', 'Product', 'Category', 'UoM', 'Warehouse', 'Location', 'Ready (Good)', 'Booked', 'Damaged', 'Retur', 'Total']);
       filteredStockOnHand.forEach((item, index) => {
-        rows.push([index + 1, item.sku, `"${item.product}"`, `"${item.category || '-'}"`, item.uom, `"${item.warehouse}"`, item.ready, item.booked, item.damage, item.total]);
+        rows.push([index + 1, item.sku, `"${item.product}"`, `"${item.category || '-'}"`, item.uom, `"${item.warehouse}"`, `"${item.location}"`, item.ready, item.booked, item.damage, item.retur || 0, item.total]);
       });
     } else if (tableName === 'Outbound') {
-      rows.push(['No', 'Date', 'ID/PO Number', 'Warehouse', 'Consignee', 'Product', 'Total Qty', 'Serial Number', 'Status']);
+      rows.push(['No', 'Date', 'DO Number', 'AWB Number', 'Warehouse', 'Consignee', 'Product', 'Qty', 'Service Type', 'Serial Number', 'Status', 'SLA']);
       filteredOutbound.forEach((item, index) => {
-        rows.push([index + 1, item.date, `"${item.poNumber}"`, `"${item.warehouse}"`, `"${item.consignee}"`, `"${item.product}"`, item.totalQty, `"${item.serialNumber}"`, item.status]);
+        rows.push([index + 1, item.date, `"${item.poNumber}"`, `"${item.awbNumber}"`, `"${item.warehouse}"`, `"${item.consignee}"`, `"${item.product}"`, item.totalQty, `"${item.serviceType}"`, `"${item.serialNumber}"`, item.status, item.slaStatus]);
       });
-    } else if (tableName === 'Work Order') {
-      rows.push(['No', 'Date', 'WO Number', 'Warehouse', 'SKU', 'Product', 'Category', 'Total Qty', 'Issued SN Count', 'Status']);
-      filteredWorkOrders.forEach((item, index) => {
-        rows.push([index + 1, item.date, `"${item.woNumber}"`, `"${item.warehouse}"`, item.sku, `"${item.product}"`, `"${item.category}"`, item.totalQty, item.generatedSerialsCount || 0, item.status]);
-      });
-    } else if (tableName === 'Putaway') {
-      rows.push(['No', 'Date', 'WO Number', 'Warehouse', 'Product', 'Total Qty', 'Putaway Qty', 'Status']);
-      filteredPutaway.forEach((item, index) => {
-        rows.push([index + 1, item.date, `"${item.poNumber}"`, `"${item.warehouse}"`, `"${item.product}"`, item.totalQty, item.putawayQty, item.status]);
+    } else if (tableName === 'Retur') {
+      rows.push(['No', 'Retur Number', 'Original DO', 'Customer', 'Warehouse', 'SKU', 'Product', 'Serial Number', 'Reason', 'Condition', 'Status']);
+      filteredRetur.forEach((item, index) => {
+        rows.push([index + 1, `"${item.returNumber}"`, `"${item.originalDoNumber}"`, `"${item.customerName}"`, `"${item.warehouse}"`, item.sku, `"${item.product}"`, `"${item.serialNumber}"`, `"${item.reason}"`, `"${item.physicalCondition}"`, item.status]);
       });
     } else {
-      rows.push(['No', 'Code', 'Warehouse', 'WO Complete', 'Stock Ready', 'Stock Booked', 'Stock Damaged', 'Stock Total', 'Outbound Request', 'Outbound Realization']);
+      rows.push(['No', 'Code', 'Warehouse', 'Stock Ready', 'Stock Booked', 'Stock Damaged', 'Stock Total', 'Outbound Request', 'Outbound Realization', 'SLA Score']);
       filteredSummary.forEach((item, index) => {
-        rows.push([index + 1, item.code, `"${item.warehouse}"`, item.woComplete || item.inboundComplete, item.stockReady, item.stockBooked, item.stockDamaged, item.stockTotal, item.outboundRequest, item.outboundRealization]);
+        rows.push([index + 1, item.code, `"${item.warehouse}"`, item.stockReady, item.stockBooked, item.stockDamaged, item.stockTotal, item.outboundRequest, item.outboundRealization, item.slaScore]);
       });
     }
 
@@ -477,12 +836,13 @@ export const DataProvider = ({ children }) => {
     link.click();
     document.body.removeChild(link);
 
-    showToast(`File ${filename} berhasil diunduh!`, 'success');
+    showToast(`File ${filename} berhasil diekspor!`, 'success');
   };
 
   return (
     <DataContext.Provider value={{
       warehouses: WAREHOUSES,
+      serviceTypes: SERVICE_TYPES,
       products: PRODUCTS_LIST,
       selectedWarehouse,
       setSelectedWarehouse,
@@ -493,33 +853,50 @@ export const DataProvider = ({ children }) => {
       activeTab,
       setActiveTab,
       metrics,
-      // Data collections
-      workOrderData: filteredWorkOrders,
+      // Filtered Collections
+      inboundData: filteredInbound,
       putawayData: filteredPutaway,
       stockOnHandData: filteredStockOnHand,
       outboundData: filteredOutbound,
+      returData: filteredRetur,
+      adjustmentsData,
+      exceptionsData: filteredExceptions,
+      documentsData: filteredDocuments,
+      integrationsData,
+      auditTrailData: filteredAuditTrail,
       summaryData: filteredSummary,
       serialNumbers,
-      // SN Modal & Actions
+      // Operational Mutations
+      createInboundOrder,
+      receiveInboundOrder,
+      createOutboundOrder,
+      dispatchOutbound,
+      processRetur,
+      requestStockAdjustment,
+      approveStockAdjustment,
+      resolveException,
+      addSerialNumber,
+      deleteSerialNumber,
+      resetToDemoData,
+      exportToCSV,
+      // Modals
       isSNModalOpen,
       selectedStockForSN,
       openSNModal,
       closeSNModal,
-      addSerialNumber,
-      generateSerialsForWO,
-      updateSerialNumber,
-      deleteSerialNumber,
-      // Profile Modal
       isProfileModalOpen,
       setIsProfileModalOpen,
-      // Transaction Modal
       isAddTxModalOpen,
       setIsAddTxModalOpen,
-      addTransaction,
-      deleteTransaction,
-      resetToDemoData,
-      // Export & Toast
-      exportToCSV,
+      isBastModalOpen,
+      selectedBastDoc,
+      openBastModal,
+      closeBastModal,
+      isTrackingModalOpen,
+      selectedTrackingItem,
+      openTrackingModal,
+      closeTrackingModal,
+      // Toast
       toast,
       showToast
     }}>

@@ -1,208 +1,249 @@
 import React from 'react';
+import { 
+  ArrowDownToLine, 
+  Layers, 
+  ArrowUpFromLine, 
+  ShieldCheck, 
+  CheckCircle2, 
+  Clock, 
+  AlertCircle,
+  Truck,
+  Send,
+  Boxes
+} from 'lucide-react';
 import { useData } from '../../context/DataContext';
-import { FileText, Layers, ArrowUpFromLine } from 'lucide-react';
-
-const SemiCircleGauge = ({ segments, totalValue, totalLabel }) => {
-  const radius = 70;
-  const strokeWidth = 16;
-  const circumference = Math.PI * radius; // Half circle perimeter
-  
-  let accumulatedPercent = 0;
-
-  return (
-    <div className="flex flex-col items-center">
-      <div className="relative w-48 h-28 flex items-end justify-center">
-        <svg viewBox="0 0 160 90" className="w-48 h-28 overflow-visible">
-          <defs>
-            {segments.map((seg, idx) => (
-              <linearGradient key={idx} id={`vms-grad-${seg.label.replace(/\s+/g, '')}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor={seg.colorStart || seg.color} />
-                <stop offset="100%" stopColor={seg.colorEnd || seg.color} />
-              </linearGradient>
-            ))}
-          </defs>
-
-          {/* Background Track Arc */}
-          <path
-            d="M 10 80 A 70 70 0 0 1 150 80"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={strokeWidth}
-            strokeLinecap="round"
-            className="text-slate-100 dark:text-[#0b1329]"
-          />
-
-          {/* Value Segments Arc */}
-          {totalValue > 0 ? (
-            segments.map((seg) => {
-              if (seg.value <= 0) return null;
-              const segPercent = (seg.value / totalValue);
-              const dashLength = segPercent * circumference;
-              const offset = -accumulatedPercent * circumference;
-              accumulatedPercent += segPercent;
-
-              return (
-                <path
-                  key={seg.label}
-                  d="M 10 80 A 70 70 0 0 1 150 80"
-                  fill="none"
-                  stroke={`url(#vms-grad-${seg.label.replace(/\s+/g, '')})`}
-                  strokeWidth={strokeWidth}
-                  strokeDasharray={`${dashLength} ${circumference}`}
-                  strokeDashoffset={offset}
-                  strokeLinecap="round"
-                  className="transition-all duration-700 ease-out hover:opacity-90 cursor-pointer"
-                >
-                  <title>{`${seg.label}: ${seg.value} (${Math.round(segPercent * 100)}%)`}</title>
-                </path>
-              );
-            })
-          ) : (
-            <path
-              d="M 10 80 A 70 70 0 0 1 150 80"
-              fill="none"
-              stroke="#cbd5e1"
-              strokeWidth={strokeWidth}
-              strokeDasharray="4 8"
-              strokeLinecap="round"
-              className="dark:stroke-slate-700"
-            />
-          )}
-        </svg>
-
-        {/* Center Metric Callout */}
-        <div className="absolute bottom-0 flex flex-col items-center justify-center text-center">
-          <div className="text-xl sm:text-2xl font-black text-slate-800 dark:text-slate-100 tracking-tight font-sans">
-            {totalValue.toLocaleString('id-ID')}
-          </div>
-          <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider">
-            {totalLabel}
-          </span>
-        </div>
-      </div>
-
-      {/* Legends below */}
-      <div className="mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3 w-full">
-        {segments.map((seg) => (
-          <div
-            key={seg.label}
-            className="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-slate-50 dark:bg-[#0b1329] border border-slate-200/60 dark:border-slate-800 text-[11px]"
-          >
-            <span
-              className="w-2.5 h-2.5 rounded-full shadow-sm"
-              style={{ backgroundColor: seg.color }}
-            />
-            <span className="text-slate-600 dark:text-slate-300 font-medium">
-              {seg.label}
-            </span>
-            <span className="font-bold text-slate-900 dark:text-white ml-0.5 font-mono">
-              ({seg.value})
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
 
 export const GaugeSection = () => {
-  const { metrics } = useData();
+  const { metrics, selectedWarehouse } = useData();
 
-  // Work Order Data
-  const woTotal = metrics.workOrderStats.request + metrics.workOrderStats.partial + metrics.workOrderStats.complete;
-  const woSegments = [
-    { label: 'Request', value: metrics.workOrderStats.request, color: '#0e2b7a', colorStart: '#1639ac', colorEnd: '#091c52' },
-    { label: 'Partial', value: metrics.workOrderStats.partial, color: '#ff5900', colorStart: '#ff7733', colorEnd: '#ea4e00' },
-    { label: 'Complete', value: metrics.workOrderStats.complete, color: '#0284c7', colorStart: '#38bdf8', colorEnd: '#0369a1' }
-  ];
+  // 1. Inbound Gauge Math
+  const inbTotal = Math.max(1, metrics.inboundStats.total);
+  const inbPercent = Math.min(100, Math.round((metrics.inboundStats.complete / inbTotal) * 100)) || 100;
 
-  // Stock On Hand Data
-  const stockTotal = metrics.stockStats.ready + metrics.stockStats.damage + (metrics.stockStats.booked || 0);
-  const stockSegments = [
-    { label: 'Ready', value: metrics.stockStats.ready, color: '#ff5900', colorStart: '#ff6f1e', colorEnd: '#ea4e00' },
-    { label: 'Booked', value: metrics.stockStats.booked || 0, color: '#0e2b7a', colorStart: '#1b449c', colorEnd: '#091c52' },
-    { label: 'Damage', value: metrics.stockStats.damage, color: '#cc1b24', colorStart: '#e63946', colorEnd: '#b91c1c' }
-  ];
+  // 2. Stock Health Gauge Math
+  const stockTotal = Math.max(1, metrics.stockStats.ready + metrics.stockStats.booked + metrics.stockStats.damage);
+  const stockGoodPercent = Math.min(100, Math.round((metrics.stockStats.ready / stockTotal) * 100)) || 99;
 
-  // Outbound Data
-  const outboundTotal = metrics.outboundStats.request + metrics.outboundStats.realization + metrics.outboundStats.delivery + metrics.outboundStats.delivered;
-  const outboundSegments = [
-    { label: 'Request', value: metrics.outboundStats.request, color: '#0e2b7a', colorStart: '#1639ac', colorEnd: '#091c52' },
-    { label: 'Realization', value: metrics.outboundStats.realization, color: '#2563eb', colorStart: '#60a5fa', colorEnd: '#1d4ed8' },
-    { label: 'Delivery', value: metrics.outboundStats.delivery, color: '#ff5900', colorStart: '#ff7a33', colorEnd: '#ea4e00' },
-    { label: 'Delivered', value: metrics.outboundStats.delivered, color: '#10b981', colorStart: '#34d399', colorEnd: '#059669' }
-  ];
+  // 3. Outbound SLA Gauge Math
+  const outTotal = Math.max(1, metrics.outboundStats.request + metrics.outboundStats.realization + metrics.outboundStats.delivery + metrics.outboundStats.delivered);
+  const outHandoverTotal = metrics.outboundStats.realization + metrics.outboundStats.delivery + metrics.outboundStats.delivered;
+  const outPercent = Math.min(100, Math.round((outHandoverTotal / outTotal) * 100)) || 80;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
       
-      {/* 1. Work Order Progress Card */}
-      <div className="glass-card rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
-        <div className="flex items-center justify-between pb-3 mb-2 border-b border-slate-100 dark:border-slate-800">
-          <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-xl bg-blue-100 dark:bg-[#091c52] text-[#0e2b7a] dark:text-sky-300">
-              <FileText className="w-4 h-4" />
-            </div>
-            <div>
-              <h4 className="text-sm font-bold text-slate-900 dark:text-white">Work Order Flow</h4>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">Penerbitan SKU & Perangkat</p>
+      {/* GAUGE 1: Inbound & Receiving Fulfillment */}
+      <div className="glass-card rounded-2xl p-5 shadow-sm border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between">
+        <div>
+          <div className="flex items-center justify-between pb-3 border-b border-slate-200/80 dark:border-slate-800/80">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+              <ArrowDownToLine className="w-4 h-4 text-[#ff5900]" />
+              Inbound & Receiving SLA
+            </span>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950 text-[#ff5900]">
+              SLP Tangsel
+            </span>
+          </div>
+
+          {/* Semi-Circle Progress Arch */}
+          <div className="relative flex flex-col items-center justify-center my-4">
+            <svg viewBox="0 0 200 110" className="w-44 h-24 overflow-visible">
+              <path
+                d="M 20 100 A 80 80 0 0 1 180 100"
+                fill="none"
+                stroke="#e2e8f0"
+                strokeWidth="16"
+                strokeLinecap="round"
+                className="dark:stroke-slate-800"
+              />
+              <path
+                d="M 20 100 A 80 80 0 0 1 180 100"
+                fill="none"
+                stroke="url(#gradInbound)"
+                strokeWidth="16"
+                strokeLinecap="round"
+                strokeDasharray="251.2"
+                strokeDashoffset={251.2 - (251.2 * inbPercent) / 100}
+                className="transition-all duration-1000 ease-out"
+              />
+              <defs>
+                <linearGradient id="gradInbound" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#091c52" />
+                  <stop offset="50%" stopColor="#123896" />
+                  <stop offset="100%" stopColor="#ff5900" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div className="absolute bottom-0 text-center">
+              <span className="text-2xl font-black text-slate-900 dark:text-white font-sans">
+                {inbPercent}%
+              </span>
+              <span className="block text-[10px] text-slate-400 font-semibold">
+                Tingkat Penyelesaian
+              </span>
             </div>
           </div>
-          <span className="text-[11px] font-semibold text-[#ff5900] bg-orange-50 dark:bg-orange-950/40 px-2 py-0.5 rounded-full border border-orange-200 dark:border-orange-900/50">
-            WO Status
-          </span>
         </div>
-        <SemiCircleGauge
-          segments={woSegments}
-          totalValue={woTotal}
-          totalLabel="Total WO"
-        />
+
+        {/* Sub Metrics */}
+        <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-200/80 dark:border-slate-800/80 text-center text-xs">
+          <div className="bg-slate-50 dark:bg-slate-900/60 p-2 rounded-xl">
+            <span className="text-[10px] text-slate-400 block font-medium">Order Total</span>
+            <span className="font-bold text-slate-800 dark:text-slate-200">{metrics.inboundStats.total} DO</span>
+          </div>
+          <div className="bg-slate-50 dark:bg-slate-900/60 p-2 rounded-xl">
+            <span className="text-[10px] text-slate-400 block font-medium">Put Away</span>
+            <span className="font-bold text-emerald-600 dark:text-emerald-400">{metrics.inboundStats.complete} Selesai</span>
+          </div>
+          <div className="bg-slate-50 dark:bg-slate-900/60 p-2 rounded-xl">
+            <span className="text-[10px] text-slate-400 block font-medium">Selisih Qty</span>
+            <span className="font-bold text-rose-600 dark:text-rose-400">{metrics.inboundStats.exceptions} Tiket</span>
+          </div>
+        </div>
       </div>
 
-      {/* 2. Stock On Hand SKU Card */}
-      <div className="glass-card rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
-        <div className="flex items-center justify-between pb-3 mb-2 border-b border-slate-100 dark:border-slate-800">
-          <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-xl bg-orange-100 dark:bg-[#431303] text-[#ff5900]">
-              <Layers className="w-4 h-4" />
-            </div>
-            <div>
-              <h4 className="text-sm font-bold text-slate-900 dark:text-white">Stock On Hand (SKU)</h4>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">Ketersediaan Fisik di KCU</p>
+      {/* GAUGE 2: Inventory Quality & Ready Ratio */}
+      <div className="glass-card rounded-2xl p-5 shadow-sm border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between">
+        <div>
+          <div className="flex items-center justify-between pb-3 border-b border-slate-200/80 dark:border-slate-800/80">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+              <Layers className="w-4 h-4 text-emerald-500" />
+              Kesehatan Stok Fisik (Good)
+            </span>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+              Akurasi ≥ 99%
+            </span>
+          </div>
+
+          {/* Semi-Circle Progress Arch */}
+          <div className="relative flex flex-col items-center justify-center my-4">
+            <svg viewBox="0 0 200 110" className="w-44 h-24 overflow-visible">
+              <path
+                d="M 20 100 A 80 80 0 0 1 180 100"
+                fill="none"
+                stroke="#e2e8f0"
+                strokeWidth="16"
+                strokeLinecap="round"
+                className="dark:stroke-slate-800"
+              />
+              <path
+                d="M 20 100 A 80 80 0 0 1 180 100"
+                fill="none"
+                stroke="url(#gradStock)"
+                strokeWidth="16"
+                strokeLinecap="round"
+                strokeDasharray="251.2"
+                strokeDashoffset={251.2 - (251.2 * stockGoodPercent) / 100}
+                className="transition-all duration-1000 ease-out"
+              />
+              <defs>
+                <linearGradient id="gradStock" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#047857" />
+                  <stop offset="70%" stopColor="#10b981" />
+                  <stop offset="100%" stopColor="#34d399" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div className="absolute bottom-0 text-center">
+              <span className="text-2xl font-black text-slate-900 dark:text-white font-sans">
+                {stockGoodPercent}%
+              </span>
+              <span className="block text-[10px] text-slate-400 font-semibold">
+                Kondisi Good / Ready
+              </span>
             </div>
           </div>
-          <span className="text-[11px] font-semibold text-[#0e2b7a] dark:text-sky-300 bg-blue-50 dark:bg-blue-950/50 px-2 py-0.5 rounded-full">
-            Danantara x POS
-          </span>
         </div>
-        <SemiCircleGauge
-          segments={stockSegments}
-          totalValue={stockTotal}
-          totalLabel="Total Stock"
-        />
+
+        {/* Sub Metrics */}
+        <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-200/80 dark:border-slate-800/80 text-center text-xs">
+          <div className="bg-slate-50 dark:bg-slate-900/60 p-2 rounded-xl">
+            <span className="text-[10px] text-slate-400 block font-medium">Ready (Good)</span>
+            <span className="font-bold text-emerald-600 dark:text-emerald-400">{metrics.stockStats.ready}</span>
+          </div>
+          <div className="bg-slate-50 dark:bg-slate-900/60 p-2 rounded-xl">
+            <span className="text-[10px] text-slate-400 block font-medium">Booked</span>
+            <span className="font-bold text-amber-600 dark:text-amber-400">{metrics.stockStats.booked}</span>
+          </div>
+          <div className="bg-slate-50 dark:bg-slate-900/60 p-2 rounded-xl">
+            <span className="text-[10px] text-slate-400 block font-medium">Damaged</span>
+            <span className="font-bold text-rose-600 dark:text-rose-400">{metrics.stockStats.damage}</span>
+          </div>
+        </div>
       </div>
 
-      {/* 3. Outbound Logistics Status Card */}
-      <div className="glass-card rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
-        <div className="flex items-center justify-between pb-3 mb-2 border-b border-slate-100 dark:border-slate-800">
-          <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-xl bg-blue-100 dark:bg-[#091c52] text-[#0e2b7a] dark:text-sky-300">
-              <ArrowUpFromLine className="w-4 h-4" />
-            </div>
-            <div>
-              <h4 className="text-sm font-bold text-slate-900 dark:text-white">Outbound Distribution</h4>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">Pengiriman Last-Mile POS IND</p>
+      {/* GAUGE 3: Outbound & Last Mile Execution */}
+      <div className="glass-card rounded-2xl p-5 shadow-sm border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between">
+        <div>
+          <div className="flex items-center justify-between pb-3 border-b border-slate-200/80 dark:border-slate-800/80">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+              <ArrowUpFromLine className="w-4 h-4 text-blue-500" />
+              Outbound & Delivery Fulfillment
+            </span>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
+              PosAja Courier
+            </span>
+          </div>
+
+          {/* Semi-Circle Progress Arch */}
+          <div className="relative flex flex-col items-center justify-center my-4">
+            <svg viewBox="0 0 200 110" className="w-44 h-24 overflow-visible">
+              <path
+                d="M 20 100 A 80 80 0 0 1 180 100"
+                fill="none"
+                stroke="#e2e8f0"
+                strokeWidth="16"
+                strokeLinecap="round"
+                className="dark:stroke-slate-800"
+              />
+              <path
+                d="M 20 100 A 80 80 0 0 1 180 100"
+                fill="none"
+                stroke="url(#gradOutbound)"
+                strokeWidth="16"
+                strokeLinecap="round"
+                strokeDasharray="251.2"
+                strokeDashoffset={251.2 - (251.2 * outPercent) / 100}
+                className="transition-all duration-1000 ease-out"
+              />
+              <defs>
+                <linearGradient id="gradOutbound" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#1d4ed8" />
+                  <stop offset="50%" stopColor="#3b82f6" />
+                  <stop offset="100%" stopColor="#60a5fa" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div className="absolute bottom-0 text-center">
+              <span className="text-2xl font-black text-slate-900 dark:text-white font-sans">
+                {outPercent}%
+              </span>
+              <span className="block text-[10px] text-slate-400 font-semibold">
+                Realisasi Outbound
+              </span>
             </div>
           </div>
-          <span className="text-[11px] font-semibold text-[#ff5900] bg-orange-50 dark:bg-orange-950/40 px-2 py-0.5 rounded-full">
-            POS Logistics
-          </span>
         </div>
-        <SemiCircleGauge
-          segments={outboundSegments}
-          totalValue={outboundTotal}
-          totalLabel="Total Order"
-        />
+
+        {/* Sub Metrics */}
+        <div className="grid grid-cols-4 gap-1.5 pt-3 border-t border-slate-200/80 dark:border-slate-800/80 text-center text-xs">
+          <div className="bg-slate-50 dark:bg-slate-900/60 p-1.5 rounded-xl">
+            <span className="text-[9px] text-slate-400 block font-medium">Request</span>
+            <span className="font-bold text-slate-800 dark:text-slate-200 text-xs">{metrics.outboundStats.request}</span>
+          </div>
+          <div className="bg-slate-50 dark:bg-slate-900/60 p-1.5 rounded-xl">
+            <span className="text-[9px] text-slate-400 block font-medium">Handover</span>
+            <span className="font-bold text-blue-600 dark:text-blue-400 text-xs">{metrics.outboundStats.realization}</span>
+          </div>
+          <div className="bg-slate-50 dark:bg-slate-900/60 p-1.5 rounded-xl">
+            <span className="text-[9px] text-slate-400 block font-medium">Delivery</span>
+            <span className="font-bold text-teal-600 dark:text-teal-400 text-xs">{metrics.outboundStats.delivery}</span>
+          </div>
+          <div className="bg-slate-50 dark:bg-slate-900/60 p-1.5 rounded-xl">
+            <span className="text-[9px] text-slate-400 block font-medium">Delivered</span>
+            <span className="font-bold text-emerald-600 dark:text-emerald-400 text-xs">{metrics.outboundStats.delivered}</span>
+          </div>
+        </div>
       </div>
 
     </div>

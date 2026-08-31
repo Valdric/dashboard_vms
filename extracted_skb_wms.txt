@@ -1,0 +1,1116 @@
+SPESIFIKASI KEBUTUHAN BISNIS
+
+Warehouse Management System
+
+Wholesale and International Businnes
+
+
+[TABLE START]
+No Surat | 
+Perihal | WMS untuk mitra More Republic
+Tanggal | 24 Agustus 2026
+[TABLE END]
+
+
+DAFTAR ISI
+
+DAFTAR ISI...........................................................................................................................………………………………………………………2
+
+BAB 1 PENDAHULUAN.......................................................................................................……………………………………………………….4
+
+1.1 Latar Belakang...........................................................................................................…………………………………………………………...4
+
+1.2 Dasar Hukum dan Acuan...........................................................................................…………………………………………………………...4
+
+1.3 Tujuan........................................................................................................................……………………………………………………………4
+
+1.4 Sasaran......................................................................................................................…………………………………………………………...4
+
+1.5 Cakupan Pengembangan Sistem...............................................................................…………………………………………………………..5
+
+BAB 2 PEMANGKU KEPENTINGAN / PENGGUNA..........................................................………………………………………………………..5
+
+2.1 Pemangku Kepentingan.............................................................................................…………………………………………………………...5
+
+2.2 Client..........................................................................................................................…………………………………………………………...6
+
+2.3 Pengguna...................................................................................................................…………………………………………………………...6
+
+BAB 3 RUANG LINGKUP....................................................................................................……………………………………………………….6
+
+3.1 Ruang Lingkup Bisnis.................................................................................................…………………………………………………………..6
+
+3.2 Ruang Lingkup Parameter Layanan...........................................................................…………………………………………………………..6
+
+3.3 Ruang Lingkup Kanal Pengajuan...............................................................................…………………………………………………………..6
+
+3.4 Ruang Lingkup Unit yang Terlibat..............................................................................…………………………………………………………..6
+
+3.5 Kebutuhan Penggunaan.............................................................................................…………………………………………………………..7
+
+BAB 4 PROSES BISNIS DAN MANFAAT...........................................................................……………………………………………………….8
+
+4.1 Gambaran Umum Proses Bisnis................................................................................…………………………………………………………..8
+
+4.2 Proses Bisnis Eksisting (As-Is)...................................................................................…………………………………………………………..8
+
+4.3 Pain Point Proses Eksisting.....................................................................................…………………………………………………………….11
+
+4.4 Proses Bisnis Usulan (To-Be)...................................................................................……………………………………………………………12
+
+4.5 Indikator Keberhasilan..............................................................................................……………………………………………………………13
+
+BAB 5 KEBUTUHAN FUNGSIONAL.................................................................................………………………………………………………...14
+
+5.1 Tujuan......................................................................................................................…………………………………………………………….14
+
+5.2 Daftar Kebutuhan Fungsional...................................................................................……………………………………………………………14
+
+5.2.1 Modul Front-End (Customer Facing)...............................................................………………………………………………………………...14
+
+5.2.2 Modul Back-End (Petugas Internal)................................................................…………………………………………………………………15
+
+5.2.3 Modul Integrasi Sistem....................................................................................…………………………………………………………………
+
+5.3 Ketentuan Umum Fungsi Sistem..............................................................................……………………………………………………………18
+
+5.4 Kebutuhan Khusus Tiap Unit (Responsibility Matrix)...............................................…………………………………………………………….19 
+
+BAB 6 RISIKO DAN MITIGASI.........................................................................................…………………………………………………………20
+
+6.1 Tujuan Pengelolaan Risiko.......................................................................................……………………………………………………………20
+
+6.2 Klasifikasi Risiko.......................................................................................................……………………………………………………………20
+
+6.3 Matriks Risiko dan Mitigasi.......................................................................................……………………………………………………………20
+
+6.4 Strategi Pengendalian Risiko Tambahan.................................................................……………………………………………………………22
+
+BAB 7 TIMELINE IMPLEMENTASI DAN ROADMAP PENGEMBANGAN.......................………………………………………………………..22
+
+7.1 Tujuan......................................................................................................................…………………………………………………………….22
+
+7.2 Rencana Implementasi.............................................................................................……………………………………………………………23
+
+7.3 Roadmap Pengembangan Fase Lanjutan................................................................……………………………………………………………23
+
+BAB 8 KEBUTUHAN NON-FUNGSIONAL DAN INTEGRASI SISTEM............................………………………………………………………...
+
+8.1 Tujuan......................................................................................................................…………………………………………………………….
+
+8.2 Kebutuhan Non-Fungsional......................................................................................…………………………………………………………..
+
+8.3 Akses dan Hak Pengguna........................................................................................…………………………………………………………..
+
+8.4 Integrasi Sistem dan Dependensi.............................................................................. …………………………………………………………
+
+8.5 Ketergantungan Teknis.............................................................................................…………………………………………………………..
+
+8.6 Standar Infrastruktur dan Platform...........................................................................……………………………………………………………
+
+8.7 Monitoring dan Logging............................................................................................……………………………………………………………
+
+BAB 9 PENUTUP...............................................................................................................………………………………………………………...
+
+9.1 Penutup....................................................................................................................……………………………………………………………
+
+9.2 Pernyataan Penetapan.............................................................................................……………………………………………………………
+
+BAB 1 PENDAHULUAN
+
+Latar Belakang
+
+Dalam rangka mendukung pengelolaan operasional warehouse untuk Mitra Mora Republic, PT Pos Indonesia (Persero) membutuhkan sistem Warehouse Management System (WMS) yang mampu mendukung proses pergudangan secara terintegrasi, akurat, dan dapat dimonitor secara end-to-end.
+
+Saat ini, proses operasional warehouse masih menggunakan aplikasi WARMAN yang sebelumnya dikembangkan dan dikelola dengan dukungan tim Ex-Poslog. Seiring dengan berakhirnya masa kerja sama penggunaan aplikasi tersebut pada Oktober 2026, diperlukan langkah antisipatif untuk memastikan keberlangsungan operasional warehouse serta mengurangi ketergantungan terhadap sistem dan dukungan pihak lain.
+
+Dalam pelaksanaannya, masih terdapat beberapa kendala pada sistem existing, antara lain ketidaksesuaian data stok pada sistem dengan kondisi fisik di warehouse, terdapat data order dari Mora Republic yang belum terintegrasi atau tidak masuk ke dalam sistem WARMAN, serta proses penanganan kendala (troubleshooting) yang membutuhkan koordinasi dengan pengelola aplikasi sebelumnya. Kondisi tersebut berpotensi menghambat proses fulfillment dan pengiriman kepada penerima apabila tidak dapat ditangani secara cepat.
+
+Berdasarkan kondisi tersebut, diperlukan pengembangan Warehouse Management System (WMS) milik PT Pos Indonesia (Persero) yang dapat mendukung pengelolaan proses warehouse Mora Republic secara lebih efektif dan terintegrasi, mulai dari penerimaan barang (inbound), pengelolaan dan monitoring persediaan (inventory management), pemrosesan order, picking dan packing, hingga proses outbound dan pengiriman.
+
+Pengembangan WMS ini diharapkan dapat meningkatkan akurasi data stok, visibilitas proses operasional secara real-time, kecepatan pemrosesan order, kemudahan monitoring dan rekonsiliasi data, serta menyediakan data operasional yang lebih akurat sebagai dasar evaluasi kinerja dan pengambilan keputusan. Selain itu, implementasi WMS juga diharapkan dapat menjamin business continuity layanan fulfillment Mora Republic serta menjadi platform yang scalable untuk mendukung pengembangan bisnis warehouse dan fulfillment PT Pos Indonesia ke depan.
+
+1.2 Dasar Hukum dan Acuan
+
+Penyusunan dokumen Spesifikasi Kebutuhan Bisnis (SKB) ini mengacu pada ketentuan internal dan regulasi yang berlaku di PT Pos Indonesia (Persero), antara lain:
+
+Keputusan Direksi PT Pos Indonesia (Persero) Nomor KD.047/DIRUT/0523 tentang Sistem Operasi Kurir
+
+Keputusan Direksi PT Pos Indonesia (Persero) Nomor KD.082/DIRUT/1123 tentang Perubahan Pertama Atas Keputusan Direksi PT Pos Indonesia (Persero) Nomor KD.047/DIRUT/0523 tentang Sistem Operasi Kurir
+
+Keputusan Direksi PT Pos Indonesia (Persero) Nomor KD.056/DIRUT/0924 tentang Perubahan Kedua Atas Keputusan Direksi PT Pos Indonesia (Persero) Nomor KD.047/DIRUT/0523 tentang Sistem Operasi Kurir
+
+NDE nomor 80001/KL.09/VIII/2026 perihal Urgensi Percepatan Pengembangan Warehouse Management System (WMS)
+
+1.3 Tujuan
+
+Pengembangan Warehouse Management System (WMS) bertujuan untuk menyediakan sistem pengelolaan warehouse yang terintegrasi, akurat, dan dapat diandalkan dalam mendukung operasional layanan fulfillment Mora Republic, sekaligus memastikan keberlangsungan proses bisnis setelah berakhirnya penggunaan aplikasi WARMAN.
+
+1.4 Sasaran
+
+Pengembangan Warehouse Management System (WMS) diarahkan untuk mendukung terciptanya proses operasional warehouse yang lebih terintegrasi, terukur, dan efisien dalam mendukung layanan fulfillment Mora Republic. Sasaran pengembangan WMS meliputi :
+
+Tersedianya sistem WMS yang mendukung operasional warehouse secara end-to-end, mulai dari proses inbound, penyimpanan, pengelolaan inventory, order processing, picking, packing, hingga outbound.
+
+Tercapainya akurasi data inventory antara stok pada sistem dengan kondisi fisik barang di warehouse sehingga dapat meminimalkan selisih stok.
+
+Terintegrasinya data order Mora Republic dengan WMS, sehingga setiap order dapat diterima, diproses, dan dimonitor dengan lebih cepat dan akurat.
+
+Meningkatnya visibilitas proses operasional warehouse melalui monitoring status inventory, order, dan aktivitas warehouse secara real-time.
+
+Berkurangnya proses manual dan potensi human error dalam pencatatan, pengolahan, dan pemantauan transaksi warehouse.
+
+Meningkatnya kecepatan dan ketepatan proses fulfillment, sehingga dapat mendukung pencapaian SLA layanan kepada Mora Republic.
+
+Tersedianya data operasional dan laporan yang akurat serta mudah ditelusuri untuk mendukung proses rekonsiliasi, evaluasi kinerja, dan pengambilan keputusan.
+
+Terciptanya sistem yang scalable dan dapat dikembangkan lebih lanjut untuk mendukung pertumbuhan volume transaksi serta kebutuhan layanan warehouse dan fulfillment pelanggan lainnya.
+
+1.5 Cakupan Pengembangan Sistem
+
+Pengembangan Warehouse Management System (WMS) untuk mendukung operasional fulfillment Mora Republic mencakup pengelolaan proses pergudangan secara end-to-end, mulai dari penerimaan barang hingga barang keluar dari warehouse serta penyediaan data monitoring dan pelaporan.Cakupan pengembangan sistem meliputi :
+
+Inbound Management
+
+Mendukung proses penerimaan barang ke warehouse, pencatatan barang masuk, pengecekan kesesuaian jumlah dan jenis barang, serta pembaruan stok secara otomatis ke dalam sistem.
+
+Inventory Management
+
+Mendukung pengelolaan dan monitoring persediaan barang secara real-time, termasuk informasi jumlah stok, lokasi penyimpanan, mutasi barang, dan histori pergerakan inventory.
+
+Order Management
+
+Mendukung penerimaan dan pengelolaan data order dari Mora Republic, termasuk proses validasi, pencatatan, monitoring status order, serta memastikan setiap order dapat diproses secara sistematis.
+
+Picking Management
+
+Mendukung proses pengambilan barang berdasarkan order yang diterima dengan mengacu pada lokasi penyimpanan dan jumlah barang yang harus diproses.
+
+Packing Management
+
+Mendukung proses pengecekan dan pengemasan barang setelah proses picking serta pencatatan status order sebelum dilakukan proses outbound.
+
+Outbound Management
+
+Mendukung proses barang keluar dari warehouse, serah terima kiriman, pembaruan status order, serta integrasi dengan proses pengiriman kepada penerima.
+
+Stock Adjustment dan Stock Opname
+
+Menyediakan fungsi penyesuaian stok dan pelaksanaan stock opname untuk memastikan kesesuaian antara data inventory pada sistem dengan kondisi fisik barang di warehouse.
+
+Integrasi Sistem
+
+Mendukung pertukaran data antara WMS dengan sistem Mora Republic maupun sistem internal PT Pos Indonesia yang diperlukan dalam proses fulfillment dan pengiriman, sehingga data order dan status pemrosesan dapat tersinkronisasi.
+
+Dashboard Monitoring
+
+Menyediakan dashboard untuk memonitor kondisi inventory, jumlah order masuk, status pemrosesan order, inbound, outbound, serta aktivitas operasional warehouse secara berkala maupun real-time.
+
+Reporting dan Rekonsiliasi Data
+
+Menyediakan laporan operasional yang mencakup data stok, transaksi inbound dan outbound, status order, serta histori aktivitas warehouse sebagai bahan monitoring, evaluasi, dan rekonsiliasi.
+
+User Management dan Hak Akses
+
+Menyediakan pengaturan user dan hak akses berdasarkan peran dan kewenangan masing-masing pengguna untuk menjaga keamanan serta tata kelola penggunaan sistem.
+
+Audit Trail dan Activity Log
+
+Merekam setiap aktivitas dan perubahan data yang dilakukan oleh pengguna sehingga setiap transaksi dapat ditelusuri apabila diperlukan untuk proses monitoring maupun evaluasi.
+
+Pengembangan dan Skalabilitas Sistem
+
+Sistem dikembangkan agar dapat mengakomodasi peningkatan volume transaksi serta memungkinkan pengembangan fungsi dan integrasi tambahan sesuai kebutuhan bisnis warehouse dan fulfillment PT Pos Indonesia di masa mendatang.
+
+BAB 2 PEMANGKU KEPENTINGAN / PENGGUNA
+
+2.1 Pemangku Kepentingan
+
+
+[TABLE START]
+Peran | Unit/Divisi
+Penanggung Jawab Kebijakan | EVP Wholesale and International Business
+ | EVP Regional 2 Jakarta
+Penanggung Jawab Operasional | SVP Courier and Logistics
+Penanggung Jawab Teknis | Senior Vice President Digital Services
+Administrator Bisnis | Subdit Wholesale and International Business
+Administrator Teknis | Digital System Operation
+[TABLE END]
+
+
+Keterangan:
+
+Subdit Wholesale and International Business berperan sebagai pemilik proses bisnis WMS untuk mitra Mora Republic.
+
+Digital Services bertanggung jawab dalam pengembangan, integrasi, dan pemeliharaan sistem aplikasi.
+
+2.2 Client
+
+
+[TABLE START]
+Peran | Unit/Divisi
+Pemilik Program Kerja | EVP Wholesale dan International Business
+Pemilik Program Kerja | EVP Regional 2 Jakarta
+Unit yang Mengusulkan | Digital Channel PosAja
+[TABLE END]
+
+
+2.3 Pengguna
+
+Pengguna Warehouse Management System (WMS) merupakan pihak-pihak yang terlibat dalam proses operasional, monitoring, serta pengelolaan data warehouse untuk mendukung layanan fulfillment Mora Republic. Pengguna sistem mencakup :
+
+Petugas Operasional Warehouse
+
+Menggunakan WMS untuk menjalankan aktivitas operasional harian, meliputi proses penerimaan barang, penyimpanan, picking, packing, stock opname, serta proses outbound.
+
+Pengawas / Supervisor Warehouse
+
+Menggunakan WMS untuk melakukan monitoring aktivitas operasional, pengendalian proses fulfillment, pengecekan status order, monitoring inventory, serta memastikan pelaksanaan operasional sesuai dengan ketentuan dan SLA yang ditetapkan.
+
+Administrator WMS
+
+Bertanggung jawab dalam pengelolaan user, hak akses, parameter sistem, master data, serta mendukung kebutuhan administrasi dan pengelolaan sistem.
+
+Tim Bisnis / Account Management PT Pos Indonesia
+
+Menggunakan informasi dan laporan dari WMS untuk melakukan monitoring kinerja layanan, evaluasi transaksi, rekonsiliasi data, serta pemantauan pemenuhan layanan kepada Mora Republic.
+
+Mora Republic
+
+Sebagai mitra bisnis, Mora Republic dapat memperoleh akses terhadap informasi yang relevan sesuai kewenangan yang diberikan, seperti status order, posisi inventory, proses fulfillment, serta laporan operasional yang dibutuhkan.
+
+BAB 3 RUANG LINGKUP
+
+3.1 Ruang Lingkup Bisnis
+
+Proses fulfillment Mora Republic melibatkan koordinasi antara Mora Republic, KC Tangerang Selatan sebagai SLP, warehouse tujuan Pos Indonesia, serta proses last mile delivery kepada end customer. Seluruh aktivitas penerimaan, pemrosesan, pengiriman, dan retur akan dimonitor melalui aplikasi Warehouse Management System (WMS).
+
+Secara umum, alur proses berjalan sebagai berikut: Warehouse Mora Republic → Pickup oleh Pos Indonesia → SLP KC Tangerang Selatan → Middle Mile → Warehouse Pos Indonesia → WMS Processing → Last Mile Delivery → End Customer / Retur ke Warehouse.
+
+Dengan alur ini, aplikasi WMS menjadi sistem utama untuk mendukung proses inbound, receiving, inventory, outbound, last mile, monitoring status, dokumentasi BAST, serta proses retur secara terintegrasi.
+
+3.2 Ruang Lingkup Parameter Layanan
+
+
+[TABLE START]
+Parameter | Ketentuan
+Jenis Layanan | RegulerKargo Darat Kargo Udara
+Pick Up | Sesuai kesepakatan PIC Pos dan PIC Gudang
+Ketersediaan Operasional | Minggu & libur nasional tetap ada delivery
+Batas Waktu Order | H+0 sd jam 15.00 waktu setempat akan diproses pengentrian dihari yang sama H+0 lewat jam 15.00 waktu setempat akan diproses pengentrian di hari berikutnya
+[TABLE END]
+
+
+3.3 Ruang Lingkup Kanal Pengajuan
+
+Pengajuan dan pemrosesan layanan fulfillment Mora Republic dilakukan melalui kanal digital yang terintegrasi dengan Warehouse Management System (WMS) sebagai media utama untuk pencatatan, pemrosesan, dan monitoring transaksi. Ruang lingkup kanal pengajuan meliputi : 
+
+Aplikasi WMS
+
+Digunakan sebagai kanal utama untuk pembuatan dan pengelolaan DO/WO (Delivery Order/Work Order), baik untuk proses inbound maupun outbound, serta untuk monitoring status proses fulfillment.
+
+Dashboard Internal Mora Republic
+
+Digunakan oleh Mora Republic untuk melakukan pengajuan order dan penyampaian data transaksi yang diperlukan dalam proses inbound maupun pengiriman kepada end customer, yang selanjutnya diteruskan atau terintegrasi ke WMS.
+
+Kanal Operasional Internal Pos Indonesia
+
+Digunakan oleh SLP KC Tangerang Selatan dan PIC Warehouse Pos Indonesia untuk menerima dan memproses order, melakukan receiving, pembaruan inventory, pemrosesan outbound, pengiriman, serta pembaruan status melalui WMS sesuai kewenangan masing-masing.
+
+Setiap pengajuan order melalui kanal yang ditetapkan harus memuat informasi yang diperlukan secara lengkap dan akurat agar proses pickup, middle mile, inbound, inventory, outbound, last mile, hingga retur dapat diproses dan dimonitor secara terintegrasi.
+
+Pada tahap awal, pengembangan difokuskan pada penggunaan WMS untuk mendukung kebutuhan operasional fulfillment Mora Republic, dengan kemungkinan pengembangan kanal maupun integrasi tambahan sesuai kebutuhan bisnis dan operasional selanjutnya.
+
+3.4 Ruang Lingkup Unit yang Terlibat
+
+
+[TABLE START]
+Unit/Divisi | Peran
+Subdit Courier and Logistic Operation | Penanggung jawab kebijakan terkait aplikasi WMS
+Subdit Fronting Management and FinancialTransaction Service | Penanggung jawab kebijakan terkait CCH jika ada pertanyaan dari Mitra Mora Republic
+Subdit Digital Services | Penanggung jawab pengembangan,integrasi, dan pemeliharaan sistem aplikasi
+[TABLE END]
+
+
+3.5 Kebutuhan Penggunaan
+
+Kebutuhan penggunaan Warehouse Management System (WMS) disusun untuk memastikan seluruh proses fulfillment Mora Republic dapat dijalankan secara terintegrasi, terdokumentasi, dan mudah dimonitor oleh pihak-pihak yang terlibat.
+
+Fitur
+
+WMS digunakan untuk mendukung proses operasional fulfillment secara end-to-end, meliputi:
+
+pembuatan dan pengelolaan DO/WO (Delivery Order/Work Order);
+
+proses inbound dan receiving barang di warehouse;
+
+pencatatan dan monitoring inventory/stok;
+
+proses picking, splitting, dan packing;
+
+proses outbound;
+
+pengelolaan pengiriman middle mile dan last mile;
+
+pembaruan status pengiriman;
+
+unggah dokumen pendukung seperti BAST/Surat Jalan dan evidence/foto;
+
+pengelolaan barang retur;
+
+monitoring transaksi dan laporan operasional.
+
+Aksesbilitas
+
+WMS dapat diakses oleh pengguna yang telah memiliki user ID dan hak akses sesuai dengan peran dan kewenangannya.
+
+Pengguna sistem meliputi Mora Republic, SLP KC Tangerang Selatan, PIC Warehouse Pos Indonesia, pengawas operasional, serta administrator WMS. Hak akses masing-masing pengguna dibatasi sesuai kebutuhan proses bisnis dan tanggung jawabnya.
+
+Sistem diharapkan dapat digunakan melalui perangkat desktop/laptop maupun perangkat mobile yang mendukung kebutuhan operasional di warehouse.
+
+Jaringan
+
+WMS beroperasi secara online dan membutuhkan konektivitas jaringan yang memadai untuk memastikan proses sinkronisasi data dapat berjalan dengan baik.
+
+Ketersediaan jaringan diperlukan terutama pada proses penerimaan order, receiving, pembaruan inventory, outbound, update status pengiriman, unggah dokumen, serta monitoring transaksi secara real-time.
+
+Update database
+
+Setiap aktivitas yang dilakukan melalui WMS harus tercatat dan memperbarui database secara real-time atau near real-time, sehingga informasi yang ditampilkan pada sistem mencerminkan kondisi operasional terkini.
+
+Data yang diperbarui antara lain meliputi:
+
+data order;
+
+data barang dan inventory;
+
+status inbound dan receiving;
+
+lokasi penyimpanan barang;
+
+status picking, packing, dan outbound;
+
+status pengiriman;
+
+data retur;
+
+dokumen BAST/Surat Jalan; dan
+
+histori aktivitas pengguna.
+
+Data tersebut digunakan sebagai dasar monitoring, rekonsiliasi, evaluasi kinerja, serta penyusunan laporan operasional.
+
+Waktu Pemakaian
+
+WMS digunakan untuk mendukung aktivitas warehouse dan fulfillment sesuai dengan jam operasional yang berlaku pada masing-masing unit.
+
+Namun demikian, sistem perlu tetap tersedia untuk kebutuhan akses data, monitoring, penerimaan order, dan integrasi sistem di luar jam operasional apabila diperlukan, sehingga proses bisnis tidak terhambat karena keterbatasan waktu akses aplikasi.
+
+Keamanan dan Hak Akses
+
+Setiap pengguna wajib menggunakan akun masing-masing dalam mengakses WMS. Sistem harus menerapkan pengaturan hak akses berdasarkan role pengguna, sehingga fungsi maupun data yang dapat dilihat dan diproses sesuai dengan kewenangan masing-masing.
+
+Setiap aktivitas penting dalam sistem juga perlu tercatat dalam audit trail/activity log untuk memudahkan proses penelusuran apabila terjadi perbedaan data atau kendala operasional.
+
+Monitoring dan Ketersediaan Data
+
+WMS harus mampu menyediakan informasi yang dapat digunakan untuk memonitor proses fulfillment secara menyeluruh, mulai dari order diterima hingga barang berhasil dikirim atau diretur.
+
+Informasi tersebut diharapkan dapat memberikan visibilitas yang sama kepada pihak terkait, sehingga proses koordinasi antara Mora Republic, SLP KC Tangerang Selatan, dan Warehouse Pos Indonesia dapat berjalan lebih cepat dan efektif.
+
+BAB 4 PROSES BISNIS DAN MANFAAT
+
+4.1 Gambaran Umum Proses Bisnis
+
+Proses bisnis fulfillment Mora Republic melibatkan beberapa tahapan utama yang dimulai dari pengajuan kebutuhan pengiriman oleh Mora Republic, proses pickup oleh Pos Indonesia, pengiriman barang menuju warehouse tujuan, pengelolaan barang di warehouse, hingga proses last mile delivery kepada end customer.
+
+Dalam proses tersebut, KC Tangerang Selatan berperan sebagai Service Level Point (SLP) yang menangani koordinasi pickup dari Warehouse Mora Republic, penerimaan awal barang, serta proses pengiriman middle mile menuju warehouse Pos Indonesia yang telah ditentukan.
+
+Setelah barang tiba di warehouse tujuan, PIC Warehouse Pos Indonesia melakukan proses receiving, pengecekan kesesuaian barang dengan dokumen BAST/Surat Jalan, penempatan barang pada area penyimpanan, serta pembaruan data barang pada Warehouse Management System (WMS).
+
+Selanjutnya, berdasarkan Delivery Order/Work Order (DO/WO) yang dibuat oleh Mora Republic, PIC Warehouse melakukan proses pemenuhan order yang meliputi pengambilan barang, penyiapan barang, pembaruan status outbound, serta penyerahan kiriman untuk proses last mile delivery kepada end customer.
+
+Seluruh aktivitas operasional tersebut dicatat dan dimonitor melalui WMS untuk memastikan data order, inventory, status inbound, outbound, pengiriman, dokumen pendukung, serta retur dapat dikelola secara terintegrasi dan dapat ditelusuri.
+
+Apabila terdapat barang yang diretur oleh end customer, barang akan dikembalikan ke warehouse Pos Indonesia dan dilakukan proses receiving retur serta pembaruan status pada WMS oleh PIC Warehouse.
+
+4.2 Proses Bisnis Eksisting (As-Is)
+
+Proses Inbound 
+
+Ruang lingkup pekerjaan Inbound mencakup proses distribusi dan pengiriman barang dari warehouse asal MyRepublic Jakarta yang berlokasi di Taman Techno BSD menuju warehouse tujuan (destinasi), termasuk proses penerimaan, pemeriksaan, serta penanganan barang hingga tercatat dan tersimpan di warehouse destinasi.
+
+Proses Outbound
+
+Ruang lingkup pekerjaan Outbound mencakup proses distribusi dan pengiriman barang dari warehouse Kantor Pos hingga ke end customer (last mile delivery), antar warehouse Kantorpos dan atau kembali ke warehouse Myrepublic. Kegiatan ini meliputi pembaruan (update) stok pada sistem WMS, proses pemeriksaan barang, pembuatan resi melalui aplikasi Mile, serta penanganan pengiriman barang sampai diterima oleh end customer maupun warehouse yang dituju.
+
+4.3 Paint Point Proses Eksisting
+
+Berdasarkan proses operasional fulfillment Mora Republic yang saat ini masih menggunakan aplikasi WARMAN, terdapat beberapa kendala yang berpotensi memengaruhi kelancaran proses warehouse dan pemenuhan layanan kepada pelanggan. Pain point pada proses eksisting antara lain:
+
+Ketidaksesuaian Data Stok dengan Kondisi Fisik
+
+Masih terdapat perbedaan antara data inventory yang tercatat pada sistem dengan jumlah fisik barang yang tersedia di warehouse. Kondisi ini dapat menyulitkan proses pengecekan stok, pemenuhan order, serta rekonsiliasi data.
+
+Data Order Belum Selalu Terintegrasi dengan Baik
+
+Pada beberapa kondisi, data order yang dikirimkan dari sistem Mora Republic belum masuk atau belum terbaca pada aplikasi WARMAN. Hal ini dapat menyebabkan order tidak segera diproses dan berpotensi menghambat proses pengiriman kepada end customer.
+
+Monitoring Proses Fulfillment Belum Optimal
+
+Informasi terkait status inbound, inventory, outbound, hingga pengiriman belum seluruhnya dapat dimonitor secara terintegrasi dalam satu sistem. Hal tersebut menyebabkan proses monitoring membutuhkan pengecekan dan koordinasi tambahan antar pihak terkait.
+
+Penanganan Troubleshooting Masih Bergantung pada Pengelola Sistem Existing
+
+Ketika terjadi kendala pada aplikasi WARMAN, proses troubleshooting masih membutuhkan koordinasi dengan tim pengelola aplikasi sebelumnya. Kondisi ini dapat memperpanjang waktu penyelesaian apabila terdapat kendala pada proses operasional.
+
+Ketergantungan terhadap Aplikasi Existing
+
+Aplikasi WARMAN masih menjadi sistem utama dalam mendukung kegiatan warehouse Mora Republic, sementara masa kerja sama penggunaan dan dukungan aplikasi tersebut akan berakhir. Kondisi ini menimbulkan risiko terhadap keberlangsungan operasional apabila belum tersedia sistem pengganti yang siap digunakan.
+
+Proses Rekonsiliasi Membutuhkan Upaya Tambahan
+
+Perbedaan data antara order, inventory, dan kondisi fisik barang menyebabkan proses rekonsiliasi membutuhkan pengecekan lebih lanjut dan dapat meningkatkan waktu yang dibutuhkan untuk memastikan kesesuaian data.
+
+Dokumentasi Operasional Belum Sepenuhnya Terpusat
+
+Dokumen pendukung seperti BAST, Surat Jalan, serta evidence/foto perlu dikelola secara lebih terstruktur agar dapat dengan mudah ditelusuri ketika diperlukan untuk monitoring, rekonsiliasi, maupun penanganan kendala.
+
+Visibilitas Status Retur Belum Terintegrasi secara Menyeluruh
+
+Barang retur dari end customer perlu dapat tercatat dan dimonitor secara jelas sejak diterima kembali di warehouse hingga dilakukan pembaruan status inventory.
+
+Apabila kondisi tersebut terus berlangsung, terdapat risiko terjadinya keterlambatan proses fulfillment, ketidakakuratan inventory, meningkatnya aktivitas manual, serta keterlambatan dalam penanganan kendala operasional.
+
+4.4 Proses Bisnis Usulan (To-Be)
+
+Proses bisnis usulan dirancang dengan menjadikan Warehouse Management System (WMS) sebagai sistem utama dalam mendukung dan memonitor proses fulfillment Mora Republic secara end-to-end. Pengembangan ini ditujukan untuk meningkatkan akurasi data, mempercepat proses operasional, memperkuat monitoring, serta mengurangi ketergantungan terhadap proses manual dan aplikasi existing. Secara umum, proses bisnis usulan adalah sebagai berikut:
+
+Pembuatan Order Inbound oleh Mora Republic
+
+Mora Republic membuat DO/WO (Delivery Order/Work Order) inbound melalui kanal yang terintegrasi dengan WMS. Data order tersebut menjadi dasar pelaksanaan proses pickup dan penerimaan barang di warehouse.
+
+Pickup Barang oleh SLP KC Tangerang Selatan
+
+Berdasarkan order yang telah dibuat, PIC SLP KC Tangerang Selatan melakukan koordinasi dan pickup barang dari Warehouse Mora Republic di Taman Tekno BSD. Pada proses serah terima, dokumen BAST/Surat Jalan turut disiapkan sebagai dokumen pendukung.
+
+Proses Middle Mile ke Warehouse Tujuan
+
+SLP KC Tangerang Selatan melakukan input data pengiriman middle mile dan mengirimkan barang menuju warehouse Pos Indonesia yang telah ditentukan. Status pengiriman dan data pendukung dicatat agar proses dapat dimonitor.
+
+Receiving Barang di Warehouse Tujuan
+
+Setelah barang tiba, PIC Warehouse melakukan proses receiving dan pengecekan kesesuaian antara barang fisik dengan data order serta BAST/Surat Jalan.
+
+Hasil receiving, termasuk kondisi dan jumlah aktual barang, dicatat langsung pada WMS. Apabila terdapat selisih jumlah atau kondisi barang, informasi tersebut dicatat sebagai exception untuk ditindaklanjuti.
+
+Put Away dan Update Inventory
+
+Barang yang telah selesai diterima kemudian ditempatkan pada lokasi penyimpanan sesuai rack atau stock point yang telah ditentukan.
+
+PIC Warehouse melakukan proses put away pada WMS sehingga posisi barang, jumlah stok, dan lokasi penyimpanan dapat tercatat dan diperbarui secara real-time.
+
+Pembuatan Order Outbound oleh Mora Republic
+
+Untuk kebutuhan pengiriman kepada end customer, Mora Republic membuat DO/WO outbound melalui WMS atau sistem yang terintegrasi dengan WMS.
+
+Order outbound tersebut menjadi dasar bagi PIC Warehouse untuk melakukan proses pemenuhan order.
+
+Picking dan Penyiapan Barang
+
+WMS menampilkan informasi barang dan lokasi penyimpanannya berdasarkan order outbound. PIC Warehouse melakukan proses picking sesuai jumlah dan item yang diminta.
+
+Untuk barang yang memiliki serial number atau identifier tertentu, proses picking dan validasi dilakukan melalui WMS untuk memastikan barang yang diproses sesuai dengan order.
+
+Packing dan Outbound Processing
+
+Setelah picking selesai, barang dilakukan pengecekan dan packing. PIC Warehouse kemudian memperbarui status order menjadi siap outbound serta mencatat data kiriman yang diperlukan untuk proses last mile.
+
+Last Mile Delivery kepada End Customer
+
+Barang yang telah selesai diproses di warehouse diserahkan kepada jaringan distribusi Pos Indonesia untuk dilakukan last mile delivery kepada end customer.
+
+Status pengiriman diperbarui secara bertahap hingga barang berhasil diterima, termasuk penyimpanan bukti serah terima atau evidence apabila diperlukan.
+
+Pengelolaan Retur
+
+Apabila terjadi retur dari end customer, barang dikembalikan ke warehouse Pos Indonesia.
+
+PIC Warehouse melakukan receiving retur, pengecekan kondisi barang, pembaruan status retur, serta penyesuaian inventory pada WMS sesuai hasil pemeriksaan.
+
+Monitoring dan Reporting
+
+Seluruh proses mulai dari inbound, inventory, outbound, delivery, hingga retur dapat dimonitor melalui dashboard
+
+4.5 Indikator Keberhasilan
+
+Keberhasilan pengembangan dan implementasi Warehouse Management System (WMS) untuk mendukung operasional fulfillment Mora Republic diukur berdasarkan kemampuan sistem dalam meningkatkan akurasi data, kecepatan proses, visibilitas operasional, serta keberlangsungan layanan warehouse. Indikator keberhasilan yang digunakan meliputi:
+
+
+[TABLE START]
+No | Indikator Keberhasilan | Parameter Pengukuran | Target / Kriteria Keberhasilan
+1 | Akurasi Inventory | Kesesuaian antara stok pada WMS dengan kondisi fisik barang di warehouse | ≥ 99%
+2 | Keberhasilan Integrasi Order | Persentase order inbound dan outbound dari Mora Republic yang berhasil diterima dan diproses oleh WMS | ≥ 99%
+3 | Ketepatan Receiving & Put Away | Barang yang diterima tercatat lengkap meliputi jumlah, kondisi, lokasi penyimpanan, dan dokumen pendukung | Seluruh transaksi receiving dan put away tercatat pada WMS
+4 | Ketepatan Pemrosesan Order Outbound | Kesesuaian item dan jumlah barang yang diproses berdasarkan DO/WO | Tidak terdapat perbedaan item dan jumlah barang yang dikirim
+5 | Ketersediaan Informasi Operasional | Ketersediaan informasi status inbound, inventory, outbound, delivery, dan retur | Data tersedia secara real-time / near real-time
+6 | Kecepatan Proses Fulfillment | Waktu pemrosesan order mulai dari order diterima sampai barang siap dikirim | Lebih cepat dibandingkan proses existing dan sesuai SLA operasional
+7 | Pencapaian SLA Operasional | Persentase proses fulfillment yang diselesaikan sesuai SLA yang telah ditetapkan | Sesuai SLA yang disepakati
+8 | Keberhasilan Pengelolaan Retur | Persentase barang retur yang tercatat lengkap pada sistem | 100% barang retur tercatat dan dapat ditelusuri
+9 | Ketersediaan Dokumen Pendukung | Ketersediaan BAST, Surat Jalan, evidence/foto, dan histori transaksi | Dokumen tersimpan dan dapat ditelusuri melalui WMS
+10 | Keandalan Sistem | Tingkat ketersediaan WMS selama operasional | System availability ≥ 99%
+11 | Kecepatan Rekonsiliasi Data | Kemudahan dan kecepatan rekonsiliasi data order, inventory, inbound, outbound, dan retur | Proses rekonsiliasi lebih cepat dan bersumber dari data terintegrasi
+12 | Keberlangsungan Operasional | Kemampuan WMS menggantikan fungsi utama aplikasi existing | Operasional fulfillment tetap berjalan tanpa gangguan saat transisi sistem
+[TABLE END]
+
+
+Keberhasilan implementasi WMS secara keseluruhan ditandai dengan terciptanya sistem yang mampu menjadi single source of truth terhadap data order, inventory, fulfillment, dan retur, serta mendukung proses operasional warehouse secara lebih akurat, terintegrasi, dan terukur.
+
+BAB 5 KEBUTUHAN FUNGSIONAL
+
+5.1 Tujuan
+
+Bagian kebutuhan fungsional ini disusun untuk menjelaskan fungsi-fungsi utama yang harus tersedia pada Warehouse Management System (WMS) agar seluruh proses operasional fulfillment Mora Republic dapat berjalan secara terintegrasi, akurat, terdokumentasi, dan mudah dimonitor.
+
+5.2 Daftar Kebutuhan Fungsional
+
+5.2.1 Modul Front-End (Customer Facing)
+
+Modul Front-End (Customer Facing) merupakan bagian dari Warehouse Management System (WMS) yang digunakan oleh Mora Republic sebagai mitra untuk melakukan pengajuan order, memantau proses fulfillment, melihat posisi inventory, serta memperoleh informasi dan dokumen terkait aktivitas warehouse.
+
+Modul ini diharapkan memberikan visibilitas proses secara end-to-end, mulai dari pengajuan barang masuk (inbound), penyimpanan barang, pengajuan barang keluar (outbound), pengiriman kepada end customer, hingga proses retur.
+
+
+[TABLE START]
+No | Fungsi Utama | Deskripsi Fungsional | Input Data | Output | Pengguna
+1 | Login & Authentication | Pengguna dapat masuk ke WMS menggunakan akun yang telah terdaftar sesuai hak akses yang diberikan. | Username, password | Akses ke dashboard WMS sesuai role | Mora Republic
+2 | Pembuatan DO/WO Inbound | Pengguna dapat membuat order inbound sebagai dasar proses pickup dan penerimaan barang ke warehouse Pos Indonesia. | No. DO/WO, tanggal inbound, data barang, qty, warehouse tujuan, keterangan | Nomor order inbound dan status order | Mora Republic
+3 | Monitoring Inbound | Pengguna dapat memonitor proses inbound mulai dari order dibuat, pickup, proses middle mile, hingga barang diterima di warehouse. | Nomor DO/WO / periode | Status inbound dan histori proses | Mora Republic
+4 | Monitoring Receiving | Pengguna dapat melihat hasil penerimaan aktual barang di warehouse termasuk jumlah dan kondisi barang yang diterima. | Data receiving warehouse | Qty diterima, kondisi barang, waktu receiving, selisih barang jika ada | Mora Republic
+5 | Monitoring Inventory | Pengguna dapat melihat posisi dan jumlah stok barang yang tersimpan di warehouse. | Warehouse, produk, periode | Stok tersedia, kondisi barang, lokasi penyimpanan | Mora Republic
+6 | Pembuatan DO/WO Outbound | Pengguna dapat membuat order outbound sebagai dasar pemenuhan order dan pengiriman kepada end customer. | No. DO/WO, data penerima, alamat, produk, qty, instruksi pengiriman | Nomor order outbound dan status order | Mora Republic
+7 | Monitoring Outbound | Pengguna dapat memonitor proses outbound mulai dari picking, packing hingga barang keluar dari warehouse. | Nomor DO/WO / periode | Status picking, packing dan outbound | Mora Republic
+8 | Monitoring Pengiriman | Pengguna dapat melihat status pengiriman barang dari warehouse sampai dengan end customer. | Nomor order / nomor kiriman | Status last mile, waktu pengiriman, status delivery | Mora Republic
+9 | Monitoring Retur | Pengguna dapat memonitor proses retur mulai dari pengembalian barang hingga diterima kembali di warehouse. | Nomor order / nomor kiriman | Status retur, tanggal penerimaan, kondisi barang | Mora Republic
+10 | Akses Dokumen Transaksi | Pengguna dapat melihat atau mengunduh dokumen yang berkaitan dengan transaksi fulfillment. | Nomor DO/WO / transaksi | BAST, Surat Jalan, evidence/foto dan dokumen pendukung | Mora Republic
+11 | Tracking Status Order | Pengguna dapat melihat status terkini dan histori perjalanan setiap order pada WMS. | Nomor DO/WO / nomor order | Timeline dan histori status transaksi | Mora Republic
+12 | Dashboard Monitoring | Sistem menampilkan ringkasan aktivitas fulfillment dalam satu dashboard. | Data transaksi WMS | Rekap inbound, inventory, outbound, delivery dan retur | Mora Republic
+13 | Pencarian & Filter Data | Pengguna dapat mencari transaksi berdasarkan parameter tertentu. | No. DO/WO, periode, status, produk, warehouse | Data sesuai parameter pencarian | Mora Republic
+14 | Download / Export Data | Pengguna dapat mengunduh laporan untuk kebutuhan monitoring dan rekonsiliasi. | Periode, jenis transaksi, status | File laporan transaksi | Mora Republic
+15 | Notifikasi Status Transaksi | Sistem memberikan informasi kepada pengguna apabila terdapat perubahan status penting pada transaksi. | Perubahan status transaksi | Notifikasi status inbound, outbound, delivery atau retur | Mora Republic
+[TABLE END]
+
+
+5.2.2 Modul Back-End (Petugas Internal)
+
+Modul Back-End (Petugas Internal) digunakan oleh petugas operasional, PIC warehouse, pengawas, serta administrator internal PT Pos Indonesia untuk menjalankan dan memonitor seluruh aktivitas fulfillment Mora Republic pada Warehouse Management System (WMS). Modul ini mendukung proses operasional mulai dari penerimaan order, receiving, put away, pengelolaan inventory, picking, packing, outbound, pengiriman, retur, hingga monitoring dan pelaporan.
+
+
+[TABLE START]
+No | Fungsi Utama | Deskripsi Fungsional | Input Data | Output | Pengguna / PIC
+1 | Penerimaan Order Inbound | Menampilkan dan menerima DO/WO inbound yang dibuat oleh Mora Republic sebagai dasar proses penerimaan barang. | No. DO/WO, produk, qty, warehouse tujuan, tanggal inbound | Daftar order inbound dan status order | PIC Warehouse / SLP
+2 | Receiving Barang | Mencatat barang yang diterima di warehouse berdasarkan kondisi aktual. | No. DO/WO, produk, qty aktual, kondisi barang | Data receiving dan status penerimaan | PIC Warehouse
+3 | Validasi Selisih Receiving | Mencatat ketidaksesuaian antara data order dengan kondisi aktual barang yang diterima. | Qty order, qty aktual, kondisi barang, keterangan | Data selisih / exception | PIC Warehouse / Supervisor
+4 | Upload Dokumen Inbound | Mengunggah dokumen pendukung penerimaan barang. | BAST, Surat Jalan, foto/evidence | Dokumen tersimpan pada transaksi | PIC Warehouse
+5 | Put Away | Menempatkan barang pada lokasi penyimpanan yang telah ditentukan. | Produk, qty, serial number/barcode, rack/slot | Lokasi barang dan status put away | PIC Warehouse
+6 | Inventory Management | Memantau posisi dan jumlah stok pada masing-masing warehouse dan lokasi penyimpanan. | Data produk dan lokasi | Posisi stok, kondisi, lokasi dan histori inventory | PIC Warehouse / Supervisor
+7 | Stock Adjustment | Melakukan penyesuaian stok berdasarkan hasil pengecekan dan persetujuan pihak berwenang. | Produk, qty awal, qty aktual, alasan adjustment | Saldo stok terbaru dan histori adjustment | Supervisor / Authorized User
+8 | Stock Opname | Melakukan pencocokan stok pada sistem dengan stok fisik di warehouse. | Data inventory dan hasil pengecekan fisik | Hasil stock opname dan selisih stok | PIC Warehouse / Supervisor
+9 | Penerimaan Order Outbound | Menampilkan dan menerima DO/WO outbound dari Mora Republic sebagai dasar pemenuhan order. | No. DO/WO, produk, qty, data penerima | Daftar order outbound dan status proses | PIC Warehouse
+10 | Picking Barang | Mendukung proses pengambilan barang sesuai order dan lokasi penyimpanannya. | No. order, produk, qty, lokasi barang | Data barang ter-pick dan status picking | PIC Warehouse
+11 | Validasi Serial Number / Barcode | Memastikan serial number/barcode barang yang diambil sesuai dengan order. | Serial number / barcode | Hasil validasi dan status kesesuaian | PIC Warehouse
+12 | Packing | Mencatat proses pengecekan dan pengemasan barang setelah picking selesai. | Produk hasil picking, qty | Status packing dan barang siap outbound | PIC Warehouse
+13 | Outbound Processing | Memproses barang keluar dari warehouse dan menyiapkan serah terima untuk pengiriman. | Data order, packing, dokumen pengiriman | Status outbound dan dokumen serah terima | PIC Warehouse
+14 | Pengelolaan Middle Mile | Mendukung pencatatan pengiriman barang dari SLP menuju warehouse tujuan. | Data barang, warehouse tujuan, transporter | Nomor pengiriman dan status middle mile | SLP / Operasional
+15 | Pengelolaan Last Mile | Meneruskan atau mencatat data pengiriman dari warehouse menuju end customer. | Data penerima, alamat, produk, qty | Nomor kiriman dan status last mile | PIC Warehouse / Operasional
+16 | Update Status Delivery | Memperbarui dan memonitor status pengiriman sampai barang diterima pelanggan. | Nomor kiriman dan status aktual | Status delivery dan histori pengiriman | Operasional
+17 | Receiving Retur | Mencatat barang yang dikembalikan dari end customer ke warehouse. | No. order/kiriman, produk, qty, kondisi retur | Status receiving retur | PIC Warehouse
+18 | Penyesuaian Inventory Retur | Memperbarui inventory berdasarkan hasil pemeriksaan kondisi barang retur. | Data retur, kondisi barang, lokasi penyimpanan | Update stok dan lokasi barang retur | PIC Warehouse
+19 | Monitoring Dokumen | Menyimpan dan menampilkan dokumen transaksi yang berkaitan dengan proses fulfillment. | BAST, Surat Jalan, evidence/foto | Arsip dokumen transaksi | PIC Warehouse / Supervisor
+20 | Dashboard Monitoring Operasional | Menampilkan ringkasan aktivitas inbound, inventory, outbound, delivery, dan retur. | Data transaksi WMS | Dashboard dan indikator operasional | Supervisor / Manajemen
+21 | Reporting & Export Data | Menyediakan laporan operasional untuk kebutuhan monitoring, evaluasi dan rekonsiliasi. | Periode, warehouse, jenis transaksi, status | Laporan inbound, inventory, outbound dan retur | Supervisor / Admin / Bisnis
+22 | Pencarian & Filter Transaksi | Memudahkan pengguna mencari transaksi berdasarkan parameter tertentu. | No. DO/WO, periode, produk, status, warehouse | Data transaksi sesuai pencarian | Seluruh User Internal
+23 | User & Role Management | Mengatur akun pengguna serta hak akses berdasarkan peran dan kewenangan. | Data user, role, unit kerja | User dan hak akses sistem | Administrator WMS
+24 | Audit Trail / Activity Log | Mencatat aktivitas pengguna dan setiap perubahan data penting pada sistem. | Aktivitas pengguna | User, timestamp dan histori aktivitas | Administrator / Supervisor
+25 | Exception Handling | Mencatat dan memonitor kendala atau ketidaksesuaian yang terjadi selama proses operasional. | Jenis kendala, transaksi, keterangan, evidence | Status exception dan histori tindak lanjut | PIC Warehouse / Supervisor
+[TABLE END]
+
+
+5.2.3 Modul Integrasi Sistem Mendukung pertukaran data antara …………………………………………,
+
+
+[TABLE START]
+No | SistemTerintegrasi | Tujuan Integrasi | Jenis Data yangDipertukarkan | UnitPenanggungJawab
+1 | Aplikasi PartnerPick Up | Sinkronisasi dataorder pick upterjadwal ke aplikasikurir dan mendapatpembaruan statuspenjemputan darikurir. | Detail order pick up(lokasi, waktu pilihanpick up, info kontak), IDKurir, status aktualpenjemputan (berhasil/gagal), foto bukti(evidence). | DS, Bagianoperasi pick up
+[TABLE END]
+
+
+
+[TABLE START]
+2 | WhatsAppGateway | Mengirimkan pesannotifikasi (templateWA) kepadapelanggan saat kurirsedang menujulokasi penjemputandan ajakan untukmenyiapkankiriman. | Nomor HP pelanggan,nama pelanggan, waktupenjemputan, namakurir. | DS, Bagianoperasi pick up
+3 | Maps API | Validasi titik lokasi(koordinat)penjemputanpelanggan untukmemastikan lokasimasuk dalamcoverage area. | Titik koordinat peta(Latitude, Longitude),alamat lengkap, kodepos. | DS
+4 | DashboardPick Up | Mengirimkan logwaktu penjemputanuntuk diolahmenjadi laporanmonitoringperforma/ketepatan waktu(SLA) pick up. | ID Transaksi, slot waktujadwal, waktupenjemputan aktual(timestamp), status"Tepat Waktu" atau"Terlambat". | DS, Bagianoperasi pick up
+5 | Tracking System(Lacak Kiriman) | Memperbaruipelacakan diaplikasi digitalchannel PosAja saatpaket sudahberhasil dijemput. | Kode booking, waktudan status kiriman. | DS
+[TABLE END]
+
+
+5.3 Ketentuan Umum Fungsi Sistem
+
+Ketentuan umum fungsi sistem merupakan persyaratan dasar yang harus dipenuhi oleh Warehouse Management System (WMS) agar seluruh proses fulfillment Mora Republic dapat berjalan secara terintegrasi, akurat, aman, dan dapat ditelusuri.
+
+Ketentuan umum fungsi sistem meliputi:
+
+Setiap transaksi memiliki nomor referensi yang unik
+
+Setiap transaksi inbound, outbound, retur, maupun aktivitas inventory harus memiliki nomor referensi yang unik sehingga dapat ditelusuri sepanjang proses operasional.
+
+Data transaksi diperbarui secara real-time atau near real-time
+
+Setiap aktivitas yang dilakukan pada WMS, seperti receiving, put away, picking, packing, outbound, maupun retur, harus memperbarui status dan data inventory secara otomatis.
+
+Validasi data dilakukan pada setiap tahapan proses
+
+Sistem harus melakukan validasi terhadap data penting seperti nomor DO/WO, produk, jumlah barang, serial number/barcode, lokasi penyimpanan, serta data penerima untuk meminimalkan kesalahan transaksi.
+
+Pergerakan barang harus tercatat dalam sistem
+
+Setiap barang masuk, berpindah lokasi, keluar dari warehouse, maupun kembali sebagai retur harus tercatat pada WMS beserta informasi waktu, lokasi, jumlah, dan pengguna yang melakukan aktivitas.
+
+Pengelolaan inventory berdasarkan kondisi aktual
+
+WMS harus mampu menampilkan stok berdasarkan kondisi aktual barang, termasuk pemisahan status barang apabila terdapat kategori seperti good, damaged, retur, atau status lainnya yang ditetapkan dalam operasional.
+
+Dukungan Serial Number dan Barcode
+
+Untuk produk yang membutuhkan identifikasi individual, WMS harus mendukung pencatatan dan validasi serial number, barcode, atau identifier lainnya mulai dari proses receiving sampai dengan outbound.
+
+Pengelolaan lokasi penyimpanan
+
+Sistem harus mampu mencatat lokasi barang secara terstruktur berdasarkan warehouse, area, rack, slot, shelf, atau struktur lokasi penyimpanan lainnya sehingga barang dapat ditemukan dengan mudah.
+
+Penerapan Role Based Access Control
+
+Setiap pengguna hanya dapat mengakses menu, fungsi, dan data sesuai dengan role serta kewenangan yang diberikan. Transaksi tertentu yang bersifat sensitif harus dibatasi pada pengguna yang berwenang.
+
+Audit Trail dan Activity Log
+
+Sistem harus mencatat aktivitas pengguna yang meliputi identitas user, tanggal dan waktu transaksi, jenis aktivitas, serta perubahan data untuk mendukung kebutuhan monitoring, rekonsiliasi, dan audit.
+
+Pengelolaan Dokumen Pendukung
+
+WMS harus menyediakan fasilitas untuk menyimpan dan mengakses dokumen transaksi seperti BAST, Surat Jalan, evidence/foto, serta dokumen lain yang diperlukan berdasarkan nomor transaksi terkait.
+
+Exception Handling
+
+Sistem harus mampu mencatat kondisi ketidaksesuaian atau exception seperti selisih jumlah barang, kerusakan barang, serial number tidak sesuai, order tidak ditemukan, maupun permasalahan operasional lainnya untuk dapat dimonitor dan ditindaklanjuti.
+
+Pengendalian Stock Adjustment
+
+Setiap perubahan atau penyesuaian inventory di luar proses transaksi normal harus dilengkapi alasan penyesuaian serta dilakukan oleh pengguna yang memiliki kewenangan agar perubahan stok dapat dipertanggungjawabkan.
+
+Integrasi Data Antar Sistem
+
+WMS harus mampu menerima dan mengirimkan data kepada sistem Mora Republic maupun sistem internal PT Pos Indonesia yang diperlukan. Setiap kegagalan integrasi harus tercatat melalui log dan dapat dilakukan proses pengiriman ulang atau tindak lanjut.
+
+Status Proses Terstandarisasi
+
+Setiap tahapan transaksi harus memiliki status yang jelas dan konsisten, misalnya New, Process, Received, Put Away, Picking, Packing, Outbound, Delivered, Return, dan Completed, atau nomenklatur lain yang disepakati pada tahap desain sistem.
+
+Pencarian dan Penelusuran Transaksi
+
+Sistem harus menyediakan fungsi pencarian dan filter berdasarkan parameter seperti nomor DO/WO, nomor transaksi, produk, serial number/barcode, warehouse, periode, status, serta parameter lainnya.
+
+Dashboard Monitoring dan Reporting
+
+WMS harus menyediakan informasi operasional yang dapat digunakan untuk memonitor inbound, inventory, outbound, delivery, retur, SLA, serta exception sesuai kebutuhan pengguna.
+
+Export Data
+
+Data transaksi dan laporan yang tersedia pada WMS harus dapat diunduh dalam format yang dapat digunakan untuk kebutuhan monitoring, analisis, dan rekonsiliasi sesuai hak akses pengguna.
+
+Sinkronisasi Front-End dan Back-End
+
+Informasi yang ditampilkan kepada Mora Republic pada modul Front-End harus mengacu pada transaksi yang diproses pada modul Back-End sehingga tidak terdapat perbedaan informasi antara customer dan petugas internal.
+
+Keamanan dan Integritas Data
+
+Sistem harus menjaga kerahasiaan, integritas, dan ketersediaan data serta mencegah pengguna melakukan perubahan terhadap data yang berada di luar kewenangannya.
+
+Ketersediaan Histori Transaksi
+
+Histori proses setiap transaksi harus tetap tersimpan dan dapat ditelusuri mulai dari inbound, inventory, outbound, delivery hingga retur, sehingga WMS dapat berfungsi sebagai single source of truth bagi proses fulfillment Mora Republic.
+
+Ketentuan umum tersebut menjadi prinsip dasar dalam pengembangan seluruh modul WMS dan dapat disesuaikan lebih lanjut berdasarkan hasil solution design, User Acceptance Test (UAT), kebutuhan operasional, serta kesepakatan antara unit terkait sebelum sistem diimplementasikan pada lingkungan production.
+
+5.4 Kebutuhan Khusus Tiap Unit (Responsibility Matrix)
+
+Kebutuhan khusus tiap unit disusun untuk memperjelas peran dan tanggung jawab masing-masing pihak dalam penggunaan, pengelolaan, dan pengembangan Warehouse Management System (WMS) untuk mendukung proses fulfillment Mora Republic.
+
+Pembagian tanggung jawab menggunakan pendekatan RACI (Responsible, Accountable, Consulted, Informed) sebagai berikut:
+
+R (Responsible) → Unit yang melaksanakan aktivitas secara langsung.
+
+A (Accountable) → Unit yang bertanggung jawab atas keberhasilan dan hasil akhir aktivitas.
+
+C (Consulted) → Unit yang dikonsultasikan atau dilibatkan dalam proses.
+
+I (Informed) → Unit yang menerima informasi atas pelaksanaan atau hasil proses.
+
+
+[TABLE START]
+No | Aktivitas / Fungsi Utama | Mora Republic | SLP KC Tangerang Selatan | PIC Warehouse | Supervisor / Operasional | Digital Services | Admin WMS | Bisnis / Account Management
+1 | Penetapan kebutuhan bisnis WMS | C | C | C | C | R | I | A
+2 | Pembuatan DO/WO Inbound | A/R | I | I | I | I | I | C
+3 | Pickup barang dari Warehouse Mora Republic | C | A/R | I | C | I | I | I
+4 | Pengiriman Middle Mile ke Warehouse Tujuan | I | R | I | A | I | I | I
+5 | Receiving dan validasi barang inbound | I | C | R | A | I | I | I
+6 | Upload BAST / Surat Jalan / Evidence | I | C | R | A | I | I | I
+7 | Put Away dan penentuan lokasi barang | I | I | R | A | I | I | I
+8 | Update dan monitoring inventory | I | I | R | A | C | C | I
+9 | Stock Opname | I | I | R | A | I | C | I
+10 | Stock Adjustment | I | I | R | A | C | C | I
+11 | Pembuatan DO/WO Outbound | A/R | I | I | I | I | I | C
+12 | Picking barang | I | I | R | A | I | I | I
+13 | Validasi Serial Number / Barcode | I | I | R | A | C | I | I
+14 | Packing barang | I | I | R | A | I | I | I
+15 | Outbound Processing | I | I | R | A | I | I | I
+16 | Last Mile Delivery | I | C | C | A/R | I | I | I
+17 | Update status pengiriman | I | I | C | A/R | C | I | I
+18 | Receiving barang retur | I | I | R | A | I | I | I
+19 | Update inventory barang retur | I | I | R | A | I | C | I
+20 | Penanganan exception operasional | C | C | R | A | C | I | I
+21 | Monitoring SLA dan performa operasional | I | I | C | R | C | I | A
+22 | Dashboard dan Reporting | I | I | C | C | R | C | A
+23 | Integrasi WMS dengan sistem Mora Republic | C | I | I | C | A/R | C | C
+24 | Integrasi WMS dengan sistem internal Pos Indonesia | I | I | C | C | A/R | C | C
+25 | Pengelolaan user dan hak akses | I | I | I | C | C | A/R | I
+26 | Audit Trail dan Activity Log | I | I | I | C | A | R | I
+27 | Penanganan gangguan / troubleshooting WMS | I | I | C | C | A/R | R | I
+28 | Backup dan pemulihan sistem | I | I | I | I | A/R | C | I
+29 | Evaluasi kinerja WMS | C | C | C | C | R | I | A
+30 | Enhancement / pengembangan WMS lanjutan | C | I | C | C | R | C | A
+[TABLE END]
+
+
+BAB 6 RISIKO DAN MITIGASI
+
+6.1 Tujuan Pengelolaan Risiko
+
+Pengelolaan risiko pada pengembangan dan implementasi Warehouse Management System (WMS) dilakukan untuk mengidentifikasi, memantau, dan mengendalikan berbagai potensi risiko yang dapat memengaruhi kelancaran proses fulfillment Mora Republic, baik dari sisi operasional, teknologi, data, maupun pengguna sistem.
+
+Pengelolaan risiko bertujuan untuk :
+
+Menjamin keberlangsungan operasional warehouse dan fulfillment selama proses pengembangan, implementasi, maupun transisi dari aplikasi existing ke WMS.
+
+Meminimalkan risiko gangguan proses bisnis, khususnya pada proses inbound, receiving, inventory, picking, packing, outbound, delivery, dan retur.
+
+Menjaga akurasi dan konsistensi data antara data order, inventory pada sistem, serta kondisi fisik barang di warehouse.
+
+Mengurangi risiko kegagalan integrasi sistem antara WMS dengan sistem Mora Republic maupun sistem internal PT Pos Indonesia yang dapat menyebabkan order atau status transaksi tidak tersinkronisasi.
+
+Menjaga keamanan, kerahasiaan, dan integritas data melalui pengaturan hak akses, pencatatan aktivitas pengguna, serta pengendalian terhadap perubahan data pada sistem.
+
+Memastikan kesiapan pengguna dan proses operasional melalui pengaturan role, sosialisasi, pelatihan, serta penyediaan panduan penggunaan sistem.
+
+Memastikan tersedianya mekanisme penanganan gangguan dan exception, sehingga setiap kendala seperti perbedaan stok, kegagalan transaksi, atau gangguan sistem dapat segera diidentifikasi dan ditindaklanjuti.
+
+Mengurangi risiko ketergantungan terhadap aplikasi existing, sehingga proses operasional fulfillment Mora Republic tetap dapat berjalan dengan baik setelah proses transisi ke WMS selesai.
+
+Mendukung pencapaian SLA dan kualitas layanan, dengan memastikan risiko yang berpotensi menyebabkan keterlambatan atau kesalahan proses dapat dimonitor dan dikendalikan sejak awal.
+
+Mendukung proses evaluasi dan perbaikan berkelanjutan, melalui pemanfaatan data risiko, histori transaksi, audit trail, dan hasil monitoring sebagai dasar penyempurnaan sistem maupun proses operasional.
+
+Dengan pengelolaan risiko yang terstruktur, implementasi WMS diharapkan dapat berlangsung secara lebih terkendali serta mampu mendukung proses fulfillment Mora Republic yang andal, akurat, aman, dan berkelanjutan.
+
+6.2 Klasifikasi Risiko
+
+Risiko dibagi menjadi empat kategori utama:
+
+1. Risiko Strategis – berkaitan dengan kebijakan, kepatuhan, dan pengambilan keputusan.
+
+2. Risiko Operasional – berkaitan dengan proses bisnis dan SDM pelaksana.
+
+3. Risiko Teknis (Teknologi Informasi) – terkait pengembangan dan stabilitas sistem.
+
+4. Risiko Pelanggan (Customer Experience) – berkaitan dengan kenyamanan, kepercayaan, dan persepsi pengguna layanan.
+
+6.3 Matriks Risiko dan Mitigasi
+
+Matriks risiko dan mitigasi disusun untuk mengidentifikasi potensi risiko yang dapat terjadi selama proses pengembangan, implementasi, transisi, dan operasional Warehouse Management System (WMS). Setiap risiko perlu memiliki tindakan pengendalian dan penanggung jawab yang jelas agar dampaknya terhadap operasional fulfillment Mora Republic dapat diminimalkan.
+
+
+[TABLE START]
+No | Kategori Risiko | Risiko | Dampak | Mitigasi / Pengendalian | Penanggung Jawab
+1 | Process | Proses bisnis WMS tidak sesuai kebutuhan operasional warehouse | Proses inbound, inventory, outbound, dan retur tidak berjalan optimal | Review proses bisnis, walkthrough operasional, UAT, dan validasi requirement sebelum implementasi | Bisnis, Operasional, Digital Services
+2 | Process | Perubahan proses bisnis atau kebijakan setelah sistem dikembangkan | Sistem tidak sesuai dengan kebutuhan terbaru | Review berkala dan mekanisme change request | Bisnis, Operasional, Digital Services
+3 | Data | Data stok WMS berbeda dengan kondisi fisik | Kesalahan picking, fulfillment, dan rekonsiliasi | Stock opname, validasi receiving, barcode/serial number, dan kontrol stock adjustment | PIC Warehouse / Supervisor
+4 | Data | Data order inbound/outbound tidak masuk atau tidak sinkron | Order terlambat atau tidak dapat diproses | Monitoring integrasi, retry mechanism, transaction log, dan rekonsiliasi order | Digital Services / Admin WMS
+5 | Tools / Integration | Integrasi WMS dengan sistem Mora Republic atau sistem Pos gagal | Pertukaran data dan update status terhambat | API monitoring, error logging, UAT integrasi, retry, dan fallback procedure | Digital Services
+6 | Tools / System | Gangguan server, database, aplikasi, atau jaringan | Operasional warehouse terhambat | Monitoring uptime, backup, disaster recovery plan, dan prosedur fallback | Digital Services / IT Operation
+7 | Tools / Performance | Volume transaksi tinggi menurunkan performa sistem | Pemrosesan transaksi menjadi lambat | Capacity planning, load testing, performance monitoring, dan scaling infrastruktur | Digital Services
+8 | People | Petugas belum familiar menggunakan WMS | Kesalahan input dan keterlambatan proses | Training, user manual, simulasi, pendampingan, dan helpdesk | Operasional / Digital Services
+9 | People | Pengguna melakukan transaksi di luar kewenangannya | Risiko perubahan data yang tidak sah | Role-based access, approval transaksi tertentu, dan audit trail | Admin WMS / Supervisor
+10 | Security | Penyalahgunaan akun atau akses tidak sah | Risiko kebocoran atau perubahan data | User individual, password policy, session management, dan activity log | Digital Services / Admin WMS
+11 | Operational | Kesalahan saat receiving barang | Data inventory tidak akurat | Validasi qty dan kondisi, scan barcode/SN, evidence, dan exception record | PIC Warehouse
+12 | Operational | Kesalahan lokasi saat put away | Barang sulit ditemukan saat picking | Validasi rack/slot serta scan barang dan lokasi | PIC Warehouse
+13 | Operational | Kesalahan picking barang | Salah kirim dan potensi komplain pelanggan | Validasi item, qty, barcode/SN, serta pengecekan sebelum packing | PIC Warehouse
+14 | Operational | BAST, Surat Jalan, atau evidence tidak tersedia | Proses tracing dan rekonsiliasi terhambat | Mandatory upload dokumen dan penyimpanan berdasarkan nomor transaksi | PIC Warehouse / SLP
+15 | Operational | Barang retur tidak tercatat dalam sistem | Stok menjadi tidak akurat | Receiving retur melalui WMS, pengecekan kondisi, dan update inventory | PIC Warehouse
+16 | Business Continuity | Migrasi dari sistem existing ke WMS tidak berjalan optimal | Gangguan operasional saat pergantian sistem | Migration plan, parallel run, data validation, cut-over, dan rollback plan | Bisnis, Operasional, Digital Services
+17 | Business Continuity | WMS belum siap saat aplikasi existing dihentikan | Operasional fulfillment dapat terganggu | Timeline implementasi, UAT, training, readiness monitoring, dan go-live sebelum aplikasi existing dihentikan | Bisnis / Digital Services
+18 | Customer Service | Keterlambatan fulfillment akibat kendala sistem atau operasional | SLA tidak tercapai dan kepuasan mitra menurun | Dashboard SLA, monitoring exception, escalation procedure, dan follow-up transaksi | Bisnis / Operasional
+19 | Reporting | Dashboard/laporan tidak sesuai transaksi aktual | Kesalahan monitoring dan pengambilan keputusan | Validasi logic reporting dan rekonsiliasi data dengan sumber transaksi | Digital Services / Bisnis
+20 | Audit & Traceability | Histori perubahan data tidak dapat ditelusuri | Sulit mengetahui penyebab dan sumber kesalahan | Audit trail berisi user, waktu, aktivitas, serta histori perubahan | Digital Services / Admin WMS
+[TABLE END]
+
+
+Risiko yang telah diidentifikasi akan dilakukan monitoring secara berkala selama proses pengembangan, implementasi, dan operasional WMS. Prioritas pengendalian difokuskan pada risiko yang berpotensi mengganggu keberlangsungan operasional, akurasi inventory, integrasi data, dan pencapaian SLA layanan Mora Republic.
+
+6.4 Strategi Pengendalian Risiko Tambahan
+
+Selain mitigasi terhadap masing-masing risiko yang telah diidentifikasi pada matriks risiko, diperlukan strategi pengendalian tambahan untuk memastikan proses pengembangan, implementasi, transisi, dan operasional Warehouse Management System (WMS) dapat berjalan secara terkendali dan berkelanjutan.
+
+Strategi pengendalian risiko tambahan yang perlu diterapkan meliputi:
+
+Pelaksanaan UAT secara Menyeluruh
+
+Melakukan User Acceptance Test (UAT) terhadap seluruh fungsi utama WMS, termasuk proses inbound, receiving, put away, inventory, picking, packing, outbound, delivery, retur, reporting, serta integrasi sistem sebelum implementasi secara penuh.
+
+Parallel Run dengan Sistem Existing
+
+Pada masa transisi, WMS dapat dijalankan secara paralel dengan aplikasi existing dalam periode tertentu untuk memastikan kesesuaian data, proses bisnis, serta kesiapan operasional sebelum dilakukan penghentian sistem lama.
+
+Validasi dan Rekonsiliasi Data Awal
+
+Melakukan rekonsiliasi terhadap data master, data inventory, lokasi barang, serial number/barcode, dan transaksi yang akan dimigrasikan ke WMS agar data awal sistem sesuai dengan kondisi aktual di warehouse.
+
+Penyusunan Prosedur Cut-Over dan Rollback
+
+Menyusun rencana perpindahan sistem secara terstruktur yang mencakup jadwal cut-over, PIC, tahapan migrasi, validasi data, serta prosedur rollback apabila ditemukan kendala yang berpotensi mengganggu operasional.
+
+Penerapan Monitoring Sistem dan Operasional
+
+Menyediakan mekanisme monitoring terhadap ketersediaan sistem, performa aplikasi, keberhasilan integrasi, status transaksi, serta exception yang terjadi agar kendala dapat diketahui dan ditangani lebih cepat.
+
+Penerapan Prosedur Fallback
+
+Menyiapkan prosedur alternatif apabila WMS atau integrasi sistem mengalami gangguan, sehingga aktivitas kritikal warehouse tetap dapat berjalan dan seluruh transaksi dapat diperbarui kembali ke sistem setelah kondisi normal.
+
+Penguatan Kontrol Inventory
+
+Melakukan stock opname secara berkala, cycle count, validasi barcode/serial number, kontrol stock adjustment, serta monitoring pergerakan barang untuk menjaga akurasi inventory.
+
+Pengelolaan Hak Akses dan Audit Trail
+
+Menerapkan role-based access control berdasarkan kewenangan masing-masing pengguna serta memastikan setiap perubahan data penting tercatat melalui audit trail untuk mendukung keamanan dan traceability.
+
+Pelatihan dan Pendampingan Pengguna
+
+Melaksanakan pelatihan, simulasi proses operasional, penyediaan user manual/SOP, serta pendampingan kepada pengguna pada masa awal implementasi untuk meminimalkan risiko kesalahan penggunaan sistem.
+
+Mekanisme Eskalasi Kendala
+
+Menetapkan alur eskalasi yang jelas berdasarkan tingkat kritikalitas kendala, termasuk PIC dari sisi operasional, bisnis, dan Digital Services, sehingga setiap gangguan dapat ditindaklanjuti sesuai target waktu penyelesaian.
+
+Backup dan Disaster Recovery
+
+Menyediakan mekanisme pencadangan data secara berkala serta disaster recovery plan untuk meminimalkan risiko kehilangan data maupun terhentinya layanan akibat gangguan infrastruktur.
+
+Evaluasi Berkala Pasca Implementasi
+
+Melakukan evaluasi secara berkala terhadap performa WMS berdasarkan indikator keberhasilan, pencapaian SLA, jumlah exception, akurasi inventory, keberhasilan integrasi, serta feedback dari pengguna.
+
+Manajemen Perubahan Sistem
+
+Setiap perubahan kebutuhan bisnis, proses operasional, konfigurasi, maupun fitur WMS perlu melalui proses review, persetujuan, pengujian, dan dokumentasi sebelum diterapkan pada sistem production.
+
+Koordinasi Berkala dengan Mora Republic
+
+Melakukan evaluasi bersama Mora Republic terhadap kualitas layanan fulfillment, kesesuaian data, kendala operasional, serta kebutuhan pengembangan selanjutnya agar WMS tetap sesuai dengan kebutuhan bisnis.
+
+Dengan strategi pengendalian tambahan tersebut, risiko implementasi WMS diharapkan dapat dikelola secara proaktif sehingga keberlangsungan operasional, akurasi data, keamanan sistem, dan pencapaian SLA layanan Mora Republic tetap terjaga selama maupun setelah proses transisi.
+
+BAB 7 TIMELINE IMPLEMENTASI DAN ROADMAP PENGEMBANGAN
+
+7.1 Tujuan
+
+Bagian ini menjelaskan rencana waktu pelaksanaan dan tahapan pengembangan Warehouse Management System (WMS) untuk mendukung operasional fulfillment Mora Republic, mulai dari tahap penyusunan kebutuhan bisnis, pengembangan sistem, pengujian, implementasi, hingga evaluasi pasca go-live.
+
+Penyusunan timeline implementasi dan roadmap pengembangan bertujuan untuk:
+
+Memastikan pengembangan WMS berjalan secara terstruktur dan terukur, dengan tahapan, target waktu, serta penanggung jawab yang jelas pada setiap fase.
+
+Menjamin kesiapan sistem sebelum implementasi, melalui proses pengembangan, integrasi, testing, User Acceptance Test (UAT), dan validasi kebutuhan operasional.
+
+Memastikan proses transisi dari aplikasi existing ke WMS dapat dilakukan dengan aman, sehingga operasional fulfillment Mora Republic tetap berjalan tanpa gangguan yang signifikan.
+
+Menyelaraskan kesiapan antara sistem, data, infrastruktur, dan pengguna, termasuk kebutuhan migrasi data, konfigurasi, hak akses, pelatihan, serta kesiapan operasional warehouse.
+
+Memberikan acuan monitoring progres pengembangan, sehingga setiap potensi keterlambatan, kendala, maupun dependensi dapat segera diidentifikasi dan ditindaklanjuti.
+
+Menetapkan prioritas pengembangan berdasarkan kebutuhan bisnis, dengan mendahulukan fungsi-fungsi utama yang dibutuhkan untuk mendukung proses inbound, inventory, outbound, delivery, retur, monitoring, dan reporting.
+
+Mendukung pengembangan sistem secara bertahap dan berkelanjutan, sehingga setelah fase awal implementasi, WMS dapat dikembangkan lebih lanjut sesuai peningkatan volume transaksi, kebutuhan operasional, serta kebutuhan integrasi lainnya.
+
+Memastikan keberlangsungan layanan fulfillment Mora Republic, dengan menyiapkan WMS agar dapat berfungsi sebagai sistem utama sebelum penggunaan aplikasi existing dihentikan.
+
+Dengan adanya timeline implementasi dan roadmap pengembangan yang jelas, proses pengembangan WMS diharapkan dapat dilaksanakan secara lebih terkendali, tepat waktu, dan selaras dengan kebutuhan bisnis serta operasional PT Pos Indonesia dan Mora Republic.
+
+7.2 Rencana Implementasi
+
+
+[TABLE START]
+No | Tahap Implementasi | Aktivitas Utama | Target Waktu | Penanggung Jawab | Output
+1 | Finalisasi SKB | Finalisasi kebutuhan bisnis, proses As-Is dan To-Be, kebutuhan fungsional, risiko, serta kebutuhan integrasi | Agustus 2026 | Bisnis / Operasional | Dokumen SKB final
+2 | Requirement Review & Solution Design | Review kebutuhan, desain sistem, arsitektur, database, user role, dan integrasi | Agustus–September 2026 | Digital Services / Bisnis / Operasional | Solution design & technical requirement
+3 | Development Core WMS | Pengembangan fungsi inbound, receiving, put away, inventory, picking, packing, outbound, retur, dan reporting | September 2026 | Digital Services | Modul utama WMS
+4 | Pengembangan Integrasi | Pengembangan integrasi dengan sistem Mora Republic dan sistem internal Pos Indonesia | September 2026 | Digital Services | Integrasi sistem
+5 | Persiapan Master Data | Penyiapan data produk, warehouse, lokasi/rack, user, inventory awal, serial number/barcode | September 2026 | Bisnis / Warehouse / Digital Services | Master data WMS
+6 | System Integration Test (SIT) | Pengujian fungsi sistem dan integrasi antar modul | September 2026 | Digital Services | Hasil SIT & daftar perbaikan
+7 | User Acceptance Test (UAT) | Pengujian end-to-end menggunakan skenario transaksi aktual | September–Oktober 2026 | Bisnis / Operasional / Digital Services | Hasil UAT
+8 | Perbaikan Hasil UAT | Penyelesaian defect, konfigurasi, dan penyempurnaan berdasarkan hasil UAT | Oktober 2026 | Digital Services | Sistem siap implementasi
+9 | Training & Sosialisasi | Pelatihan kepada PIC warehouse, supervisor, administrator, SLP, dan pengguna terkait | Oktober 2026 | Digital Services / Bisnis / Operasional | User siap menggunakan WMS
+10 | Parallel Run & Rekonsiliasi | Menjalankan WMS secara paralel dengan aplikasi existing dan memvalidasi data transaksi serta inventory | Oktober 2026 | Bisnis / Warehouse / Digital Services | Hasil validasi & rekonsiliasi
+11 | Go-Live WMS | Implementasi WMS sebagai sistem utama fulfillment Mora Republic | Sebelum aplikasi existing berakhir | Bisnis / Operasional / Digital Services | WMS production
+12 | Hypercare & Monitoring | Monitoring incident, integrasi, performa, dan stabilitas operasional setelah go-live | Pasca Go-Live | Digital Services / Bisnis / Operasional | Sistem stabil
+13 | Evaluasi Pasca Implementasi | Evaluasi SLA, inventory accuracy, integrasi, penggunaan sistem, dan kebutuhan enhancement | Pasca Go-Live | Bisnis / Operasional / Digital Services | Improvement plan
+[TABLE END]
+
+
+7.3 Roadmap Pengembangan Fase Lanjutan
+
+
+[TABLE START]
+No | Fase Pengembangan | Fokus Pengembangan | Ruang Lingkup | Tujuan / Manfaat
+1 | Fase 1 – Stabilization | Penyempurnaan fungsi inti | Perbaikan defect, optimasi proses inbound, inventory, outbound, retur, dan reporting | Menjaga stabilitas sistem dan memastikan seluruh fungsi utama berjalan sesuai kebutuhan
+2 | Fase 2 – Advanced Monitoring | Pengembangan dashboard operasional | Dashboard SLA, inventory aging, order status, exception, productivity, dan fulfillment performance | Meningkatkan visibilitas operasional dan mempercepat proses monitoring
+3 | Fase 3 – Advanced Inventory Control | Penguatan kontrol inventory | Cycle count, stock aging, slow moving, dead stock, batch/serial tracking, dan inventory alert | Meningkatkan akurasi inventory dan mengurangi risiko selisih stok
+4 | Fase 4 – Automation & Workflow | Otomasi proses warehouse | Auto assignment, automated validation, workflow approval, dan notifikasi otomatis | Mengurangi aktivitas manual dan mempercepat proses operasional
+5 | Fase 5 – Integration Expansion | Perluasan integrasi sistem | Integrasi tambahan dengan sistem Mora Republic, sistem kurir, billing, tracking, dan sistem internal Pos Indonesia | Menciptakan proses end-to-end yang lebih terintegrasi
+6 | Fase 6 – Mobile Warehouse Operation | Dukungan perangkat mobile | Mobile receiving, barcode/QR scanning, put away, picking, stock opname, dan proof/evidence upload | Meningkatkan produktivitas petugas warehouse
+7 | Fase 7 – Exception & Alert Management | Monitoring transaksi bermasalah | Alert selisih stok, keterlambatan order, kegagalan integrasi, retur, dan SLA exception | Mempercepat identifikasi dan penanganan kendala
+8 | Fase 8 – Reporting & Analytics | Pengembangan analitik | Analisis produktivitas, tren volume, SLA, inventory movement, retur, dan fulfillment cost | Mendukung evaluasi kinerja dan pengambilan keputusan
+9 | Fase 9 – Customer Visibility Enhancement | Penguatan fitur customer facing | Self-service dashboard, tracking order, inventory visibility, document access, dan report download | Meningkatkan transparansi layanan kepada Mora Republic
+10 | Fase 10 – Multi Customer & Multi Warehouse | Skalabilitas bisnis | Dukungan multi customer, multi warehouse, multi owner, dan konfigurasi layanan per pelanggan | Memungkinkan WMS digunakan untuk pelanggan fulfillment lainnya
+11 | Fase 11 – Billing & Cost Management | Dukungan aspek komersial | Perhitungan aktivitas warehouse, storage, handling, outbound, dan layanan tambahan | Mendukung rekonsiliasi dan proses billing yang lebih akurat
+12 | Fase 12 – Continuous Improvement | Pengembangan berkelanjutan | Review kebutuhan user, enhancement, performance tuning, security improvement, dan technology update | Menjaga WMS tetap relevan dengan kebutuhan bisnis dan teknologi
+[TABLE END]
+
+
+BAB 8 KEBUTUHAN NON-FUNGSIONAL DAN INTEGRASI SISTEM
+
+8.1 Tujuan
+
+Bab ini menjelaskan kebutuhan non-fungsional fitur pick up terjadwal yang meliputi aspek keamanan, kinerja, skalabilitas, ketersediaan, serta integrasi dengan sistem dan platform lain di lingkungan PT Pos Indonesia (Persero). Kebutuhan ini dirancang untuk menjamin bahwa sistem beroperasi andalan, aman, dan dapat diakses secara 7x24 jam oleh seluruh pemangku kepentingan.
+
+8.2 Kebutuhan Non-Fungsional
+
+
+[TABLE START]
+Kategori | Deskripsi Kebutuhan
+A. Keamanan(Security) | - Sistem harus memiliki multi-layer security denganautentikasi berbasis SSO.- Seluruh data pelanggan, termasuk nomor HP,rekening, dan dokumen pribadi, harus dienkripsimenggunakan protokol AES-256.- Sistem wajib memiliki audit trail untuk seluruhaktivitas pengguna.
+B. KetersediaanSistem (Availability) | - Sistem harus dapat diakses 7 x 24 jam baik olehpelanggan maupun petugas internal.- Uptime minimal 99,5% per bulan.- Memiliki disaster recovery system (DRS) denganreplikasi data harian ke server backup.
+C. Performa Sistem(Performance) | - Respon aplikasi maksimum 3 detik per transaksidalam kondisi normal.- Kapasitas sistem minimal 1.000 pick up request perhari.dan dapat ditingkatkan sesuai pertumbuhanvolume.- Pengujian performa (load test) wajib dilakukansebelum go-live.
+D. Skalabilitas(Scalability) | - Sistem harus mendukung auto-scaling berdasarkanvolume transaksi dan jumlah pengguna.- Desain arsitektur microservices agar mudahdikembangkan untuk fitur tambahan.
+E. Pemeliharaan(Maintainability) | - DS wajib menyiapkan mekanisme log monitoringdan error handling system.- Update sistem dilakukan minimal dua kali per tahunatau sesuai kebutuhan perbaikan fungsional.
+F. Audit danKepatuhan(Compliance) | - Sistem harus mematuhi kebijakan internal PT PosIndonesia terkait Kerahasiaan Data Pelanggan danRegulasi.- Sistem harus mendukung pelaporan audit internaldan eksternal (BPK, KAP, dan Internal Audit).
+[TABLE END]
+
+
+8.3 Akses dan Hak Pengguna
+
+Pengembangan fitur pick up terjadwal di digital channel PosAja memberikan hak akses kepada pelanggan untuk mengatur jadwal penjemputan paket berdasarkan preferensi waktu yang tersedia.
+
+8.4 Integrasi Sistem dan Dependensi
+
+Fitur pick up terjadwal akan terhubung dengan beberapa platform utama Pos Indonesia melalui Application Programming Interface (API) atau web service yang dikembangkan oleh subdit DS.
+
+
+[TABLE START]
+Sistem / Platform | Keterangan
+Digital Channel PosAja | Digital channel PosAja terdiri dari aplikasi PosAja, PosAjaUMKM, Pospay Superapp, serta layanan kirim barang diBRImo dan MyTelkomsel, serta channel lainnya yangmenggunakan PosAja.Tahapan awal pengembangan fitur pick up terjadwal dilakukandi aplikasi Pospay Superapp.
+Partner pick up | Aplikasi partner pick up (user pengawas) akan menerimarequest pick up dari pelanggan, kemudian melakukanpenugasan pick up ke kurir.Aplikasi partner pick up (user kurir) menerima informasi waktupick up yang diinginkan pelanggan dan melakukan updatedata setelah berhasil melakukan pick up.
+Dashboard pick up | Dashboard pick up memberikan informasi waktu pick up danstatus pick up secara real-time apakah terlambat atau tepatwaktu.
+[TABLE END]
+
+
+8.5 Ketergantungan Teknis
+
+
+[TABLE START]
+Komponen | Deskripsi Ketergantungan
+Database server | Harus berada pada server production Pos Indonesia.
+Middleware API Gateway | Mengatur koneksi antar aplikasi internal daneksternal.
+Identity Management (PosID) | SSO bagi seluruh user internal dan pelanggan.
+Network Security (Firewall &VPN) | Melindungi komunikasi antar sistem dan kantorregional
+Notification Engine (WhatsApp,Email, Push) | Mengirimkan update otomatis status refund.
+[TABLE END]
+
+
+8.6 Standar Infrastruktur dan Platform
+
+1. Platform Teknologi:
+
+a. Front-End: ReactJS / Next.js
+
+b. Back-End: Node.js / Laravel REST API
+
+c. Database: PostgreSQL / MySQL dengan replikasi otomatis
+
+d. Server: Cloud Hybrid Environment (Private + Public)
+
+2. Arsitektur:
+
+a. Service-Oriented Architecture (SOA) untuk fleksibilitas integrasi
+
+b. Containerized deployment (Docker/Kubernetes) untuk efisiensi dan
+
+skalabilitas
+
+3. Keamanan Sistem:
+
+a. Firewall berlapis dan IDS/IPS aktif
+
+b. Enkripsi komunikasi SSL/TLS 1.3
+
+c. Backup otomatis harian dan restore mingguan
+
+8.7 Monitoring dan Logging
+
+Sistem wajib memiliki mekanisme pemantauan yang berjalan otomatis untuk menjamin keandalan operasional:
+
+● System Monitoring Dashboard: memantau uptime, performa, error log, dan SLA.
+
+● Log Server Centralized: mencatat seluruh aktivitas user untuk audit dan
+
+troubleshooting.
+
+● Alerting System: mengirimkan peringatan dini (email/WA) untuk error kritis dan
+
+downtime.
+
+BAB 9 PENUTUP
+
+Tujuan
+
+Pengembangan Warehouse Management System (WMS) merupakan langkah strategis dalam mendukung keberlangsungan dan peningkatan kualitas operasional fulfillment Mora Republic di PT Pos Indonesia (Persero).
+
+Melalui implementasi WMS, proses bisnis warehouse diharapkan dapat dikelola secara lebih terintegrasi, mulai dari inbound, receiving, put away, inventory management, picking, packing, outbound, delivery, retur, monitoring, hingga reporting. Seluruh aktivitas tersebut diarahkan agar tercatat secara sistematis, akurat, dan dapat ditelusuri melalui satu sistem yang terintegrasi.
+
+Pengembangan WMS juga diharapkan dapat menjawab berbagai kendala pada proses existing, khususnya terkait akurasi inventory, integrasi order, monitoring proses fulfillment, dokumentasi transaksi, serta ketergantungan terhadap aplikasi yang digunakan saat ini.
+
+Dengan tersedianya WMS, PT Pos Indonesia diharapkan memiliki sistem yang mampu menjadi single source of truth terhadap data operasional fulfillment Mora Republic, sehingga proses monitoring, rekonsiliasi, evaluasi SLA, serta pengambilan keputusan dapat dilakukan dengan lebih cepat dan akurat.
+
+Keberhasilan implementasi WMS membutuhkan koordinasi dan kolaborasi antara unit bisnis, operasional warehouse, Digital Services, SLP, serta Mora Republic, baik pada tahap pengembangan, pengujian, implementasi, maupun evaluasi pasca go-live.
+
+Pengembangan WMS selanjutnya dapat dilakukan secara bertahap berdasarkan kebutuhan bisnis, perkembangan volume transaksi, hasil evaluasi operasional, serta kebutuhan integrasi dan peningkatan kapabilitas sistem di masa mendatang.
+
+Pernyataan Penetapan
+
+Dokumen Spesifikasi Kebutuhan Bisnis (SKB) Warehouse Management System (WMS) untuk Fulfillment Mora Republic ini disusun sebagai acuan kebutuhan bisnis dan operasional dalam proses pengembangan, pengujian, serta implementasi sistem.
+
+Seluruh kebutuhan yang tercantum dalam dokumen ini menjadi dasar bagi unit terkait dalam melakukan perancangan solusi, pengembangan fungsi sistem, integrasi, pengujian, serta persiapan implementasi WMS.
+
+Apabila dalam proses pengembangan terdapat perubahan kebutuhan bisnis, proses operasional, maupun aspek teknis, maka penyesuaian dilakukan melalui mekanisme review dan persetujuan bersama antara unit terkait sesuai tata kelola yang berlaku di PT Pos Indonesia (Persero).
+
+Dengan ditetapkannya dokumen ini, diharapkan proses pengembangan dan implementasi WMS dapat dilaksanakan secara terarah, terukur, dan sesuai dengan kebutuhan operasional fulfillment Mora Republic.
